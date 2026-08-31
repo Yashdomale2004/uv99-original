@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>UV99 Glazing — Harmful rays out, protection in</title>
+  <meta name="description" content="Automotive glazing that blocks up to 99% of harmful UV while preserving a clear, confident view.">
+  <link rel="stylesheet" href="/uv99/styles.css">
+  <link rel="stylesheet" href="/uv99/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%238f4a9e'/><text x='50' y='67' text-anchor='middle' fill='white' font-size='44' font-family='Arial' font-weight='900'>99</text></svg>">
+  <style>
+    /* style.css is loaded for the ported cinematic hero (.upo-*). Re-pin the four
+       design tokens it shares with styles.css so the rest of the landing page keeps
+       its own palette; give the hero back the electric-violet / orange accents. */
+    :root { --ink: #f3eef6; --line: rgba(255, 255, 255, .14); --amber: #f3aa2c; --violet: #8f4a9e; }
+    main { position: static; z-index: auto; }
+    .upo-hero { --amber: #ff7a34; --violet: #8b5cf6; margin-top: -78px; min-height: max(86vh, 720px); }
+    section.upo-hero { background: radial-gradient(760px 620px at 34% 40%, rgba(120,70,210,.22), transparent 60%), #050308 !important; }
+    .upo-hero__content { top: clamp(76px, 9vh, 130px); bottom: auto; margin-block: 0; }
+    /* stay right-aligned, but stop drifting into the corner past ~1600px:
+       the column then holds the right edge of a 1600px-centred band */
+    .upo-hero__content { right: max(var(--edge), calc((100vw - 1600px) / 2)); }
+    /* short-viewport safety: keep the stats row clear of the guard bar */
+    @media (min-width: 901px) and (max-height: 820px) {
+      .upo-hero { min-height: 760px; }
+      .upo-hero__content { top: 72px; }
+      .upo-hero__headline { font-size: clamp(2.4rem, 6vw, 3.4rem); }
+      .upo-stat__value { font-size: clamp(1.35rem, 2vw, 1.8rem); }
+    }
+    .upo-hero::after { content: ""; position: absolute; left: var(--rail-w); top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,.06); pointer-events: none; z-index: 4; }
+    .lp-rail-note { position: absolute; left: clamp(14px, 2vw, 26px); bottom: clamp(24px, 5vh, 54px); z-index: 4; margin: 0; font-size: 12px; line-height: 1.4; color: rgba(255,255,255,.5); pointer-events: none; }
+    @media (max-width: 900px) { .upo-hero { margin-top: -70px; } .upo-hero::after, .lp-rail-note { display: none; } .upo-hero__content { top: auto; } }
+
+    /* ---- UV99 protection guard bar (shield icons + warranty note) ---- */
+    .uv-guardbar { position: relative; z-index: 1; background: linear-gradient(180deg, #8a4aa4, #7c3a96); color: #fff; padding: clamp(12px, 1.6vw, 18px) clamp(20px, 5vw, 64px) clamp(10px, 1.2vw, 14px); text-align: center; }
+    .uv-guardbar__row { list-style: none; margin: 0 auto; padding: 0; max-width: 1120px; display: grid; grid-template-columns: repeat(6, 1fr); gap: clamp(12px, 2.2vw, 32px); }
+    .uv-guardbar__item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .uv-guardbar__icon { width: clamp(32px, 3.2vw, 42px); }
+    .uv-guardbar__icon svg { display: block; width: 100%; height: auto; }
+    .uv-guardbar__label { font: 800 clamp(9px, .8vw, 11px)/1.24 "Montserrat", "Inter", Arial, sans-serif; letter-spacing: .05em; text-transform: uppercase; }
+    .uv-guardbar__note { margin: clamp(8px, 1vw, 12px) auto 0; max-width: 860px; font: 500 clamp(9.5px, .8vw, 11.5px)/1.55 "Inter", Arial, sans-serif; letter-spacing: .01em; color: rgba(255, 255, 255, .9); }
+    @media (max-width: 900px) { .uv-guardbar__row { grid-template-columns: repeat(3, 1fr); gap: 22px 16px; } }
+    @media (max-width: 520px) { .uv-guardbar__row { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+  <script>try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('hero-anim');}catch(e){}</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header"><div class="nav-shell"><a class="brand" href="/uv99/index.html" aria-label="UV99 Glazing home"><img class="brand__logo" src="/uv99/assets/uv99-logo.png" alt="UV99 Glazing"></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span><span></span></button><nav class="nav-links" id="nav-links" aria-label="Primary navigation"><a href="/uv99/index.html" aria-current="page">Home</a><a href="/uv99/films.html">Products</a><a href="/uv99/warranty.html">Warranty</a><a href="/uv99/faq-contact.html">FAQ &amp; Contact</a><a href="/uv99/about.html">About</a><a class="nav-cta" href="/uv99/faq-contact.html#contact">Book installation</a></nav></div></header>
+  <main id="main">
+    <section class="upo-hero" id="overview">
+      <div class="upo-watermark" aria-hidden="true"><span>UV99</span></div>
+      <p class="lp-rail-note">Harmful rays out,<br>protection in.</p>
+
+      <div class="upo-stage" aria-hidden="true">
+        <div class="upo-stage__scene">
+          <div class="upo-stage__frame">
+            <img class="upo-stage__plate" src="/uv99/assets/uv99-plus-one-stage.png" alt="" width="1376" height="768" fetchpriority="high" decoding="async">
+            <img class="upo-stage__ring" src="/uv99/assets/uv99-plus-one-stage.png" alt="" width="1376" height="768" aria-hidden="true" decoding="async">
+            <span class="upo-stage__turntable" aria-hidden="true"><span class="upo-stage__turntable-spin"></span></span>
+            <span class="upo-stage__spark"></span>
+            <span class="upo-stage__glow"></span>
+
+            <div class="upo-product-slot">
+              <div class="upo-product">
+                <div class="upo-product__par">
+                  <div class="upo-product__lift">
+                    <img class="upo-product__photo" src="/uv99/assets/NEW.png" alt="UV99 window film packaging — harmful rays out, protection in." decoding="async">
+                  </div>
+                </div>
+                <span class="upo-product__shadow" aria-hidden="true"></span>
+                <span class="upo-product__reflection"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <span class="upo-stage__sweep"></span>
+      </div>
+
+      <div class="upo-hero__content">
+        <h1 class="upo-hero__headline">
+          <span class="line"><span>Invisible</span></span>
+          <span class="line"><span>Protection.</span></span>
+          <span class="line"><span>Noticeable Comfort.</span></span>
+        </h1>
+
+        <p class="upo-hero__lede">
+          Blocks up to <strong>99%</strong> of harmful UV rays while preserving exceptional optical clarity.
+        </p>
+
+        <div class="upo-hero__actions">
+          <a class="upo-btn" href="/uv99/films.html">
+            <span>Explore UV99 Films</span>
+            <svg class="upo-btn__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="upo-textlink" href="/uv99/about.html">See the technology</a>
+        </div>
+
+        <dl class="upo-stats">
+          <div class="upo-stat">
+            <dd class="upo-stat__value">99%</dd>
+            <dt class="upo-stat__label">UV<br>Protection</dt>
+          </div>
+          <div class="upo-stat">
+            <dd class="upo-stat__value">Optical</dd>
+            <dt class="upo-stat__label">Clarity</dt>
+          </div>
+          <div class="upo-stat">
+            <dd class="upo-stat__value">3&nbsp;Year</dd>
+            <dt class="upo-stat__label">Warranty</dt>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="uv-guardbar" aria-label="What UV99 protects">
+      <ul class="uv-guardbar__row">
+        <li class="uv-guardbar__item">
+          <span class="uv-guardbar__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.8 5.2 5.3v5.9c0 4.5 2.9 7.8 6.8 9.3 3.9-1.5 6.8-4.8 6.8-9.3V5.3L12 2.8Z"/>
+              <circle cx="12" cy="9.7" r="2.1"/>
+              <path d="M12 5.3v1.4M12 12.7v1.3M7.6 9.7h1.4M15 9.7h1.4M8.9 6.6l1 1M15.1 6.6l-1 1M8.9 12.8l1-1M15.1 12.8l-1-1"/>
+              <text x="12" y="18.1" text-anchor="middle" font-size="3.7" font-weight="700" fill="#fff" stroke="none" font-family="Montserrat,Inter,Arial,sans-serif">UV</text>
+            </svg>
+          </span>
+          <span class="uv-guardbar__label">100%<br>UV&nbsp;Protection</span>
+        </li>
+        <li class="uv-guardbar__item">
+          <span class="uv-guardbar__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.8 5.2 5.3v5.9c0 4.5 2.9 7.8 6.8 9.3 3.9-1.5 6.8-4.8 6.8-9.3V5.3L12 2.8Z"/>
+              <path d="M7.7 16.7v-3c0-1.1.9-2 2-2s2 .9 2 2v3"/>
+              <path d="M6.9 17.2h5.6"/>
+              <path d="M13.4 16.1v-2.3c0-.9.7-1.6 1.6-1.6s1.6.7 1.6 1.6v2.3"/>
+              <path d="M12.8 16.6h4.4"/>
+            </svg>
+          </span>
+          <span class="uv-guardbar__label">Interior<br>Preservation</span>
+        </li>
+        <li class="uv-guardbar__item">
+          <span class="uv-guardbar__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.8 5.2 5.3v5.9c0 4.5 2.9 7.8 6.8 9.3 3.9-1.5 6.8-4.8 6.8-9.3V5.3L12 2.8Z"/>
+              <path d="M12 6.6l2.3 1.3v2.7L12 11.9 9.7 10.6V7.9z"/>
+              <path d="M8.2 11.1l2.3 1.3v2.7l-2.3 1.3-2.3-1.3v-2.7z"/>
+              <path d="M15.8 11.1l2.3 1.3v2.7l-2.3 1.3-2.3-1.3v-2.7z"/>
+            </svg>
+          </span>
+          <span class="uv-guardbar__label">Skin<br>Protection</span>
+        </li>
+        <li class="uv-guardbar__item">
+          <span class="uv-guardbar__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.8 5.2 5.3v5.9c0 4.5 2.9 7.8 6.8 9.3 3.9-1.5 6.8-4.8 6.8-9.3V5.3L12 2.8Z"/>
+              <circle cx="11.4" cy="9" r="1.9"/>
+              <path d="M7.3 16.9c.7-2.3 2.2-3.6 4.1-3.6s3.4 1.3 4.1 3.6"/>
+              <path d="M14.7 6.2l1 1 1.9-2.1"/>
+            </svg>
+          </span>
+          <span class="uv-guardbar__label">Enhance<br>Comfort</span>
+        </li>
+        <li class="uv-guardbar__item">
+          <span class="uv-guardbar__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.8 5.2 5.3v5.9c0 4.5 2.9 7.8 6.8 9.3 3.9-1.5 6.8-4.8 6.8-9.3V5.3L12 2.8Z"/>
+              <path d="M6.4 12c1.6-2.1 3.6-3.2 5.6-3.2s4 1.1 5.6 3.2c-1.6 2.1-3.6 3.2-5.6 3.2S8 14.1 6.4 12Z"/>
+              <circle cx="12" cy="12" r="1.7"/>
+              <path d="M16.3 7.3l.45 1.1 1.1.45-1.1.45-.45 1.1-.45-1.1-1.1-.45 1.1-.45z" fill="#fff" stroke="none"/>
+            </svg>
+          </span>
+          <span class="uv-guardbar__label">Optical<br>Clarity</span>
+        </li>
+        <li class="uv-guardbar__item">
+          <span class="uv-guardbar__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.8 5.2 5.3v5.9c0 4.5 2.9 7.8 6.8 9.3 3.9-1.5 6.8-4.8 6.8-9.3V5.3L12 2.8Z"/>
+              <text x="12" y="15.9" text-anchor="middle" font-size="10.5" font-weight="800" fill="#fff" stroke="none" font-family="Montserrat,Inter,Arial,sans-serif">3</text>
+            </svg>
+          </span>
+          <span class="uv-guardbar__label">Years<br>Warranty</span>
+        </li>
+      </ul>
+      <p class="uv-guardbar__note">*Warranty covers bubbles, adhesive failures, discoloration, and ensures less than 10% drop in UVR/IRR performance.</p>
+    </section>
+
+    <section class="upo-strip" aria-hidden="true">
+      <div class="upo-strip__rail"></div>
+      <figure class="upo-strip__panel upo-strip__panel--film">
+        <div class="upo-strip__tex"></div>
+        <figcaption>UV-A / UV-B blocked</figcaption>
+      </figure>
+      <figure class="upo-strip__panel upo-strip__panel--edge">
+        <div class="upo-strip__rim"></div>
+        <figcaption>Optical clarity preserved</figcaption>
+      </figure>
+    </section>
+    <section class="section section--dark section--glow why99">
+      <div class="wrap">
+        <div class="why99__head">
+          <div class="section-head" data-reveal>
+            <p class="eyebrow">Why UV99</p>
+            <h2 class="section-title">A clearer answer to an <span class="why99__accent">invisible problem.</span></h2>
+            <p class="section-lede">Ordinary side glass can let UV-A into the cabin. UV99 starts with protection, then lets you choose the level of heat and glare control that suits the way you drive.</p>
+          </div>
+        </div>
+
+        <div class="grid-3 why99__cards">
+          <article class="card" data-reveal>
+            <div class="card__top">
+              <span class="card__num">01</span>
+              <span class="card__badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 4.5 5.5v6c0 4.6 3.2 8.4 7.5 10 4.3-1.6 7.5-5.4 7.5-10v-6L12 2.5Z"/><circle cx="12" cy="10" r="2.2"/><path d="M8.5 16c.6-2 1.9-3 3.5-3s2.9 1 3.5 3"/></svg></span>
+            </div>
+            <h3>Protect people</h3>
+            <p>Reduce everyday exposure to the UV-A and UV-B that reaches through side and rear glass.</p>
+            <figure class="card__media"><img src="/uv99/assets/CAR2.png" alt="Driver behind a UV99-tinted side window as UV light is turned away" loading="lazy" decoding="async"></figure>
+          </article>
+          <article class="card" data-reveal>
+            <div class="card__top">
+              <span class="card__num">02</span>
+              <span class="card__badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 4.5 5.5v6c0 4.6 3.2 8.4 7.5 10 4.3-1.6 7.5-5.4 7.5-10v-6L12 2.5Z"/><path d="m8.7 11.9 2.3 2.3 4.3-4.6"/></svg></span>
+            </div>
+            <h3>Preserve interiors</h3>
+            <p>Help slow fading, cracking and material ageing across dashboards, leather and trim.</p>
+            <figure class="card__media"><img src="/uv99/assets/NEWCAR.png" alt="Black sedan with UV99 window film packaging, protecting the cabin interior from sun damage" loading="lazy" decoding="async"></figure>
+          </article>
+          <article class="card" data-reveal>
+            <div class="card__top">
+              <span class="card__num">03</span>
+              <span class="card__badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/></svg></span>
+            </div>
+            <h3>Drive in comfort</h3>
+            <p>Choose extra solar heat and glare rejection without settling for a hazy or mirrored finish.</p>
+            <figure class="card__media"><img src="/uv99/assets/CAR4.png" alt="Sunlight and heat deflected off a UV99-treated windscreen" loading="lazy" decoding="async"></figure>
+          </article>
+        </div>
+
+        <ul class="why99__trust" data-reveal>
+          <li><span class="why99__trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 4.5 5.5v6c0 4.6 3.2 8.4 7.5 10 4.3-1.6 7.5-5.4 7.5-10v-6L12 2.5Z"/></svg></span><span>Blocks up to 99% UV rays</span></li>
+          <li><span class="why99__trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13.5V5a2 2 0 1 1 4 0v8.5a4 4 0 1 1-4 0Z"/><path d="M12 9v5"/></svg></span><span>Helps reduce heat &amp; glare</span></li>
+          <li><span class="why99__trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></span><span>Optical clarity never compromised</span></li>
+          <li><span class="why99__trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="m8.5 13-1.5 8L12 18l5 3-1.5-8"/></svg></span><span>Trusted quality you can rely on</span></li>
+        </ul>
+      </div>
+    </section>
+    <section class="about-uv99" id="about-uv99" aria-labelledby="about-uv99-title">
+      <div class="about-uv99__bg" aria-hidden="true"><div class="about-uv99__bg-img"></div></div>
+      <div class="wrap about-uv99__grid">
+        <div class="about-uv99__intro">
+          <p class="about-uv99__eyebrow" data-au="eyebrow">About UV99</p>
+          <h2 class="about-uv99__title" id="about-uv99-title" data-au="title">An advanced glazing brand built on a single promise.</h2>
+          <p class="about-uv99__lede" data-au="lede">Uncompromising protection against harmful ultraviolet rays. Developed with precision UV-defense technology, every UV99 glazing product blocks up to <strong>99%</strong> of harmful UV-A and UV-B rays &mdash; protecting your skin, your passengers, and your vehicle&rsquo;s interior on every journey.</p>
+          <figure class="about-uv99__figure" data-au="figure">
+            <img src="/uv99/assets/glazing.png.png" alt="UV99 nano-film technology layered above automotive glass, rejecting incoming UV rays while sunlight passes through" loading="lazy" decoding="async">
+          </figure>
+        </div>
+        <ul class="about-uv99__cards" data-au="cards">
+          <li class="about-uv99__card is-highlight">
+            <span class="about-uv99__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 4.5 5.5v6c0 4.6 3.2 8.4 7.5 10 4.3-1.6 7.5-5.4 7.5-10v-6L12 2.5Z"/><path d="M8 10.6 12 8.8l4 1.8"/><path d="M8 13.8 12 12l4 1.8"/></svg></span>
+            <div class="about-uv99__card-body">
+              <h3>Interior Protection</h3>
+              <p>Shields the dashboard, seats, and other interior components from sun damage such as fading, cracking, and deterioration &mdash; keeping your cabin looking new for longer.</p>
+            </div>
+          </li>
+          <li class="about-uv99__card">
+            <span class="about-uv99__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.4"/><circle cx="12" cy="4.7" r="1.5"/><circle cx="18.3" cy="8.35" r="1.5"/><circle cx="18.3" cy="15.65" r="1.5"/><circle cx="12" cy="19.3" r="1.5"/><circle cx="5.7" cy="15.65" r="1.5"/><circle cx="5.7" cy="8.35" r="1.5"/><path d="M12 6.9v2.7M16.5 9.4l-2.3 1.35M16.5 14.6l-2.3-1.35M12 14.4v2.7M7.5 14.6l2.3-1.35M7.5 9.4l2.3 1.35"/></svg></span>
+            <div class="about-uv99__card-body">
+              <h3>Skin Protection</h3>
+              <p>Protects your skin from damage caused by harmful UV rays while you drive.</p>
+            </div>
+          </li>
+          <li class="about-uv99__card">
+            <span class="about-uv99__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="10" r="2.6"/><path d="M7.5 17.3c.9-2.35 2.6-3.5 4.5-3.5s3.6 1.15 4.5 3.5"/></svg></span>
+            <div class="about-uv99__card-body">
+              <h3>Enhanced Comfort</h3>
+              <p>Creates a cooler, calmer environment inside the cabin, making every trip feel more pleasant and smooth.</p>
+            </div>
+          </li>
+          <li class="about-uv99__card">
+            <span class="about-uv99__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.6"/><path d="M12 3.4v2.5M12 18.1v2.5M3.4 12h2.5M18.1 12h2.5M5.95 5.95 7.7 7.7M16.3 16.3l1.75 1.75M18.05 5.95 16.3 7.7M7.7 16.3l-1.75 1.75"/></svg></span>
+            <div class="about-uv99__card-body">
+              <h3>Glare Reduction</h3>
+              <p>Cuts intense sunlight and reflections, making driving in bright conditions safer and more comfortable.</p>
+            </div>
+          </li>
+          <li class="about-uv99__card">
+            <span class="about-uv99__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2c.62 4.9 2.28 6.56 7 7-4.72.44-6.38 2.1-7 7-.62-4.9-2.28-6.56-7-7 4.72-.44 6.38-2.1 7-7Z"/></svg></span>
+            <div class="about-uv99__card-body">
+              <h3>Optical Clarity</h3>
+              <p>Delivers clear, sharp visibility without distortion &mdash; day or night &mdash; so there is no compromise on what you see.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <section class="section section--soft section--paths">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">One promise, three paths</p>
+          <h2 class="section-title">Start with the protection you need.</h2>
+        </div>
+        <div class="path-grid">
+          <article class="path-card" style="--accent:#8f4a9e" data-reveal>
+            <span class="path-card__badge">Pure UV protection</span>
+            <h3>UV99 Series</h3>
+            <p>Factory-like clarity with 99% UV rejection. The focused, everyday choice.</p>
+            <a class="path-card__link" href="/uv99/films.html#uv99">See UV99 films</a>
+          </article>
+          <article class="path-card" style="--accent:#d84f9a" data-reveal>
+            <span class="path-card__badge">UV + heat comfort</span>
+            <h3>UV PRO Series</h3>
+            <p>UV protection with stronger total solar heat rejection for hot commutes and long drives.</p>
+            <a class="path-card__link" href="/uv99/films.html#pro">See PRO films</a>
+          </article>
+          <article class="path-card" style="--accent:#e69418" data-reveal>
+            <span class="path-card__badge">Flagship protection</span>
+            <h3>UV99 +1</h3>
+            <p>100% UV rejection to 400 nm, 89% infrared rejection and maximum heat relief.</p>
+            <a class="path-card__link" href="/uv99/uv99-plus-one.html">Meet UV99 +1</a>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="std99" id="uv99-standard" aria-labelledby="std99-title">
+      <div class="wrap std99__inner">
+        <p class="std99__eyebrow">The UV99 Standard</p>
+
+        <h2 class="std99__headline" id="std99-title">
+          <span class="std99__line"><span>Protection is only good</span></span>
+          <span class="std99__line"><span>when the view stays</span></span>
+          <span class="std99__line"><span>honest.</span></span>
+        </h2>
+
+        <p class="std99__copy">Built around a simple balance: block the invisible harm, preserve the visible world.</p>
+
+        <dl class="std99__panel" aria-label="The UV99 range at a glance">
+          <div class="std99__metric" data-metric>
+            <span class="std99__glow" aria-hidden="true"></span>
+            <span class="std99__sweep" aria-hidden="true"></span>
+            <dt class="std99__label">Films across three focused series</dt>
+            <dd class="std99__value" data-count="5">0</dd>
+          </div>
+          <div class="std99__metric" data-metric>
+            <span class="std99__glow" aria-hidden="true"></span>
+            <span class="std99__sweep" aria-hidden="true"></span>
+            <dt class="std99__label">Visible light transmission options</dt>
+            <dd class="std99__value" data-reveal-value>47–70%</dd>
+          </div>
+          <div class="std99__metric" data-metric>
+            <span class="std99__glow" aria-hidden="true"></span>
+            <span class="std99__sweep" aria-hidden="true"></span>
+            <dt class="std99__label">Total heat rejection</dt>
+            <dd class="std99__value" data-reveal-value>30–54%</dd>
+          </div>
+          <div class="std99__metric" data-metric>
+            <span class="std99__glow" aria-hidden="true"></span>
+            <span class="std99__sweep" aria-hidden="true"></span>
+            <dt class="std99__label">Published batch tolerance</dt>
+            <dd class="std99__value" data-reveal-value>&pm;5%</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+    <section class="dark-cta"><div class="wrap dark-cta__in"><div data-reveal><h2>Find the right film for your car.</h2><p>Tell us how, when and where you drive. We’ll help narrow the choice.</p></div><a class="button button--light" href="/uv99/faq-contact.html#contact" data-reveal>Start an enquiry</a></div></section>
+  </main>
+  <footer class="site-footer" data-reveal><div class="wrap"><div class="footer-cols"><div class="footer-brand" data-reveal><a class="brand" href="/uv99/index.html" aria-label="UV99 Glazing home"><img class="brand__logo" src="/uv99/assets/uv99-logo.png" alt="UV99 Glazing"></a><p class="footer-about">Harmful rays out, protection in. Automotive glazing engineered on advanced UV rejection and nano-ceramic heat-control film.</p><ul class="footer-contact"><li><a href="tel:+919876543210">+91 98765 43210</a></li><li><a href="mailto:bookings@uv99glazing.com">bookings@uv99glazing.com</a></li><li>Service centre address available on request</li></ul><p class="footer-social-label">Follow us</p><ul class="footer-social"><li><a href="https://www.instagram.com/uv99.in/" target="_blank" rel="noopener" aria-label="UV99 on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></li><li><a href="https://www.facebook.com/profile.php?id=61591502420683" target="_blank" rel="noopener" aria-label="UV99 on Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H17V3.6c-.3-.04-1.3-.13-2.47-.13-2.44 0-4.11 1.49-4.11 4.22V9.9H7.7V13h2.72v8h3.08Z"/></svg></a></li><li><a href="https://www.youtube.com/@UV99Glazing" target="_blank" rel="noopener" aria-label="UV99 on YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.45A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.97C5.12 20 12 20 12 20s6.88 0 8.59-.45a2.78 2.78 0 0 0 1.95-1.97A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58ZM9.75 15.5v-7l6 3.5-6 3.5Z"/></svg></a></li></ul></div><nav class="footer-nav" data-reveal aria-label="Products"><h3>Products</h3><ul><li><a href="/uv99/films.html">Window Film</a></li><li><a href="/uv99/uv99-plus-one.html">UV99 +1</a></li><li><a href="/uv99/films.html#simulator">Tint Simulator</a></li><li><a href="/uv99/films.html#selector">Compare &amp; Configure</a></li></ul></nav><nav class="footer-nav" data-reveal aria-label="Ownership"><h3>Ownership</h3><ul><li><a href="/uv99/warranty.html">Warranty</a></li><li><a href="/uv99/warranty.html#care">Film Care</a></li><li><a href="/uv99/faq-contact.html#contact">Contact</a></li></ul></nav><nav class="footer-nav" data-reveal aria-label="Company"><h3>Company</h3><ul><li><a href="/uv99/about.html">Our Journey</a></li><li><a href="/uv99/faq-contact.html#faq">FAQ</a></li><li><a href="/uv99/faq-contact.html#contact">Become a Dealer</a></li></ul></nav></div><div class="footer-bottom" data-reveal><span>&copy; <span data-year></span> UV99 Glazing. All rights reserved.</span><nav class="footer-legal" aria-label="Legal"><a href="/uv99/warranty.html">Terms &amp; Conditions</a><a href="/uv99/faq-contact.html">Privacy Policy</a><a href="/uv99/warranty.html#care">Disclaimer</a><a href="/uv99/faq-contact.html#contact">Contact</a></nav></div></div></footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="/uv99/site.js" defer></script>
+
+  <!-- "The UV99 Standard" — cinematic entrance for the .std99 spec panel.
+       Runs after the deferred GSAP bundle (DOMContentLoaded fires later).
+       Degrades to the fully-visible static section if GSAP is absent or
+       the visitor prefers reduced motion. -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var section = document.querySelector('.std99');
+    if (!section) return;
+
+    var lines = section.querySelectorAll('.std99__line > span');
+    var metrics = Array.prototype.slice.call(section.querySelectorAll('[data-metric]'));
+    var counter = section.querySelector('[data-count]');
+    var reveals = section.querySelectorAll('[data-reveal-value]');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function finishCount() {
+      if (counter) counter.textContent = counter.getAttribute('data-count');
+    }
+
+    // No GSAP or reduced motion → leave everything in its final, readable state.
+    if (reduce || !window.gsap) {
+      lines.forEach(function (s) { s.style.transform = 'none'; });
+      finishCount();
+      return;
+    }
+
+    var gsap = window.gsap;
+    if (window.ScrollTrigger) gsap.registerPlugin(window.ScrollTrigger);
+
+    gsap.set('.std99__eyebrow', { autoAlpha: 0, y: 18 });
+    gsap.set(lines, { yPercent: 115 });
+    gsap.set('.std99__copy', { autoAlpha: 0, y: 16 });
+    gsap.set('.std99__panel', { autoAlpha: 0, y: 64 });
+    gsap.set(reveals, { autoAlpha: 0, y: 14 });
+
+    var tl = gsap.timeline({
+      defaults: { ease: 'power3.out' },
+      scrollTrigger: window.ScrollTrigger
+        ? { trigger: section, start: 'top 72%', once: true }
+        : undefined
+    });
+
+    tl.to('.std99__eyebrow', { autoAlpha: 1, y: 0, duration: 0.6 })
+      .to(lines, { yPercent: 0, duration: 0.9, stagger: 0.12 }, '-=0.25')
+      .to('.std99__copy', { autoAlpha: 1, y: 0, duration: 0.6 }, '-=0.5')
+      .to('.std99__panel', { autoAlpha: 1, y: 0, duration: 0.8 }, '-=0.3');
+
+    if (counter) {
+      var proxy = { v: 0 };
+      tl.to(proxy, {
+        v: parseFloat(counter.getAttribute('data-count')) || 0,
+        duration: 1.1,
+        ease: 'power1.out',
+        snap: { v: 1 },
+        onUpdate: function () { counter.textContent = String(Math.round(proxy.v)); },
+        onComplete: finishCount
+      }, '-=0.55');
+    }
+
+    tl.to(reveals, { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.1 }, '-=0.9');
+
+    // metrics activate one after another with a soft purple pulse
+    tl.add(function () {
+      metrics.forEach(function (m, i) {
+        gsap.delayedCall(i * 0.16, function () {
+          m.classList.add('is-active');
+          gsap.delayedCall(0.9, function () { m.classList.remove('is-active'); });
+        });
+      });
+    }, '-=0.2');
+  });
+  </script>
+</body>
+</html>
+

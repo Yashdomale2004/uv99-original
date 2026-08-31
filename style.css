@@ -1,0 +1,1151 @@
+/* =====================================================================
+   UV99+1 — Advanced UV Protection. Extra Cooling.
+   Standalone cinematic product page.  HTML + CSS + JS (GSAP optional).
+   ---------------------------------------------------------------------
+   Editing map:
+     :root ............ palette, spacing, type scale
+     .upo-rail ........ fixed left navigation rail
+     .upo-watermark ... giant vertical brand mark
+     .upo-hero ........ hero shell (stage + content)
+     .upo-stage ....... the cinematic composition (photoreal render + float + light sweep)
+     .upo-hero__content  right-aligned editorial column
+     .upo-strip ....... bottom film strip
+     .upo-section ..... scroll sections (technology / performance)
+     .upo-cta ......... closing call to action
+   ===================================================================== */
+
+:root {
+  --bg:            #05060b;
+  --bg-2:          #0a0b13;
+  --ink:           #f4f5f8;
+  --ink-soft:      rgba(255, 255, 255, .62);
+  --ink-faint:     rgba(255, 255, 255, .38);
+  --line:          rgba(255, 255, 255, .12);
+
+  --amber:         #ff7a34;
+  --amber-soft:    #ffa05a;
+  --blue:          #57a4ff;
+  --blue-soft:     #8ec2ff;
+  --violet:        #8b5cf6;
+  --violet-deep:   #6d34d6;
+
+  --rail-w:        clamp(116px, 10vw, 168px);
+  --edge:          clamp(18px, 3.4vw, 52px);
+  --strip-h:       clamp(112px, 14vh, 168px);
+
+  --font:          'Inter', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+
+  --h1:            clamp(2.2rem, 4.1vw, 3.5rem);
+  --h2:            clamp(1.9rem, 3.4vw, 3rem);
+  --ease:          cubic-bezier(.22, .61, .36, 1);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body.upo {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* fixed ambient lighting behind everything */
+body.upo::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(38vw 40vw at 39% 33%, rgba(255, 122, 45, .18), transparent 60%),
+    radial-gradient(40vw 46vw at 52% 40%, rgba(60, 120, 255, .16), transparent 63%),
+    radial-gradient(82vw 62vw at 50% 118%, rgba(42, 26, 78, .58), transparent 72%),
+    var(--bg);
+}
+
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+
+main { position: relative; z-index: 1; }
+
+.upo-skip {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 200;
+  padding: 10px 16px;
+  background: #fff;
+  color: #000;
+  border-radius: 6px;
+  transform: translateY(-160%);
+  transition: transform .2s ease;
+}
+.upo-skip:focus { transform: none; }
+
+/* ============================================================
+   LEFT NAV RAIL
+   ============================================================ */
+.upo-rail {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 40;
+  width: var(--rail-w);
+  padding: clamp(22px, 3vw, 34px) 0 clamp(22px, 3vw, 34px) clamp(16px, 2.4vw, 34px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+/* architectural separator between the rail and the stage */
+.upo-rail::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--line) 10%, var(--line) 90%, transparent);
+}
+
+.upo-rail__logo {
+  width: clamp(74px, 6vw, 96px);
+  color: #fff;
+}
+
+.upo-rail__nav {
+  margin-top: clamp(38px, 7vh, 74px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(13px, 1.7vh, 19px);
+}
+
+.upo-rail__nav a {
+  position: relative;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .005em;
+  color: var(--ink-faint);
+  transition: color .3s ease;
+}
+.upo-rail__nav a:hover { color: var(--ink-soft); }
+.upo-rail__nav a.is-active { color: #fff; }
+.upo-rail__nav a.is-active::before {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 50%;
+  width: 11px;
+  height: 2px;
+  background: var(--violet);
+  transform: translateY(-50%);
+  box-shadow: 0 0 10px rgba(139, 92, 246, .8);
+}
+
+.upo-rail__menu {
+  margin-top: clamp(30px, 5vh, 44px);
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-content: center;
+  gap: 4px;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: border-color .3s ease, background .3s ease;
+}
+.upo-rail__menu:hover { border-color: rgba(255, 255, 255, .55); }
+.upo-rail__menu span {
+  display: block;
+  width: 16px;
+  height: 1.5px;
+  background: #fff;
+  transition: transform .3s ease, opacity .3s ease;
+}
+
+/* lower-left supporting copy — sits at strip height, tied to the rail */
+.upo-rail__note {
+  margin: auto 0 0;
+  padding-right: 10px;
+  font-size: clamp(11px, .82vw, 13px);
+  font-weight: 400;
+  line-height: 1.42;
+  color: rgba(255, 255, 255, .82);
+}
+
+/* ============================================================
+   GIANT VERTICAL WATERMARK
+   ============================================================ */
+.upo-watermark {
+  position: absolute;
+  left: clamp(-14px, -0.9vw, -6px);
+  bottom: clamp(88px, 15vh, 168px);   /* clears the rail note below it */
+  z-index: 3;                 /* above the stage render, below the text column */
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-weight: 700;
+  font-size: clamp(58px, 10.5vw, 140px);
+  line-height: .78;
+  letter-spacing: -.05em;
+  pointer-events: none;
+  user-select: none;
+}
+.upo-watermark span:first-child {
+  color: rgba(147, 110, 234, .14);
+  -webkit-text-stroke: 1.2px rgba(150, 112, 232, .34);
+}
+.upo-watermark span:last-child {
+  color: rgba(159, 120, 240, .42);
+  font-size: .5em;
+}
+
+/* ============================================================
+   HERO SHELL
+   ============================================================ */
+.upo-hero {
+  position: relative;
+  z-index: 1;
+  min-height: 86vh;             /* upper hero — the bottom strip is the other 14vh */
+  padding: 0 var(--edge) 0 var(--rail-w);
+  overflow: hidden;
+}
+/* keep the composition tight on very tall / portrait displays */
+@media (min-height: 1180px) and (min-width: 901px) {
+  .upo-hero { min-height: 820px; }
+}
+
+.upo-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  /* soft hand-off into the bottom media strip — no hard cut */
+  -webkit-mask-image: linear-gradient(to bottom, #000 86%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 86%, transparent 100%);
+}
+
+.upo-hero__content {
+  position: absolute;
+  z-index: 6;
+  right: var(--edge);
+  top: 0;
+  bottom: 18%;                   /* pulls the block up so the headline sits by the sphere's top half */
+  height: max-content;
+  margin-block: auto;            /* vertical centering without transform (GSAP-safe) */
+  width: min(430px, 33vw);
+}
+
+/* ---- headline ---- */
+.upo-hero__headline {
+  margin: 0;
+  font-weight: 600;
+  font-size: var(--h1);
+  line-height: .99;
+  letter-spacing: -.03em;
+  text-align: left;
+}
+.upo-hero__headline .line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: .06em;
+}
+.upo-hero__headline .line > span { display: block; }
+
+/* ---- lede ---- */
+.upo-hero__lede {
+  position: relative;
+  margin: clamp(26px, 3.4vw, 40px) 0 0;
+  padding-top: 20px;
+  max-width: 38ch;
+  font-size: clamp(.95rem, 1.05vw, 1.05rem);
+  color: var(--ink-soft);
+}
+.upo-hero__lede::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 2px;
+  background: var(--violet);
+  box-shadow: 0 0 12px rgba(139, 92, 246, .55);
+}
+
+/* ---- actions ---- */
+.upo-hero__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(14px, 1.6vw, 20px);
+  margin-top: clamp(26px, 3vw, 38px);
+}
+
+.upo-btn {
+  --pad: 15px 26px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: var(--pad);
+  border-radius: 40px;
+  background: linear-gradient(118deg, var(--violet-deep), #9c5cf0);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .01em;
+  white-space: nowrap;
+  box-shadow: 0 22px 46px -16px rgba(123, 63, 228, .65), inset 0 1px 0 rgba(255, 255, 255, .18);
+  transition: box-shadow .35s ease, filter .35s ease;
+}
+.upo-btn:hover { box-shadow: 0 26px 54px -14px rgba(123, 63, 228, .8); filter: brightness(1.06); }
+.upo-btn__arrow {
+  width: 18px;
+  height: 18px;
+  padding: 3px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .5);
+  color: #fff;
+  transition: transform .3s var(--ease);
+}
+.upo-btn:hover .upo-btn__arrow { transform: translateX(3px); }
+.upo-btn--lg { --pad: 18px 32px; font-size: 15px; }
+
+.upo-textlink {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  border-bottom: 1px solid rgba(255, 255, 255, .35);
+  padding-bottom: 3px;
+  transition: color .3s ease, border-color .3s ease;
+}
+.upo-textlink:hover { color: #fff; border-color: #fff; }
+
+/* ---- stats ---- */
+.upo-stats {
+  display: flex;
+  margin: clamp(30px, 4vw, 46px) 0 0;
+}
+.upo-stat {
+  padding: 0 clamp(12px, 1.5vw, 22px);
+  border-left: 1px solid var(--line);
+}
+.upo-stat:first-child { padding-left: 0; border-left: 0; }
+.upo-stat__value {
+  margin: 0;
+  font-size: clamp(1.55rem, 2.3vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+.upo-stat:nth-child(1) .upo-stat__value { color: var(--amber); }
+.upo-stat:nth-child(2) .upo-stat__value { color: var(--blue); }
+.upo-stat:nth-child(3) .upo-stat__value { color: #b98bff; }
+.upo-stat__label {
+  margin-top: 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  line-height: 1.35;
+}
+
+/* ============================================================
+   CINEMATIC STAGE — layered (Reference Image 1)
+   ------------------------------------------------------------
+   .upo-stage__plate  rendered energy sphere + glass + platform (no box)
+   .upo-stage__spark  drifting embers on the orange side
+   .upo-stage__glow   platform light that slowly breathes
+   .upo-stage__sweep  restrained light pass
+   .upo-product       crisp CSS/SVG UV99+1 box, stood on the platform
+   ============================================================ */
+.upo-stage__scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+/* non-visual wrapper: owns the centre-left positioning + ambient float, so the
+   ring layer inside can be rotated on its own transform without clobbering it */
+.upo-stage__frame {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  --sx: -56%;                 /* pull sphere + platform to centre-left */
+  width: min(1480px, 120%);
+  aspect-ratio: 1376 / 768;   /* matches the render, so children can size in % */
+  transform: translate(var(--sx), -50%);
+  will-change: transform;
+}
+
+.upo-stage__plate,
+.upo-stage__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* base render — everything except the orb (the orb disc is punched out) */
+.upo-stage__plate {
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0, #000 9%, #000 92%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 6%, #000 88%, transparent 100%),
+    radial-gradient(19% 34% at 36% 39%, transparent 74%, #000 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0, #000 9%, #000 92%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 6%, #000 88%, transparent 100%),
+    radial-gradient(19% 34% at 36% 39%, transparent 74%, #000 100%);
+  mask-composite: intersect;
+}
+
+/* the circular energy orb layer — isolated from the base plate by the disc mask so
+   it can turn on its own axis. A very slow rotation (28s) about the orb centre, well
+   off the pace of the platform and product, keeps the vortex energetic but calm. */
+.upo-stage__ring {
+  z-index: 2;
+  transform-origin: 36% 39%;
+  will-change: transform;
+  -webkit-mask-image: radial-gradient(19% 34% at 36% 39%, #000 74%, transparent 100%);
+  mask-image: radial-gradient(19% 34% at 36% 39%, #000 74%, transparent 100%);
+}
+
+.upo-stage__spark {
+  position: absolute;
+  left: 8%;
+  top: 18%;
+  width: 34%;
+  height: 50%;
+  z-index: 2;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background-image:
+    radial-gradient(2px 2px at 20% 18%, #ffc98c, transparent 60%),
+    radial-gradient(1.6px 1.6px at 8% 42%, #ff9a4d, transparent 60%),
+    radial-gradient(2.2px 2.2px at 30% 60%, #ffd9ab, transparent 60%),
+    radial-gradient(1.5px 1.5px at 14% 74%, #ff8a3a, transparent 60%),
+    radial-gradient(1.8px 1.8px at 40% 34%, #ffb877, transparent 60%),
+    radial-gradient(1.4px 1.4px at 4% 60%, #ff7d2f, transparent 60%),
+    radial-gradient(2px 2px at 26% 88%, #ffcf9a, transparent 60%),
+    radial-gradient(1.5px 1.5px at 46% 66%, #ff9550, transparent 60%);
+  filter: drop-shadow(0 0 6px rgba(255, 140, 60, .6));
+  opacity: .9;
+}
+
+.upo-stage__glow {
+  position: absolute;
+  left: 49%;                  /* platform centre within the render */
+  bottom: 12%;
+  z-index: 3;
+  width: 54%;
+  height: 13%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%, rgba(150, 92, 240, .4), rgba(70, 120, 230, .16) 55%, transparent 78%);
+  filter: blur(16px);
+}
+
+/* rotating turntable highlight — sits over the platform in the render (Reference Image 2).
+   A conic sheen inside a squashed-ellipse clip: the base platform photo stays put
+   (heavy lower base = visually stable) while purple / blue / faint-amber light
+   streaks sweep around, so the disc reads as a premium showroom turntable. */
+.upo-stage__turntable {
+  position: absolute;
+  left: 49%;                  /* platform centre within the render — matches .upo-stage__glow */
+  bottom: 8%;
+  z-index: 3;                 /* above the energy orb (z2), below the product (z4) */
+  width: 47%;
+  height: 16%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: .5;
+  transition: opacity .4s ease;
+  -webkit-mask: radial-gradient(closest-side, #000 58%, rgba(0, 0, 0, .45) 80%, transparent 100%);
+  mask: radial-gradient(closest-side, #000 58%, rgba(0, 0, 0, .45) 80%, transparent 100%);
+}
+.upo-stage__turntable-spin {
+  position: absolute;
+  inset: -45%;                /* oversized so rotation never exposes a straight edge */
+  border-radius: 50%;
+  will-change: transform;
+  background: conic-gradient(from 0deg,
+    rgba(150, 105, 255, 0)   0deg,
+    rgba(170, 120, 255, .55) 24deg,
+    rgba(120, 165, 255, .12) 58deg,
+    rgba(120, 165, 255, 0)   96deg,
+    rgba(255, 150, 95, .30)  150deg,
+    rgba(255, 150, 95, 0)    196deg,
+    rgba(120, 165, 255, .34) 262deg,
+    rgba(160, 110, 255, .5)  312deg,
+    rgba(150, 105, 255, 0)   360deg);
+}
+
+.upo-stage__sweep {
+  position: absolute;
+  inset: 0;
+  z-index: 5;                 /* crosses the product box too */
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0;
+  background: linear-gradient(101deg,
+    transparent 40%,
+    rgba(176, 202, 255, .05) 47%,
+    rgba(214, 228, 255, .12) 50%,
+    rgba(176, 202, 255, .05) 53%,
+    transparent 62%);
+}
+
+/* ---- product box ---- */
+/* positioning wrapper: centres the card on the platform in the render's own
+   coordinate space, so it stays centred at every breakpoint (no pixel offsets) */
+.upo-product-slot {
+  position: absolute;
+  left: 39%;                  /* centred over the podium / visual showcase area */
+  bottom: 19%;
+  z-index: 4;
+  --slot-w: min(21vw, 300px); /* single size source — breakpoints override this var */
+  width: var(--slot-w);
+  transform: translateX(-50%);
+}
+/* .upo-product        — perspective host + GSAP intro target (opacity / yPercent)
+   .upo-product__par   — pointer-parallax tilt (JS sets transform; nothing else touches it)
+   .upo-product__lift  — vertical float + fixed downward tilt so the lid reads
+   .upo-product__box   — continuous Y-axis spin; real 3D cuboid (front/back/left/right/top) */
+.upo-product {
+  position: relative;
+  width: 100%;
+  --w: var(--slot-w);
+  --h: calc(var(--w) * 94 / 70);
+  --d: calc(var(--w) * 0.2);  /* package depth */
+  height: var(--h);
+  perspective: 1300px;
+  perspective-origin: 50% 42%;
+  will-change: transform;
+}
+.upo-product__par {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform .4s var(--ease);
+}
+.upo-product__lift {
+  position: absolute;
+  inset: 0;
+  transform: rotateX(-5deg);
+  transform-style: preserve-3d;
+}
+.upo-product__box {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+/* product photograph — replaces the procedural 3D package on the landing hero */
+.upo-product__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 26px 52px rgba(0, 0, 0, .55));
+  /* NEW.png is shot with the rear tube leaning ~22°; counter-rotate about the
+     base so the pair reads upright on the hero */
+  transform: rotate(-11deg);
+  transform-origin: 50% 88%;
+}
+.upo-product__face {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--w);
+  height: var(--h);
+  margin-top: calc(var(--h) / -2);
+  margin-left: calc(var(--w) / -2);
+  border-radius: 4px;
+  overflow: hidden;
+  background: linear-gradient(158deg, #8b44e2 0%, #5825b2 52%, #331a72 100%);
+  /* blue rim on one edge, violet on the other — realistic package rim lighting */
+  box-shadow:
+    inset 3px 0 12px rgba(90, 170, 255, .26),
+    inset -3px 0 14px rgba(180, 95, 255, .30),
+    inset 0 0 60px rgba(255, 255, 255, .07),
+    inset 0 -70px 90px rgba(0, 0, 0, .38);
+}
+.upo-product__face--front {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16% 12% 12%;
+  backface-visibility: hidden;
+  transform: translateZ(calc(var(--d) / 2));
+}
+.upo-product__face--back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  background: linear-gradient(202deg, #7d3ace 0%, #4a1f9c 55%, #2b1568 100%);
+  transform: rotateY(180deg) translateZ(calc(var(--d) / 2));
+}
+.upo-product__face--right {
+  width: var(--d);
+  margin-left: calc(var(--d) / -2);
+  background: linear-gradient(#3b2080, #180b46);
+  transform: translateX(calc(var(--w) / 2)) rotateY(90deg);
+}
+.upo-product__face--left {
+  width: var(--d);
+  margin-left: calc(var(--d) / -2);
+  background: linear-gradient(#180b46, #3b2080);
+  transform: translateX(calc(var(--w) / -2)) rotateY(-90deg);
+}
+.upo-product__face--top {
+  height: var(--d);
+  margin-top: calc(var(--d) / -2);
+  background: linear-gradient(180deg, #6a34c4, #3a1d84);
+  transform: translateY(calc(var(--h) / -2)) rotateX(90deg);
+}
+.upo-product__face::before {          /* hex technical pattern — every face */
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.16'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5z'/%3E%3Cpath d='M0 15l12.98-7.5V0M0 15v2.3M0 15l12.98 7.5M28 15l-13-7.5V0M28 15v2.3M28 15l-13 7.5M13.99 41v8M0 33.5L13.99 41M28 33.5L13.99 41'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 32px 56px;
+}
+.upo-product__face--front::after {   /* gloss sweep — front only */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(112deg, transparent 42%, rgba(255, 255, 255, .15) 50%, transparent 60%);
+}
+.upo-product__shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -6%;
+  width: 82%;
+  height: 12%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, .58), rgba(0, 0, 0, .26) 55%, transparent 78%);
+  filter: blur(7px);
+  z-index: -1;
+  pointer-events: none;
+}
+.upo-product__logo { position: relative; width: 70%; height: auto; }
+.upo-product__logo--ghost { width: 58%; opacity: .22; }
+.upo-product__plus {
+  position: relative;
+  margin-top: 5%;
+  font-weight: 700;
+  font-size: clamp(15px, 1.8vw, 25px);
+  letter-spacing: .05em;
+  color: #fff;
+}
+.upo-product__copy {
+  position: absolute;
+  left: 12%;
+  right: 30%;
+  bottom: 15%;
+  font-size: clamp(8px, .8vw, 10.5px);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, .84);
+}
+.upo-product__shield {
+  position: absolute;
+  right: 10%;
+  bottom: 10%;
+  width: 20%;
+  max-width: 42px;
+  height: auto;
+  opacity: .92;
+}
+/* soft violet pool on the glossy disc — reads as the product's reflection without
+   a mirrored rectangle that would fight the spin */
+.upo-product__reflection {
+  position: absolute;
+  left: 50%;
+  top: 95%;
+  width: 92%;
+  height: 34%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 28%, rgba(123, 58, 208, .4), rgba(123, 58, 208, .12) 46%, transparent 72%);
+  filter: blur(6px);
+  pointer-events: none;
+  -webkit-mask: linear-gradient(#000, transparent 80%);
+  mask: linear-gradient(#000, transparent 80%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .upo-stage__frame          { animation: upo-float 10s var(--ease) infinite alternate; }
+  .upo-stage__glow           { animation: upo-glow-pulse 5.5s ease-in-out infinite; }
+  .upo-stage__spark          { animation: upo-spark-drift 9s ease-in-out infinite alternate; }
+  .upo-stage__sweep          { animation: upo-sweep 13s ease-in-out 2s infinite; }
+  .upo-stage__ring           { animation: upo-orb 28s linear infinite; }
+  .upo-stage__turntable-spin { animation: upo-turntable 10s linear infinite reverse; }
+  .upo-product__lift         { animation: upo-box-float 3.5s ease-in-out infinite alternate; }
+  .upo-product__box          { animation: upo-spin 16s linear infinite; }
+  .upo-product__shadow       { animation: upo-contact 8s ease-in-out infinite alternate; }
+
+  /* JS adds .is-paused when the hero scrolls out of view or the tab is hidden */
+  .upo-hero.is-paused .upo-stage__frame,
+  .upo-hero.is-paused .upo-stage__glow,
+  .upo-hero.is-paused .upo-stage__spark,
+  .upo-hero.is-paused .upo-stage__sweep,
+  .upo-hero.is-paused .upo-stage__ring,
+  .upo-hero.is-paused .upo-stage__turntable-spin,
+  .upo-hero.is-paused .upo-product__lift,
+  .upo-hero.is-paused .upo-product__box,
+  .upo-hero.is-paused .upo-product__shadow { animation-play-state: paused; }
+
+  /* pointer hover over the visual: gently quicker box, livelier turntable rim.
+     Only animation-duration / opacity change — no stop, no reversal. */
+  .upo-hero:hover .upo-product__box          { animation-duration: 12s; }
+  .upo-hero:hover .upo-stage__turntable-spin { animation-duration: 8.5s; }
+  .upo-hero:hover .upo-stage__turntable      { opacity: .56; }
+}
+@keyframes upo-float {
+  from { transform: translate(var(--sx), calc(-50% - 5px)); }
+  to   { transform: translate(var(--sx), calc(-50% + 5px)); }
+}
+@keyframes upo-box-float {          /* ~5px vertical float, tilt held constant */
+  from { transform: translateY(-5px) rotateX(-5deg); }
+  to   { transform: translateY(4px)  rotateX(-5deg); }
+}
+@keyframes upo-spin {              /* product: full 360° about Y */
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+@keyframes upo-turntable {         /* platform disc: opposite sense via `reverse` */
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes upo-orb {              /* energy sphere: very slow drift */
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes upo-contact {          /* contact shadow breathes across each half-turn */
+  from { transform: translateX(-50%) scaleX(.93); opacity: .78; }
+  to   { transform: translateX(-50%) scaleX(1.05); opacity: 1; }
+}
+@keyframes upo-glow-pulse {
+  0%, 100% { opacity: .5; }
+  50%      { opacity: .95; }
+}
+@keyframes upo-spark-drift {
+  from { transform: translate(0, 5px);   opacity: .65; }
+  to   { transform: translate(-6px, -7px); opacity: 1; }
+}
+@keyframes upo-sweep {
+  0%   { transform: translateX(-24%); opacity: 0; }
+  10%  { opacity: .8; }
+  34%  { opacity: 0; }
+  100% { transform: translateX(24%); opacity: 0; }
+}
+
+/* ============================================================
+   BOTTOM MEDIA STRIP  (continuation of the hero, ~14vh)
+   ============================================================ */
+.upo-strip {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: var(--rail-w) 1fr 1.04fr;
+  gap: 1px;
+  height: var(--strip-h);
+  border-top: 1px solid rgba(255, 255, 255, .07);
+  background: rgba(255, 255, 255, .07);   /* shows through the 1px gaps as dividers */
+}
+/* left cell — visually continues the navigation rail */
+.upo-strip__rail {
+  background: linear-gradient(180deg, #07070d, #05050a);
+}
+.upo-strip__panel {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: var(--bg-2);
+}
+.upo-strip__panel figcaption {
+  position: absolute;
+  left: 18px;
+  bottom: 13px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .5);
+}
+/* centre — close-up of nano-ceramic film: purple hexagonal matrix */
+.upo-strip__panel--film {
+  background: radial-gradient(140% 180% at 22% 0%, rgba(120, 70, 210, .34), transparent 58%), #0c0918;
+}
+.upo-strip__tex {
+  position: absolute;
+  inset: -20%;
+  transform: rotate(-8deg);
+  opacity: .6;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill='none' stroke='%23b98bff' stroke-opacity='0.5'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 26px 46px;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 30%, #000 78%, transparent);
+  mask: linear-gradient(90deg, transparent, #000 30%, #000 78%, transparent);
+}
+/* right — layered automotive glass edges lit by cyan/blue */
+.upo-strip__panel--edge {
+  background: linear-gradient(100deg, #08131a 0%, #0d2830 55%, #071319 100%);
+}
+.upo-strip__rim {
+  position: absolute;
+  right: 12%;
+  top: -12%;
+  bottom: -12%;
+  width: 46%;
+  transform: skewX(-14deg);
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(120, 240, 255, .0) 40%, rgba(120, 240, 255, .5) 74%, rgba(190, 250, 255, .92) 86%, rgba(120, 240, 255, .3) 92%, transparent 100%);
+  box-shadow: -18px 0 30px -8px rgba(90, 210, 255, .35), 14px 0 26px -10px rgba(90, 210, 255, .3);
+  filter: blur(.6px);
+}
+.upo-strip__rim::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-46%);
+  background: linear-gradient(90deg, transparent 60%, rgba(150, 245, 255, .55) 84%, transparent 96%);
+}
+
+/* ============================================================
+   SCROLL SECTIONS
+   ============================================================ */
+.upo-section {
+  position: relative;
+  z-index: 3;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(90px, 15vh, 170px) var(--edge);
+}
+.upo-kicker {
+  margin: 0 0 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--blue-soft);
+}
+.upo-section__title {
+  margin: 0;
+  font-size: var(--h2);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -.025em;
+}
+.upo-section__copy {
+  margin: 26px 0 0;
+  max-width: 60ch;
+  color: var(--ink-soft);
+  font-size: clamp(.95rem, 1.05vw, 1.05rem);
+}
+
+.upo-specs {
+  list-style: none;
+  margin: clamp(44px, 6vw, 72px) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.upo-specs li {
+  padding: 26px 24px;
+  background: #07080e;
+}
+.upo-specs b {
+  display: block;
+  font-size: clamp(1.3rem, 2vw, 1.9rem);
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+.upo-specs b i { font-style: normal; font-size: .5em; color: var(--ink-faint); margin-left: 2px; }
+/* count-up number inside a spec value — opt out of the label span styling */
+.upo-specs b .upo-num { display: inline; margin: 0; font: inherit; letter-spacing: inherit; color: inherit; }
+.upo-specs span {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  letter-spacing: .04em;
+  color: var(--ink-faint);
+}
+
+.upo-section--perf { border-top: 1px solid rgba(255, 255, 255, .06); }
+.upo-perf {
+  margin-top: clamp(44px, 6vw, 72px);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(28px, 4vw, 54px) clamp(40px, 7vw, 90px);
+}
+.upo-perf__item { display: grid; }
+.upo-perf__num {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.upo-perf__label {
+  margin: 12px 0 16px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.upo-perf__bar {
+  height: 3px;
+  background: rgba(255, 255, 255, .1);
+  overflow: hidden;
+}
+.upo-perf__bar i {
+  display: block;
+  height: 100%;
+  width: var(--v);
+  background: linear-gradient(90deg, var(--amber), var(--blue));
+  transform-origin: left;
+}
+
+/* ============================================================
+   CLOSING CTA
+   ============================================================ */
+.upo-cta {
+  position: relative;
+  z-index: 3;
+  padding: clamp(100px, 20vh, 220px) var(--edge);
+  text-align: center;
+  background:
+    radial-gradient(50vw 40vw at 50% 0%, rgba(123, 63, 228, .22), transparent 68%);
+  border-top: 1px solid rgba(255, 255, 255, .06);
+}
+.upo-cta__inner { max-width: 720px; margin: 0 auto; }
+.upo-cta h2 {
+  margin: 0;
+  font-size: var(--h2);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -.025em;
+}
+.upo-cta p {
+  margin: 20px auto 40px;
+  max-width: 46ch;
+  color: var(--ink-soft);
+}
+
+.upo-foot {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 30px var(--edge);
+  font-size: 11px;
+  color: var(--ink-faint);
+  border-top: 1px solid rgba(255, 255, 255, .06);
+}
+
+/* ============================================================
+   MOBILE NAV OVERLAY
+   ============================================================ */
+body.upo.menu-open { overflow: hidden; }
+@media (max-width: 900px) {
+  .upo-rail__nav {
+    position: fixed;
+    inset: 0;
+    z-index: 39;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    background: rgba(5, 6, 11, .96);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .35s ease;
+  }
+  body.upo.menu-open .upo-rail__nav { opacity: 1; pointer-events: auto; }
+  .upo-rail__nav a { font-size: 22px; }
+  .upo-rail__nav a.is-active::before { display: none; }
+  body.upo.menu-open .upo-rail__menu span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+  body.upo.menu-open .upo-rail__menu span:nth-child(2) { opacity: 0; }
+  body.upo.menu-open .upo-rail__menu span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1180px) {
+  .upo-hero__content { width: min(360px, 33vw); }
+  .upo-stage__frame { --sx: -52%; top: 43%; width: min(1280px, 134%); }
+  .upo-product-slot { --slot-w: min(24vw, 276px); }
+}
+
+@media (max-width: 900px) {
+  :root { --rail-w: 0px; --strip-h: clamp(148px, 20vh, 200px); }
+
+  .upo-rail {
+    inset: 0 0 auto 0;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px var(--edge);
+    background: linear-gradient(#05060b 40%, rgba(5, 6, 11, 0));
+  }
+  .upo-rail::after { display: none; }
+  .upo-rail__logo { width: 66px; }
+  .upo-rail__menu { margin: 0; width: 40px; height: 40px; }
+  .upo-rail__note { display: none; }
+
+  .upo-hero {
+    padding: 92px var(--edge) 36px;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .upo-stage {
+    position: relative;
+    inset: auto;
+    height: clamp(320px, 46vh, 440px);
+    order: 1;
+  }
+  .upo-hero__content {
+    position: static;
+    height: auto;
+    margin-block: 0;
+    width: 100%;
+    order: 2;
+  }
+  .upo-hero__headline { text-align: left; }
+  .upo-stage__frame {
+    --sx: -50%;
+    top: 50%;
+    width: auto;
+    height: 118%;
+  }
+  .upo-product-slot { bottom: 20%; --slot-w: min(48vw, 248px); }
+
+  /* phones: calmer box, shallower depth, lighter turntable / ember load */
+  .upo-product { --d: calc(var(--w) * 0.16); perspective: 900px; }
+  .upo-product__box { animation-duration: 26s; }
+  .upo-stage__turntable-spin { animation-duration: 16s; }
+  .upo-stage__spark { opacity: .5; }
+
+  .upo-watermark {
+    font-size: clamp(46px, 15vw, 96px);
+    bottom: auto;
+    top: 66px;
+    left: -6px;
+    opacity: .14;
+  }
+
+  .upo-strip {
+    grid-template-columns: 1fr 1fr;
+    height: var(--strip-h);
+  }
+  .upo-strip__rail { display: none; }
+  .upo-strip__panel { min-height: 0; }
+
+  .upo-specs { grid-template-columns: repeat(2, 1fr); }
+  .upo-perf { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .upo-hero__actions { flex-direction: column; align-items: flex-start; gap: 18px; }
+  .upo-stats { flex-wrap: wrap; gap: 18px 0; }
+  .upo-stat { width: 50%; padding: 0 16px 0 0; border-left: 0; }
+  .upo-stat:nth-child(2) { padding-left: 16px; border-left: 1px solid var(--line); }
+  .upo-strip { grid-template-columns: 1fr 1fr; }
+  .upo-foot { flex-direction: column; gap: 8px; }
+}
+
+/* ============================================================
+   ANIMATION GATE  (only while JS/GSAP will drive the reveal)
+   ============================================================ */
+html.upo-anim [data-animate] { opacity: 0; }
+html.upo-anim .upo-hero__headline .line > span { opacity: 0; }
+html.upo-anim [data-reveal] { opacity: 0; }
+/* decorative stage accents the JS intro fades in as a distinct beat */
+html.upo-anim .upo-stage__glow,
+html.upo-anim .upo-stage__turntable,
+html.upo-anim .upo-stage__spark { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    transition-duration: .001ms !important;
+    animation-duration: .001ms !important;
+  }
+  [data-animate], [data-reveal],
+  .upo-hero__headline .line > span { opacity: 1 !important; }
+  /* energy ring stays in its static starting position */
+  .upo-stage__ring { animation: none; transform: none; }
+
+  /* no continuous rotation — present the package at a static three-quarter
+     angle with all lighting / reflections intact */
+  .upo-stage__turntable-spin { animation: none !important; transform: none !important; }
+  .upo-stage__turntable { opacity: .4; }
+  .upo-product__lift  { animation: none !important; transform: rotateX(-6deg); }
+  .upo-product__box   { animation: none !important; transform: rotateY(-26deg); }
+  .upo-product__shadow { animation: none !important; transform: translateX(-50%) scaleX(1); opacity: .9; }
+}
+
+/* =====================================================================
+   Global override — plain solid black background on every section.
+   Strips the page-wide ambient wash, section gradients and hex
+   patterns. Hero render, product card, text and specs are untouched.
+   ===================================================================== */
+html,
+body.upo,
+.upo-hero,
+.upo-strip,
+.upo-strip__rail,
+.upo-strip__panel,
+.upo-strip__panel--film,
+.upo-strip__panel--edge,
+.upo-section,
+.upo-section--perf,
+.upo-cta {
+  background: #000 !important;
+  background-image: none !important;
+}
+
+body.upo::before,
+.upo-strip__tex,
+.upo-strip__rim,
+.upo-strip__rim::after {
+  background: none !important;
+  background-image: none !important;
+  opacity: 0 !important;
+}
+
+/* all headings: Montserrat Bold (kept last so it wins over earlier weight rules) */
+h1, h2, h3, h4, h5, h6,
+.upo-hero__headline, .upo-section__title, .upo-cta h2 {
+  font-family: "Montserrat", var(--font);
+  font-weight: 700;
+}

@@ -1,0 +1,279 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>About UV99 Glazing — Protection Without Compromise</title><meta name="description" content="The UV99 brand story, philosophy and nano-ceramic approach to automotive glazing."><link rel="stylesheet" href="/uv99/styles.css"><link rel="stylesheet" href="/uv99/sunlight-spectrum.css"><link rel="stylesheet" href="/uv99/communicate.css"></head><body>
+<a class="skip-link" href="#main">Skip to content</a><header class="site-header"><div class="nav-shell"><a class="brand" href="/uv99/index.html" aria-label="UV99 Glazing home"><img class="brand__logo" src="/uv99/assets/uv99-logo.png" alt="UV99 Glazing"></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span><span></span></button><nav class="nav-links" id="nav-links" aria-label="Primary navigation"><a href="/uv99/index.html">Home</a><a href="/uv99/films.html">Products</a><a href="/uv99/warranty.html">Warranty</a><a href="/uv99/faq-contact.html">FAQ &amp; Contact</a><a href="/uv99/about.html" aria-current="page">About</a><a class="nav-cta" href="/uv99/faq-contact.html#contact">Book installation</a></nav></div></header>
+<main id="main">
+  <section class="about-hero">
+    <div class="about-hero__media">
+      <img src="/uv99/assets/CAR.png" alt="A dark luxury sedan with UV99 film on its glass, parked outside a glass-walled building" loading="eager" decoding="async">
+    </div>
+    <div class="wrap about-hero__inner">
+      <div class="about-hero__copy" data-reveal>
+        <p class="crumb"><a href="/uv99/index.html">Home</a> / About</p>
+        <p class="kicker">Why UV99 exists</p>
+        <span class="about-hero__rule" aria-hidden="true"></span>
+        <h1>We believe protection should never cloud the view.</h1>
+        <p class="about-hero__lede">UV99 turns an invisible science into a clear promise: remove the harmful part of sunlight while keeping the drive natural, sharp and connected.</p>
+        <ul class="about-hero__stats">
+          <li><b>99%</b> UV blocked</li>
+          <li><b>30%</b> heat rejection</li>
+          <li>Clear optical view</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="section section--soft"><div class="wrap"><div class="manifesto" data-reveal><blockquote>“Harmful rays out. Protection in. Everything you love about the view stays exactly where it belongs.”</blockquote><p>This is the idea behind every film, every performance figure and every installation conversation.</p></div></div></section>
+  <!-- ================================================================
+       SUNLIGHT SPECTRUM  ·  interactive point-of-view simulator
+       Styles: /uv99/sunlight-spectrum.css   Script: /uv99/sunlight-spectrum.js
+       Adjust the windshield mask + wavelength/temperature data in the
+       CONFIG object at the top of sunlight-spectrum.js.
+       ================================================================ -->
+  <section class="sss" id="sunlight-spectrum" aria-labelledby="sss-title">
+    <div class="sss__wrap">
+      <div class="sss__head" data-reveal>
+        <p class="sss__eyebrow">Our point of view</p>
+        <h2 class="sss__headline" id="sss-title">Sunlight is not one thing.</h2>
+        <p class="sss__body">It is a spectrum. Visible light gives us the view; ultraviolet accelerates skin and material ageing; infrared contributes to the heat you feel. Better glazing treats these bands differently instead of simply making the window dark.</p>
+      </div>
+
+      <p class="sss__sr" aria-live="polite"></p>
+
+      <div class="sss__sim">
+
+        <!-- ============ LEFT · visualisation panel ============ -->
+        <div class="sss__viz">
+          <div class="sss__stage" data-band="uv">
+            <div class="sss__carbox">
+              <!-- layer 2 · the single reused asset (two blended copies of
+                   ONE image — never swapped between states) -->
+              <img class="sss__car" src="/uv99/assets/NEWCAR-cut.png" alt="A glossy black luxury sedan in a studio, front three-quarter view, its windscreen carrying UV99 film" decoding="async">
+              <span class="sss__floor" aria-hidden="true"></span>
+
+              <!-- layer 3 · windshield-only film (clip-path written by JS) -->
+              <span class="sss__film" aria-hidden="true"></span>
+              <span class="sss__windglow" aria-hidden="true"></span>
+
+              <!-- layer 4 · sun + rays. One SVG in a 1600x950 space; only
+                   nodes inside <g clip-path="url(#sssWind)"> touch the glass. -->
+              <svg class="sss__fx" viewBox="0 0 1600 950" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+                <defs>
+                  <radialGradient id="sssSunG" cx="50%" cy="50%" r="50%">
+                    <stop offset="0" stop-color="#fff7e8" stop-opacity=".97"/>
+                    <stop offset=".38" stop-color="#ffd9f2" stop-opacity=".45"/>
+                    <stop offset="1" stop-color="#c9a0ff" stop-opacity="0"/>
+                  </radialGradient>
+                  <clipPath id="sssWind" clipPathUnits="userSpaceOnUse">
+                    <polygon id="sssWindPoly" points="696,313 1136,209 1184,361 688,437"/>
+                  </clipPath>
+                </defs>
+
+                <ellipse class="sss__sun" cx="120" cy="92" rx="280" ry="250" fill="url(#sssSunG)"/>
+
+                <g class="sss__rayIn" fill="none">
+                  <path style="--i:0" d="M120 92 L720 340"/>
+                  <path style="--i:1" d="M120 92 L820 290"/>
+                  <path style="--i:2" d="M120 92 L920 360"/>
+                  <path style="--i:3" d="M120 92 L1020 285"/>
+                  <path style="--i:4" d="M120 92 L1110 350"/>
+                  <path style="--i:5" d="M120 92 L880 240"/>
+                </g>
+
+                <g clip-path="url(#sssWind)">
+                  <rect class="sss__glass" x="0" y="0" width="1600" height="950"/>
+                  <path class="sss__heat" d="M700 280 Q930 262 1170 288"/>
+                  <path class="sss__heat" d="M700 330 Q930 316 1170 340"/>
+                  <path class="sss__heat" d="M700 385 Q930 372 1170 392"/>
+                </g>
+
+                <g class="sss__rayRefl" fill="none">
+                  <path style="--i:0" d="M740 330 L690 60"/>
+                  <path style="--i:1" d="M860 320 L910 50"/>
+                  <path style="--i:2" d="M980 315 L1080 70"/>
+                  <path style="--i:3" d="M1080 320 L1180 90"/>
+                  <path style="--i:4" d="M800 300 L820 40"/>
+                </g>
+
+                <g class="sss__spark">
+                  <circle style="--i:0" cx="760" cy="320" r="3.4"/>
+                  <circle style="--i:1" cx="860" cy="290" r="2.6"/>
+                  <circle style="--i:2" cx="960" cy="345" r="3"/>
+                  <circle style="--i:3" cx="1050" cy="300" r="3.4"/>
+                  <circle style="--i:4" cx="800" cy="370" r="2.2"/>
+                  <circle style="--i:5" cx="1110" cy="320" r="2.8"/>
+                  <circle style="--i:6" cx="900" cy="255" r="2.5"/>
+                </g>
+              </svg>
+            </div>
+
+            <!-- layer 6 · floating temperature card -->
+            <div class="sss__temp" aria-hidden="true">
+              <p class="sss__temp-label">Live cabin temp</p>
+              <p class="sss__temp-read"><span class="sss__temp-value">38.0</span><span class="sss__temp-unit">°C</span></p>
+              <svg class="sss__temp-graph" viewBox="0 0 120 32" preserveAspectRatio="none">
+                <polyline points="4,22 30,20 58,17 86,14 112,11"/>
+                <circle cx="112" cy="11" r="2.6"/>
+              </svg>
+              <span class="sss__temp-base">48°C bare glass</span>
+            </div>
+          </div>
+
+          <!-- layer 7 · selector rail (tabs, not a carousel) -->
+          <div class="sss__rail">
+            <div class="sss__cards" role="tablist" aria-label="Choose a wavelength range">
+              <button class="sss__card" type="button" role="tab" data-band="uv" aria-selected="true" aria-pressed="true" style="--card-accent:#b06bff">
+                <svg class="sss__card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1.2 1.5 1.3 2.5h5.4c.1-1 .5-1.7 1.3-2.5A6 6 0 0 0 12 3Z"/></svg>
+                <span class="sss__card-range">280–400</span>
+                <span class="sss__card-name">ULTRAVIOLET</span>
+                <span class="sss__card-desc">Skin • material ageing</span>
+                <span class="sss__card-dot" aria-hidden="true"></span>
+              </button>
+              <button class="sss__card" type="button" role="tab" data-band="visible" aria-selected="false" aria-pressed="false" style="--card-accent:#37e0c8">
+                <svg class="sss__card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span class="sss__card-range">400–780</span>
+                <span class="sss__card-name">VISIBLE LIGHT</span>
+                <span class="sss__card-desc">The view</span>
+                <span class="sss__card-dot" aria-hidden="true"></span>
+              </button>
+              <button class="sss__card" type="button" role="tab" data-band="infrared" aria-selected="false" aria-pressed="false" style="--card-accent:#ff8a3d">
+                <svg class="sss__card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8c2-2 4-2 6 0s4 2 6 0M4 13c2-2 4-2 6 0s4 2 6 0M4 18c2-2 4-2 6 0s4 2 6 0"/></svg>
+                <span class="sss__card-range">BEYOND 780</span>
+                <span class="sss__card-name">INFRARED</span>
+                <span class="sss__card-desc">Cabin heat</span>
+                <span class="sss__card-dot" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ RIGHT · spectrum panel (own surface) ============ -->
+        <div class="sss__spectrum">
+          <div class="sss__spectrum-inner">
+            <div class="sss__scalecol">
+              <div class="sss__ticks"><!-- wavelength labels injected from CONFIG.ticks --></div>
+              <div class="sss__bar">
+                <span class="sss__bracket"></span>
+                <span class="sss__marker"></span>
+              </div>
+            </div>
+            <div class="sss__legend">
+              <div class="sss__leg" data-band="uv" style="--leg-accent:#c79bff">
+                <span class="sss__leg-range">280–400 NM</span>
+                <p class="sss__leg-name">Ultraviolet</p>
+                <span class="sss__leg-desc">Skin • material ageing</span>
+              </div>
+              <div class="sss__leg" data-band="visible" style="--leg-accent:#4fe6d0">
+                <span class="sss__leg-range">400–780 NM</span>
+                <p class="sss__leg-name">Visible light</p>
+                <span class="sss__leg-desc">The view</span>
+              </div>
+              <div class="sss__leg" data-band="infrared" style="--leg-accent:#ff9a52">
+                <span class="sss__leg-range">BEYOND 780 NM</span>
+                <p class="sss__leg-name">Infrared</p>
+                <span class="sss__leg-desc">Cabin heat</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="sss__note">Illustrative model. Cabin temperature is shown against a 48&deg;C bare-glass baseline and varies with vehicle, glass and conditions.</p>
+    </div>
+  </section>
+  <section class="section section--soft"><div class="wrap"><div class="section-head" data-reveal><p class="eyebrow">What guides us</p><h2 class="section-title">Four principles, one honest product story.</h2></div><div class="principles"><article class="principle" data-reveal><b>01 · Clarity</b><h3>Preserve the road as it is.</h3><p>Protection is not permission for haze, colour shift or optical distortion. A film lives in the driver’s line of sight.</p></article><article class="principle" data-reveal><b>02 · Evidence</b><h3>Use numbers people can compare.</h3><p>Visible light, UV, infrared and total heat are different measures. We label them plainly and avoid pretending one is another.</p></article><article class="principle" data-reveal><b>03 · Restraint</b><h3>Technology should disappear.</h3><p>The best result feels factory-fitted: clean edges, neutral colour and no unnecessary visual noise.</p></article><article class="principle" data-reveal><b>04 · Accountability</b><h3>Stand behind the installation.</h3><p>Care guidance, traceable fitment records and written warranty terms turn a promise into responsibility.</p></article></div></div></section>
+  <section class="section stack-section">
+    <div class="wrap grid-2 stack-grid" style="align-items:center">
+      <div class="stack-intro" data-reveal>
+        <p class="eyebrow">Under the surface</p>
+        <h2 class="section-title stack-title">
+          <span class="stack-line">A layered approach</span>
+          <span class="stack-line">to lasting</span>
+          <span class="stack-line">performance.</span>
+        </h2>
+        <p class="section-lede">The flagship UV99 +1 uses a multi-layer, non-metallic nano-ceramic construction. Each layer has one job, and together they balance durability, adhesion, filtration and clarity.</p>
+      </div>
+      <ol class="stack" data-reveal aria-label="Film construction, from the outer surface inward">
+        <li class="stack-layer" style="--i:0">
+          <div class="stack-layer__inner">
+            <span class="stack-layer__num" aria-hidden="true">01</span>
+            <div class="stack-layer__body"><b>Hard coat</b><span>Everyday scratch resistance and cleanability</span></div>
+          </div>
+        </li>
+        <li class="stack-layer" style="--i:1">
+          <div class="stack-layer__inner">
+            <span class="stack-layer__num" aria-hidden="true">02</span>
+            <div class="stack-layer__body"><b>Optical polyester</b><span>Stable, clear structural base</span></div>
+          </div>
+        </li>
+        <li class="stack-layer" style="--i:2">
+          <div class="stack-layer__inner">
+            <span class="stack-layer__num" aria-hidden="true">03</span>
+            <div class="stack-layer__body"><b>Nano-ceramic core</b><span>Solar energy rejection without metallic signal interference</span></div>
+          </div>
+        </li>
+        <li class="stack-layer" style="--i:3">
+          <div class="stack-layer__inner">
+            <span class="stack-layer__num" aria-hidden="true">04</span>
+            <div class="stack-layer__body"><b>UVA400 shield</b><span>UV filtration through the full band to 400 nm</span></div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+  <section class="commsec" data-reveal aria-labelledby="commsec-title">
+    <div class="commsec__bg" aria-hidden="true"></div>
+    <div class="commsec__veil" aria-hidden="true"></div>
+    <div class="wrap commsec__inner">
+      <div class="commsec__head">
+        <p class="commsec__eyebrow">How we communicate</p>
+        <h2 class="commsec__title" id="commsec-title">
+          <span class="commsec__line">Premium, never</span>
+          <span class="commsec__line">mysterious.</span>
+        </h2>
+        <p class="commsec__lede">The visual identity moves from deep plum to the colours of the spectrum. The language stays calm, precise and useful. We are not selling darkness; we are designing what passes through.</p>
+      </div>
+
+      <svg class="commsec__route" viewBox="0 0 1000 420" fill="none" aria-hidden="true" preserveAspectRatio="none">
+        <path class="commsec__route-path" d="M40 20 L40 150 Q40 182 74 182 L300 182 Q334 182 334 214 L334 300 Q334 332 368 332 L660 332" vector-effect="non-scaling-stroke"/>
+      </svg>
+
+      <ol class="commsec__grid" role="list">
+        <li class="commsec__item is-active" style="--i:0">
+          <span class="commsec__num">01</span>
+          <span class="commsec__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 5.5V11c0 4.4 2.9 7.8 7 9 4.1-1.2 7-4.6 7-9V5.5L12 3Z"/><path d="M12 8.5v5M9.5 11h5"/></svg></span>
+          <b class="commsec__word">Protect</b>
+          <span class="commsec__sub">people and materials</span>
+        </li>
+        <li class="commsec__item" style="--i:1">
+          <span class="commsec__num">02</span>
+          <span class="commsec__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="10" r="4.4"/><circle cx="15" cy="10" r="4.4"/><circle cx="12" cy="15" r="4.4"/></svg></span>
+          <b class="commsec__word">Preserve</b>
+          <span class="commsec__sub">clarity and connection</span>
+        </li>
+        <li class="commsec__item" style="--i:2">
+          <span class="commsec__num">03</span>
+          <span class="commsec__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16M5 15l4-4 3 2.5L20 6"/><path d="M20 10.5V6h-4.5"/></svg></span>
+          <b class="commsec__word">Explain</b>
+          <span class="commsec__sub">performance honestly</span>
+        </li>
+        <li class="commsec__item" style="--i:3">
+          <span class="commsec__num">04</span>
+          <span class="commsec__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M6 20c0-3.3 2.7-6 6-6 1.4 0 2.7.5 3.7 1.3"/><path d="M18.6 15.1c.9.9.9 2.3 0 3.2l-2.1 2.1-2.1-2.1a2.2 2.2 0 0 1 0-3.2c.6-.6 1.6-.6 2.1 0 .5-.6 1.5-.6 2.1 0Z"/></svg></span>
+          <b class="commsec__word">Support</b>
+          <span class="commsec__sub">the customer after fitment</span>
+        </li>
+      </ol>
+
+      <div class="commsec__foot">
+        <div class="commsec__foot-copy">
+          <h3>See the philosophy in the films.</h3>
+          <p>Compare the range by clarity, UV and heat performance.</p>
+        </div>
+        <a class="commsec__cta" href="/uv99/films.html">
+          <span>Explore all five films</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="site-footer" data-reveal><div class="wrap"><div class="footer-cols"><div class="footer-brand" data-reveal><a class="brand" href="/uv99/index.html" aria-label="UV99 Glazing home"><img class="brand__logo" src="/uv99/assets/uv99-logo.png" alt="UV99 Glazing"></a><p class="footer-about">Harmful rays out, protection in. Automotive glazing engineered on advanced UV rejection and nano-ceramic heat-control film.</p><ul class="footer-contact"><li><a href="tel:+919876543210">+91 98765 43210</a></li><li><a href="mailto:bookings@uv99glazing.com">bookings@uv99glazing.com</a></li><li>Service centre address available on request</li></ul><p class="footer-social-label">Follow us</p><ul class="footer-social"><li><a href="https://www.instagram.com/uv99.in/" target="_blank" rel="noopener" aria-label="UV99 on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></li><li><a href="https://www.facebook.com/profile.php?id=61591502420683" target="_blank" rel="noopener" aria-label="UV99 on Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H17V3.6c-.3-.04-1.3-.13-2.47-.13-2.44 0-4.11 1.49-4.11 4.22V9.9H7.7V13h2.72v8h3.08Z"/></svg></a></li><li><a href="https://www.youtube.com/@UV99Glazing" target="_blank" rel="noopener" aria-label="UV99 on YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.45A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.97C5.12 20 12 20 12 20s6.88 0 8.59-.45a2.78 2.78 0 0 0 1.95-1.97A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58ZM9.75 15.5v-7l6 3.5-6 3.5Z"/></svg></a></li></ul></div><nav class="footer-nav" data-reveal aria-label="Products"><h3>Products</h3><ul><li><a href="/uv99/films.html">Window Film</a></li><li><a href="/uv99/uv99-plus-one.html">UV99 +1</a></li><li><a href="/uv99/films.html#simulator">Tint Simulator</a></li><li><a href="/uv99/films.html#selector">Compare &amp; Configure</a></li></ul></nav><nav class="footer-nav" data-reveal aria-label="Ownership"><h3>Ownership</h3><ul><li><a href="/uv99/warranty.html">Warranty</a></li><li><a href="/uv99/warranty.html#care">Film Care</a></li><li><a href="/uv99/faq-contact.html#contact">Contact</a></li></ul></nav><nav class="footer-nav" data-reveal aria-label="Company"><h3>Company</h3><ul><li><a href="/uv99/about.html">Our Journey</a></li><li><a href="/uv99/faq-contact.html#faq">FAQ</a></li><li><a href="/uv99/faq-contact.html#contact">Become a Dealer</a></li></ul></nav></div><div class="footer-bottom" data-reveal><span>&copy; <span data-year></span> UV99 Glazing. All rights reserved.</span><nav class="footer-legal" aria-label="Legal"><a href="/uv99/warranty.html">Terms &amp; Conditions</a><a href="/uv99/faq-contact.html">Privacy Policy</a><a href="/uv99/warranty.html#care">Disclaimer</a><a href="/uv99/faq-contact.html#contact">Contact</a></nav></div></div></footer><script src="/uv99/site.js"></script><script src="/uv99/sunlight-spectrum.js" defer></script></body></html>
+
