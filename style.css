@@ -405,13 +405,11 @@ main { position: relative; z-index: 1; }
   mask-composite: intersect;
 }
 
-/* the circular energy orb layer — isolated from the base plate by the disc mask so
-   it can turn on its own axis. A very slow rotation (28s) about the orb centre, well
-   off the pace of the platform and product, keeps the vortex energetic but calm. */
+/* the circular energy orb layer — isolated from the base plate by the disc mask.
+   Held static (no rotation) so the vortex reads as a fixed background element. */
 .upo-stage__ring {
   z-index: 2;
   transform-origin: 36% 39%;
-  will-change: transform;
   -webkit-mask-image: radial-gradient(19% 34% at 36% 39%, #000 74%, transparent 100%);
   mask-image: radial-gradient(19% 34% at 36% 39%, #000 74%, transparent 100%);
 }
@@ -513,7 +511,7 @@ main { position: relative; z-index: 1; }
   left: 39%;                  /* centred over the podium / visual showcase area */
   bottom: 19%;
   z-index: 4;
-  --slot-w: min(21vw, 300px); /* single size source — breakpoints override this var */
+  --slot-w: min(29vw, 408px); /* single size source — breakpoints override this var */
   width: var(--slot-w);
   transform: translateX(-50%);
 }
@@ -558,10 +556,8 @@ main { position: relative; z-index: 1; }
   height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 26px 52px rgba(0, 0, 0, .55));
-  /* NEW.png is shot with the rear tube leaning ~22°; counter-rotate about the
-     base so the pair reads upright on the hero */
-  transform: rotate(-11deg);
-  transform-origin: 50% 88%;
+  /* NEW.png is shot with the front tube already vertical — no counter-rotation,
+     so the front tube stands dead straight (the rear keeps its baked-in lean). */
 }
 .upo-product__face {
   position: absolute;
@@ -692,10 +688,10 @@ main { position: relative; z-index: 1; }
   .upo-stage__glow           { animation: upo-glow-pulse 5.5s ease-in-out infinite; }
   .upo-stage__spark          { animation: upo-spark-drift 9s ease-in-out infinite alternate; }
   .upo-stage__sweep          { animation: upo-sweep 13s ease-in-out 2s infinite; }
-  .upo-stage__ring           { animation: upo-orb 28s linear infinite; }
   .upo-stage__turntable-spin { animation: upo-turntable 10s linear infinite reverse; }
   .upo-product__lift         { animation: upo-box-float 3.5s ease-in-out infinite alternate; }
   .upo-product__box          { animation: upo-spin 16s linear infinite; }
+  .upo-product__photo        { animation: upo-photo-turn 12s ease-in-out infinite alternate; }
   .upo-product__shadow       { animation: upo-contact 8s ease-in-out infinite alternate; }
 
   /* JS adds .is-paused when the hero scrolls out of view or the tab is hidden */
@@ -703,10 +699,10 @@ main { position: relative; z-index: 1; }
   .upo-hero.is-paused .upo-stage__glow,
   .upo-hero.is-paused .upo-stage__spark,
   .upo-hero.is-paused .upo-stage__sweep,
-  .upo-hero.is-paused .upo-stage__ring,
   .upo-hero.is-paused .upo-stage__turntable-spin,
   .upo-hero.is-paused .upo-product__lift,
   .upo-hero.is-paused .upo-product__box,
+  .upo-hero.is-paused .upo-product__photo,
   .upo-hero.is-paused .upo-product__shadow { animation-play-state: paused; }
 
   /* pointer hover over the visual: gently quicker box, livelier turntable rim.
@@ -727,11 +723,11 @@ main { position: relative; z-index: 1; }
   from { transform: rotateY(0deg); }
   to   { transform: rotateY(360deg); }
 }
-@keyframes upo-turntable {         /* platform disc: opposite sense via `reverse` */
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+@keyframes upo-photo-turn {        /* flat packshot: gentle 3D showcase sway about Y */
+  from { transform: rotateY(-16deg); }
+  to   { transform: rotateY(16deg); }
 }
-@keyframes upo-orb {              /* energy sphere: very slow drift */
+@keyframes upo-turntable {         /* platform disc: opposite sense via `reverse` */
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
@@ -999,7 +995,7 @@ body.upo.menu-open { overflow: hidden; }
 @media (max-width: 1180px) {
   .upo-hero__content { width: min(360px, 33vw); }
   .upo-stage__frame { --sx: -52%; top: 43%; width: min(1280px, 134%); }
-  .upo-product-slot { --slot-w: min(24vw, 276px); }
+  .upo-product-slot { --slot-w: min(31vw, 364px); }
 }
 
 @media (max-width: 900px) {
@@ -1047,7 +1043,7 @@ body.upo.menu-open { overflow: hidden; }
     width: auto;
     height: 118%;
   }
-  .upo-product-slot { bottom: 20%; --slot-w: min(48vw, 248px); }
+  .upo-product-slot { bottom: 20%; --slot-w: min(55vw, 300px); }
 
   /* phones: calmer box, shallower depth, lighter turntable / ember load */
   .upo-product { --d: calc(var(--w) * 0.16); perspective: 900px; }
@@ -1111,6 +1107,7 @@ html.upo-anim .upo-stage__spark { opacity: 0; }
   .upo-stage__turntable { opacity: .4; }
   .upo-product__lift  { animation: none !important; transform: rotateX(-6deg); }
   .upo-product__box   { animation: none !important; transform: rotateY(-26deg); }
+  .upo-product__photo { animation: none !important; transform: rotateY(-12deg); }
   .upo-product__shadow { animation: none !important; transform: translateX(-50%) scaleX(1); opacity: .9; }
 }
 
@@ -1148,4 +1145,26 @@ h1, h2, h3, h4, h5, h6,
 .upo-hero__headline, .upo-section__title, .upo-cta h2 {
   font-family: "Montserrat", var(--font);
   font-weight: 700;
+}
+
+/* =====================================================================
+   MOBILE POLISH
+   ===================================================================== */
+@media (max-width: 900px) {
+  /* The decorative bottom "film strip" has no visible texture on phones
+     (its backgrounds are stripped to solid black) — it only adds an empty
+     band under the hero. Remove it on small screens. */
+  .upo-strip { display: none !important; }
+
+  /* trim the deep desktop section padding so scroll sections sit closer */
+  .upo-section { padding: clamp(56px, 11vh, 96px) var(--edge); }
+  .upo-cta { padding-block: clamp(56px, 11vh, 96px); }
+}
+
+@media (max-width: 560px) {
+  /* stat row: 3 tidy columns instead of a 2 + 1 wrap with a stray divider */
+  .upo-stats { flex-wrap: nowrap; gap: 12px; }
+  .upo-stat { width: auto; flex: 1 1 0; padding: 0 10px 0 0; border-left: 0; }
+  .upo-stat:nth-child(2) { padding-left: 0; border-left: 0; }
+  .upo-stat + .upo-stat { border-left: 1px solid var(--line); padding-left: 12px; }
 }

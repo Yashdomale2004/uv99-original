@@ -106,6 +106,7 @@
   text-transform: uppercase;
 }
 .bookcta__card-tx b { display: block; margin-top: 2px; font-size: 14.5px; }
+.bookcta__card--static .bookcta__card-tx b { font-size: 13px; font-weight: 700; line-height: 1.5; }
 
 @media (hover: hover) {
   a.bookcta__card:hover {
@@ -219,6 +220,18 @@
   transition: transform .2s ease, box-shadow .3s ease, filter .2s ease;
 }
 .bookcta__submit svg { width: 18px; height: 18px; }
+.bookcta__submit-ic {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: contain;
+  animation: wa-bob 1.4s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes wa-bob {
+  0%, 100% { transform: translateY(-3px); }
+  50%      { transform: translateY(3px); }
+}
 .bookcta__submit::after {
   content: "";
   position: absolute;
@@ -248,6 +261,50 @@
   .bookcta__form-grid { grid-template-columns: 1fr; }
 }
 
+/* Floating WhatsApp button */
+.wa-fab {
+  position: fixed;
+  right: clamp(16px, 3vw, 28px);
+  bottom: clamp(16px, 3vw, 28px);
+  z-index: 900;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #25d366;
+  box-shadow: 0 10px 30px -6px rgba(37, 211, 102, .55);
+  animation: wa-fab-bob 1.6s ease-in-out infinite;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.wa-fab img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+}
+.wa-fab::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(37, 211, 102, .5);
+  animation: wa-fab-ring 2.4s ease-out infinite;
+}
+.wa-fab:hover {
+  transform: scale(1.08);
+  box-shadow: 0 16px 38px -6px rgba(37, 211, 102, .75);
+}
+.wa-fab:focus-visible { outline: 2px solid #eafff2; outline-offset: 4px; }
+@keyframes wa-fab-bob {
+  0%, 100% { translate: 0 -3px; }
+  50%      { translate: 0 3px; }
+}
+@keyframes wa-fab-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(37, 211, 102, .5); }
+  70%  { box-shadow: 0 0 0 16px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bookcta__aurora { animation: none; }
   .bookcta__intro[data-reveal] .bookcta__line,
@@ -255,4 +312,7 @@
   .bookcta__form[data-reveal],
   .bookcta__form[data-reveal] .field { opacity: 1; transform: none; }
   .bookcta__submit::after { display: none; }
+  .bookcta__submit-ic { animation: none; }
+  .wa-fab { animation: none; }
+  .wa-fab::before { animation: none; box-shadow: none; }
 }

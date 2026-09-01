@@ -29,9 +29,9 @@
   var CONFIG = {
 
     /* Windshield outline, clockwise from top-left, [x%, y%] of the car
-       box. Re-trace against /uv99/assets/NEWCAR.png (shown with
-       object-fit:cover, object-position:10% 50%) if the art changes.
-       MAIN front windscreen only. */
+       box. The glazing pane itself is not drawn in this section (film /
+       glow / glass fill are hidden in CSS) — this polygon is retained
+       only so the JS handles stay valid. */
     windshield: [
       [43.5, 33],
       [71.0, 22],
@@ -100,6 +100,13 @@
 
   var ORDER = ['uv', 'visible', 'infrared'];
 
+  /* Reference image opened when a card is clicked. */
+  var CARD_IMAGES = {
+    uv:       { src: '/uv99/assets/UV.png',      alt: 'Ultraviolet wavelengths (280–400 nm)' },
+    visible:  { src: '/uv99/assets/RAINBOW.png', alt: 'Visible light spectrum (400–780 nm)' },
+    infrared: { src: '/uv99/assets/HEAT.png',    alt: 'Infrared heat wavelengths (beyond 780 nm)' }
+  };
+
   /* ================================================================= *
    *  Element handles
    * ================================================================= */
@@ -118,6 +125,7 @@
   var tempGraph = $('.sss__temp-graph polyline');
   var tempDot   = $('.sss__temp-graph circle');
   var sr        = $('.sss__sr');
+  var sceneImgs = $$('.sss__scene-img');
   var legends   = {};
   $$('.sss__leg').forEach(function (el) { legends[el.dataset.band] = el; });
 
@@ -191,6 +199,40 @@
   }
 
   /* ================================================================= *
+   *  Band scene — crossfade the framed photo between the two <img>.
+   *  A blur + scale settle (see .sss__scene-img in the CSS) gives the
+   *  swap its premium feel; we only flip .is-active once the incoming
+   *  frame has decoded so it never fades in on a blank element.
+   * ================================================================= */
+  var sceneShown = -1;   /* index of the currently visible .sss__scene-img */
+
+  function setScene(id) {
+    var meta = CARD_IMAGES[id];
+    if (!meta || sceneImgs.length < 2) return;
+
+    var nextIdx = sceneShown === 0 ? 1 : 0;
+    var next = sceneImgs[nextIdx];
+    var cur  = sceneShown >= 0 ? sceneImgs[sceneShown] : null;
+
+    if (next.getAttribute('src') === meta.src && next.classList.contains('is-active')) return;
+
+    var reveal = function () {
+      if (activeBand !== id) return;           /* a newer pick won the race */
+      next.classList.add('is-active');
+      if (cur) cur.classList.remove('is-active');
+      sceneShown = nextIdx;
+    };
+
+    next.onload = reveal;
+    next.onerror = reveal;                      /* never stall on a missing file */
+    if (next.getAttribute('src') !== meta.src) {
+      next.src = meta.src;
+      next.alt = meta.alt || '';
+    }
+    if (next.complete) reveal();
+  }
+
+  /* ================================================================= *
    *  Band selection — never remounts the visualisation
    * ================================================================= */
   var activeBand = 'uv';
@@ -231,6 +273,7 @@
     });
 
     animateTemp(band.tempC);
+    setScene(id);
 
     if (!reduceMotion) {
       stage.classList.remove('is-scanning');
@@ -243,6 +286,76 @@
         band.tempC.toFixed(1) + ' degrees Celsius against a ' +
         CONFIG.baseTempC + ' degree bare-glass baseline.';
     }
+  }
+
+  /* ================================================================= *
+   *  Lightbox — a card click opens that band's reference image
+   * ================================================================= */
+  var lb, lbImg, lbCap, lbReturnFocus = null;
+
+  function buildLightbox() {
+    lb = document.createElement('div');
+    lb.className = 'sss__lightbox';
+    lb.setAttribute('role', 'dialog');
+    lb.setAttribute('aria-modal', 'true');
+    lb.setAttribute('aria-label', 'Wavelength reference image');
+    lb.hidden = true;
+
+    var fig = document.createElement('figure');
+    fig.className = 'sss__lightbox-figure';
+
+    var close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'sss__lightbox-close';
+    close.setAttribute('aria-label', 'Close image');
+    close.innerHTML = '&times;';
+
+    lbImg = document.createElement('img');
+    lbImg.className = 'sss__lightbox-img';
+    lbImg.alt = '';
+
+    lbCap = document.createElement('figcaption');
+    lbCap.className = 'sss__lightbox-cap';
+
+    fig.appendChild(close);
+    fig.appendChild(lbImg);
+    fig.appendChild(lbCap);
+    lb.appendChild(fig);
+    root.appendChild(lb);
+
+    close.addEventListener('click', closeLightbox);
+    lb.addEventListener('click', function (ev) { if (ev.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' && lb.classList.contains('is-open')) closeLightbox();
+    });
+  }
+
+  function openLightbox(id) {
+    var img = CARD_IMAGES[id];
+    if (!img) return;
+    if (!lb) buildLightbox();
+    lbReturnFocus = document.activeElement;
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+    lbCap.textContent = (CONFIG.bands[id] && CONFIG.bands[id].label) || '';
+    lb.hidden = false;
+    void lb.offsetWidth;
+    lb.classList.add('is-open');
+    var btn = lb.querySelector('.sss__lightbox-close');
+    if (btn) btn.focus();
+  }
+
+  function closeLightbox() {
+    if (!lb) return;
+    lb.classList.remove('is-open');
+    var done = function () {
+      lb.hidden = true;
+      lb.removeEventListener('transitionend', done);
+    };
+    if (reduceMotion) done();
+    else lb.addEventListener('transitionend', done);
+    if (lbReturnFocus && lbReturnFocus.focus) lbReturnFocus.focus();
+    lbReturnFocus = null;
   }
 
   /* --- card interaction: behave as a tablist --- */

@@ -94,7 +94,7 @@
     position:absolute; inset:0;
     background:
       radial-gradient(120% 80% at 82% -10%, rgba(102,71,180,.20), transparent 55%),
-      radial-gradient(90% 70% at 12% 8%, rgba(74,55,120,.14), transparent 60%),
+      radial-gradient(90% 70% at 12% 8%, rgba(74,55,120,.05), transparent 60%),
       radial-gradient(140% 120% at 50% 120%, rgba(120,86,210,.10), transparent 55%),
       linear-gradient(180deg, #060509 0%, #050507 40%, #08070c 100%);
   }
@@ -117,9 +117,9 @@
     background:radial-gradient(circle at 40% 40%, rgba(139,92,246,.42), rgba(139,92,246,0) 68%);
   }
   .atmos__orb--2{
-    width:40vw; height:40vw; left:-16vw; top:34vh;
+    width:40vw; height:40vw; left:-24vw; top:34vh;
     background:radial-gradient(circle at 50% 50%, rgba(86,64,150,.30), rgba(86,64,150,0) 70%);
-    opacity:.4;
+    opacity:.16;
   }
   .atmos__grain{
     position:absolute; inset:0;
@@ -161,14 +161,14 @@
      ============================================================ */
   .hero{
     position:relative;
-    padding-top:clamp(48px, 9vh, 104px);
-    padding-bottom:clamp(64px, 12vh, 132px);
+    padding-top:clamp(36px, 6vh, 84px);
+    padding-bottom:clamp(52px, 9vh, 112px);
   }
   .hero__grid{
     display:grid;
-    grid-template-columns:1fr;
+    grid-template-columns:minmax(0, 540px) minmax(0, 1fr);
     align-items:center;
-    gap:clamp(36px, 5vw, 92px);
+    gap:clamp(32px, 5vw, 76px);
   }
   .hero__grid > *{ min-width:0; }
 
@@ -176,7 +176,7 @@
     display:flex; align-items:center; gap:8px;
     font-size:12px; letter-spacing:.14em; text-transform:uppercase;
     color:var(--faint);
-    margin:0 0 34px;
+    margin:0 0 24px;
   }
   .crumb a{ color:var(--muted); transition:color .25s var(--ease); }
   .crumb a:hover{ color:var(--text-soft); }
@@ -184,7 +184,7 @@
 
   .eyebrow{
     display:flex; align-items:center; flex-wrap:wrap; gap:10px 16px;
-    margin:0 0 26px;
+    margin:0 0 22px;
     font-size:12px; font-weight:600;
     letter-spacing:.24em; text-transform:uppercase;
     color:var(--amber);
@@ -198,26 +198,39 @@
     margin:0;
     font-family:"Inter Tight","Inter",sans-serif;
     font-weight:600;
-    font-size:clamp(2.55rem, 6.4vw, 4.6rem);
-    line-height:1.03;
+    font-size:clamp(2.35rem, 4.6vw, 3.7rem);
+    line-height:1.05;
     letter-spacing:-0.03em;
     color:#fff;
   }
   .hero h1 .soft{ color:var(--text-soft); }
 
   .hero__lede{
-    margin:30px 0 0;
-    max-width:34ch;
-    font-size:clamp(1rem, 1.15vw, 1.12rem);
+    margin:24px 0 0;
+    max-width:40ch;
+    font-size:clamp(1rem, 1.15vw, 1.1rem);
     line-height:1.72;
     color:var(--muted);
     font-weight:400;
   }
 
+  .hero__cta{
+    display:inline-flex; align-items:center; gap:9px;
+    margin:22px 0 0;
+    padding-bottom:5px;
+    font-size:.94rem; font-weight:500; letter-spacing:.005em;
+    color:var(--text-soft);
+    border-bottom:1px solid rgba(139,92,246,.5);
+    transition:color .25s var(--ease), border-color .25s var(--ease);
+  }
+  .hero__cta:hover{ color:#fff; border-bottom-color:var(--violet-soft); }
+  .hero__cta svg{ width:15px; height:15px; transition:transform .3s var(--ease); }
+  .hero__cta:hover svg{ transform:translateX(3px); }
+
   .hero__meta{
     display:flex; flex-wrap:wrap; align-items:center; gap:12px 26px;
-    margin:38px 0 0;
-    padding-top:26px;
+    margin:30px 0 0;
+    padding-top:24px;
     border-top:1px solid var(--line);
   }
   .hero__meta span{
@@ -228,6 +241,238 @@
   .hero__meta span::before{
     content:""; width:5px; height:5px; border-radius:50%;
     background:var(--violet); box-shadow:0 0 10px rgba(139,92,246,.8);
+  }
+
+  /* ============================================================
+     Warranty seal — layered glass "3", protection rings,
+     timeline markers 01/02/03, floating installer badge.
+     Decorative (aria-hidden); reinforces the copy at left.
+     ============================================================ */
+  .wseal{ position:relative; width:100%; justify-self:center; }
+  .wseal__stage{
+    position:relative;
+    width:min(100%, 540px);
+    margin-inline:auto;
+    aspect-ratio:1 / 1;
+    display:grid;
+    place-items:center;
+    container-type:inline-size;
+  }
+  /* travelling highlight arc riding the rings */
+  .wseal__stage::before{
+    content:"";
+    position:absolute; top:50%; left:50%;
+    width:90%; aspect-ratio:1;
+    translate:-50% -50%;
+    border-radius:50%;
+    background:conic-gradient(from 210deg, transparent 0deg, rgba(178,158,242,.55) 30deg, rgba(168,146,236,.15) 60deg, transparent 88deg);
+    -webkit-mask:radial-gradient(circle, transparent calc(50% - 3px), #000 calc(50% - 2px), #000 50%, transparent 50%);
+            mask:radial-gradient(circle, transparent calc(50% - 3px), #000 calc(50% - 2px), #000 50%, transparent 50%);
+    opacity:0;
+    pointer-events:none;
+  }
+  /* soft floor glow under the numeral */
+  .wseal__stage::after{
+    content:"";
+    position:absolute; left:50%; bottom:5%;
+    width:58%; height:13%;
+    transform:translateX(-50%);
+    background:radial-gradient(ellipse at center, rgba(139,92,246,.3), transparent 70%);
+    filter:blur(14px);
+    pointer-events:none;
+  }
+
+  .wseal__ring{
+    position:absolute; top:50%; left:50%;
+    translate:-50% -50%;
+    border-radius:50%;
+    border:1px solid rgba(139,92,246,.14);
+    pointer-events:none;
+    opacity:0;
+    transform:scale(.62);
+  }
+  .wseal__ring--1{ width:100%; height:100%; border-color:rgba(139,92,246,.10); }
+  .wseal__ring--2{ width:82%;  height:82%;  border-color:rgba(139,92,246,.15); }
+  .wseal__ring--3{
+    width:64%; height:64%;
+    border-color:rgba(168,146,236,.22);
+    box-shadow:0 0 40px -6px rgba(139,92,246,.28);
+  }
+
+  .wseal__mark{
+    position:absolute;
+    width:34px; height:34px;
+    display:grid; place-items:center;
+    translate:-50% -50%;
+    border:1px solid var(--line-2);
+    border-radius:50%;
+    background:rgba(16,14,22,.72);
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+    font-family:"Inter Tight",sans-serif;
+    font-size:11px; font-weight:600; letter-spacing:.05em;
+    color:var(--muted);
+    opacity:0;
+    transform:scale(0);
+  }
+  .wseal__mark--1{ top:9%;  left:74%; }
+  .wseal__mark--2{ top:40%; left:96%; }
+  .wseal__mark--3{
+    top:70%; left:92%;
+    color:#fff;
+    border-color:rgba(168,146,236,.85);
+    background:linear-gradient(180deg, rgba(139,92,246,.42), rgba(139,92,246,.16));
+    box-shadow:0 0 0 4px rgba(139,92,246,.12), 0 0 24px rgba(139,92,246,.75);
+  }
+
+  .wseal__numeral{
+    position:relative;
+    display:grid;
+    place-items:center;
+    z-index:2;
+    opacity:0;
+  }
+  .wseal__digit{
+    grid-area:1 / 1;
+    font-family:"Inter Tight","Inter",sans-serif;
+    font-weight:600;
+    font-size:140cqi;
+    line-height:.78;
+    letter-spacing:-0.04em;
+    -webkit-user-select:none; user-select:none;
+  }
+  .wseal__digit--back{
+    color:#171322;
+    filter:blur(7px);
+    transform:translate(7px, 12px);
+    opacity:.85;
+  }
+  .wseal__digit--glass{
+    background:linear-gradient(153deg,
+      rgba(74,62,104,.78) 0%,
+      rgba(38,30,58,.5) 32%,
+      rgba(20,16,32,.38) 56%,
+      rgba(58,46,92,.55) 78%,
+      rgba(128,104,190,.5) 100%);
+    -webkit-background-clip:text; background-clip:text;
+    color:transparent;
+    -webkit-text-stroke:1px rgba(168,146,236,.25);
+    filter:drop-shadow(0 22px 42px rgba(139,92,246,.28));
+  }
+  .wseal__digit--edge{
+    background:linear-gradient(180deg, rgba(255,255,255,.55), transparent 24%);
+    -webkit-background-clip:text; background-clip:text;
+    color:transparent;
+    -webkit-text-stroke:1.4px rgba(201,188,244,.5);
+    mix-blend-mode:screen;
+  }
+
+  .wseal__years{
+    position:absolute;
+    left:50%; bottom:14%;
+    transform:translateX(-50%);
+    margin:0;
+    z-index:3;
+    font-family:"Inter Tight",sans-serif;
+    font-weight:600;
+    font-size:clamp(.85rem, 1.4vw, 1.1rem);
+    letter-spacing:.52em;
+    text-indent:.52em;
+    text-transform:uppercase;
+    color:var(--violet-ink);
+    opacity:0;
+  }
+
+  .wseal__badge{
+    position:absolute;
+    top:52%; left:-7%;
+    translate:0 -50%;
+    z-index:4;
+    display:flex; align-items:center; gap:14px;
+    padding:15px 19px;
+    border:1px solid var(--line-2);
+    border-radius:16px;
+    background:linear-gradient(160deg, rgba(21,18,30,.86), rgba(12,10,18,.7));
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+    box-shadow:0 26px 60px -30px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.06);
+    opacity:0;
+  }
+  .wseal__badge-ic{
+    flex-shrink:0;
+    width:40px; height:40px;
+    display:grid; place-items:center;
+    border:1px solid rgba(139,92,246,.4);
+    border-radius:11px;
+    background:linear-gradient(160deg, rgba(139,92,246,.22), rgba(139,92,246,.05));
+    color:var(--violet-soft);
+  }
+  .wseal__badge-ic svg{ width:20px; height:20px; }
+  .wseal__badge-tx{
+    display:flex; flex-direction:column;
+    font-size:11px; font-weight:600; letter-spacing:.14em; line-height:1.55;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .wseal__badge-tx b{ color:#fff; font-weight:600; }
+
+  /* ---- ambient loops (start after the build-in) ---- */
+  @keyframes wseal-spin{ to{ transform:rotate(360deg); } }
+  @keyframes wseal-float{ from{ translate:0 -9px; } to{ translate:0 9px; } }
+  @keyframes wseal-bob{ from{ transform:translateY(-5px); } to{ transform:translateY(6px); } }
+
+  /* ---- choreographed entrance: fires when .wseal scrolls into view ---- */
+  @keyframes wseal-ring-in{
+    from{ opacity:0; transform:scale(.62); }
+    to{   opacity:1; transform:scale(1); }
+  }
+  @keyframes wseal-arc-in{ from{ opacity:0; } to{ opacity:1; } }
+  @keyframes wseal-num-in{
+    from{ opacity:0; transform:translateY(36px) scale(.78); filter:blur(13px); }
+    62% { filter:blur(0); }
+    to{   opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
+  }
+  @keyframes wseal-years-in{
+    from{ opacity:0; transform:translateX(-50%) translateY(13px); letter-spacing:1em; }
+    to{   opacity:1; transform:translateX(-50%) translateY(0);    letter-spacing:.52em; }
+  }
+  @keyframes wseal-mark-in{
+    from{ opacity:0; transform:scale(0); }
+    to{   opacity:1; transform:scale(1); }
+  }
+  @keyframes wseal-badge-in{
+    from{ opacity:0; translate:-32px -50%; }
+    to{   opacity:1; translate:0 -50%; }
+  }
+  @keyframes wseal-mark-glow{
+    0%,100%{ box-shadow:0 0 0 4px rgba(139,92,246,.12), 0 0 24px rgba(139,92,246,.55); }
+    50%    { box-shadow:0 0 0 7px rgba(139,92,246,.05), 0 0 36px rgba(139,92,246,.95); }
+  }
+
+  .wseal.is-in .wseal__ring--1{ animation:wseal-ring-in .8s cubic-bezier(.16,1,.3,1) .05s both; }
+  .wseal.is-in .wseal__ring--2{ animation:wseal-ring-in .8s cubic-bezier(.16,1,.3,1) .16s both; }
+  .wseal.is-in .wseal__ring--3{ animation:wseal-ring-in .8s cubic-bezier(.16,1,.3,1) .27s both; }
+
+  .wseal.is-in .wseal__stage::before{
+    animation:wseal-arc-in 1.4s ease .15s both,
+              wseal-spin 20s linear 1.4s infinite;
+  }
+
+  .wseal.is-in .wseal__numeral{
+    animation:wseal-num-in 1s cubic-bezier(.2,.7,.2,1) .12s both,
+              wseal-float 9s ease-in-out 1.15s infinite alternate;
+  }
+
+  .wseal.is-in .wseal__years{ animation:wseal-years-in .8s ease .52s both; }
+
+  .wseal.is-in .wseal__mark--1{ animation:wseal-mark-in .55s cubic-bezier(.34,1.56,.64,1) .70s both; }
+  .wseal.is-in .wseal__mark--2{ animation:wseal-mark-in .55s cubic-bezier(.34,1.56,.64,1) .82s both; }
+  .wseal.is-in .wseal__mark--3{
+    animation:wseal-mark-in .55s cubic-bezier(.34,1.56,.64,1) .94s both,
+              wseal-mark-glow 2.8s ease-in-out 1.7s infinite;
+  }
+
+  .wseal.is-in .wseal__badge{
+    animation:wseal-badge-in .8s cubic-bezier(.2,.7,.2,1) .68s both,
+              wseal-bob 11s ease-in-out 1.5s infinite alternate;
   }
 
   /* ============================================================
@@ -405,10 +650,24 @@
      ============================================================ */
   .claimpath{
     position:relative;
-    padding:clamp(72px, 13vh, 148px) 0;
+    padding:clamp(56px, 9vh, 104px) 0;
     border-top:1px solid var(--line);
-    background:linear-gradient(180deg, transparent, rgba(11,10,16,.6) 42%, transparent);
+    background:
+      radial-gradient(680px 340px at 15% 0%, rgba(139,92,246,.14), transparent 70%),
+      linear-gradient(180deg, transparent, rgba(11,10,16,.6) 42%, transparent);
   }
+  .claimpath::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+    background-size:48px 48px;
+    -webkit-mask-image:radial-gradient(120% 82% at 28% 0%, #000, transparent 74%);
+            mask-image:radial-gradient(120% 82% at 28% 0%, #000, transparent 74%);
+    pointer-events:none;
+  }
+  .claimpath > .shell{ position:relative; z-index:1; }
   .claimpath__head{
     display:grid;
     grid-template-columns:1.1fr .9fr;
@@ -425,7 +684,7 @@
     letter-spacing:-0.028em;
     color:#fff;
   }
-  .claimpath h2 .accent{ color:var(--violet-soft); }
+  .claimpath h2 .accent{ color:#9b7bf7; }
   .claimpath__lede{
     margin:0;
     font-size:1.02rem;
@@ -434,53 +693,74 @@
   }
 
   .steps{
-    margin-top:clamp(44px,7vh,86px);
+    position:relative;
+    margin-top:clamp(36px,5.5vh,64px);
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:clamp(14px,1.6vw,20px);
+    gap:clamp(22px,2.6vw,40px);
     counter-reset:step;
     list-style:none;
     margin-bottom:0;
     padding:0;
   }
+  /* glowing progress line threaded through the journey */
+  .steps::before{
+    content:"";
+    position:absolute;
+    top:50px; left:12.5%; right:12.5%;
+    height:1px;
+    background:linear-gradient(90deg,
+      rgba(139,92,246,.04), rgba(139,92,246,.4) 14%,
+      rgba(139,92,246,.4) 86%, rgba(139,92,246,.04));
+    box-shadow:0 0 14px rgba(139,92,246,.3);
+    z-index:0;
+  }
   .steps__item{
     position:relative;
-    isolation:isolate;
-    padding:30px 24px 32px;
+    z-index:1;
+    padding:26px 24px 28px;
     border:1px solid var(--line);
     border-radius:16px;
-    background:linear-gradient(180deg, rgba(20,18,28,.9), rgba(11,10,16,.5));
-    overflow:hidden;
+    background:linear-gradient(180deg, rgba(22,20,30,.92), rgba(12,11,17,.55));
+    -webkit-backdrop-filter:blur(6px);
+            backdrop-filter:blur(6px);
     transition:transform .5s var(--ease), border-color .5s var(--ease), box-shadow .5s var(--ease);
   }
+  /* large translucent step number */
   .steps__item::before{
     counter-increment:step;
     content:counter(step, decimal-leading-zero);
-    display:inline-block;
-    padding:5px 10px;
-    border:1px solid var(--line-2);
-    border-radius:999px;
+    position:absolute; top:15px; right:20px;
     font-family:"Inter Tight",sans-serif;
-    font-size:11px; font-weight:600; letter-spacing:.16em;
-    color:var(--violet-ink);
+    font-weight:700; font-size:2.4rem; line-height:1;
+    color:rgba(255,255,255,.09);
   }
-  /* connector tick between steps */
+  /* circular directional arrow between cards */
   .steps__item::after{
     content:"";
-    position:absolute; top:44px; right:-10px;
-    width:20px; height:1px;
-    background:linear-gradient(90deg, var(--line-2), transparent);
+    position:absolute; top:50px; right:0;
+    transform:translate(50%,-50%);
+    width:26px; height:26px;
+    border-radius:50%;
+    border:1px solid rgba(139,92,246,.4);
+    background:#0b0a11 no-repeat center/9px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23a892ec' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6l6 6-6 6'/%3E%3C/svg%3E");
+    box-shadow:0 0 0 4px var(--bg), 0 0 16px rgba(139,92,246,.35);
+    z-index:4;
   }
   .steps__item:last-child::after{ display:none; }
-  .steps__item:hover{
-    transform:translateY(-6px);
-    border-color:rgba(139,92,246,.42);
-    box-shadow:0 24px 55px -24px rgba(139,92,246,.4);
+  .steps__ic{
+    display:grid; place-items:center;
+    width:44px; height:44px;
+    border:1px solid var(--line-2);
+    border-radius:12px;
+    color:var(--violet-soft);
+    background:linear-gradient(180deg, rgba(139,92,246,.12), rgba(139,92,246,.02));
   }
+  .steps__ic svg{ width:20px; height:20px; }
   .steps__item h3{
-    margin:20px 0 10px;
+    margin:18px 0 9px;
     font-family:"Inter Tight",sans-serif;
-    font-size:1.1rem; font-weight:600; letter-spacing:-0.01em;
+    font-size:1.08rem; font-weight:600; letter-spacing:-0.01em;
     color:#fff;
   }
   .steps__item p{
@@ -488,35 +768,73 @@
     font-size:.9rem; line-height:1.62;
     color:var(--muted);
   }
+  .steps__item:hover{
+    transform:translateY(-6px);
+    border-color:rgba(139,92,246,.42);
+    box-shadow:0 24px 55px -24px rgba(139,92,246,.4);
+  }
+  /* active step 01 */
+  .steps__item.is-active{
+    border-color:rgba(139,92,246,.6);
+    box-shadow:
+      0 0 0 1px rgba(139,92,246,.28),
+      0 26px 60px -28px rgba(139,92,246,.55),
+      inset 0 1px 30px -16px rgba(139,92,246,.7);
+  }
+  .steps__item.is-active .steps__ic{
+    border-color:rgba(139,92,246,.55);
+    color:#fff;
+    background:linear-gradient(180deg, rgba(139,92,246,.3), rgba(139,92,246,.08));
+    box-shadow:0 0 18px -4px rgba(139,92,246,.5);
+  }
+  .steps__item.is-active::before{ color:rgba(155,123,247,.22); }
 
   .claim-aside{
-    margin-top:clamp(24px,3.6vh,36px);
+    position:relative;
+    margin-top:clamp(22px,3.4vh,34px);
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:clamp(14px,2vw,28px);
-    padding:clamp(22px,3vw,34px);
+    grid-template-columns:minmax(190px,.8fr) 1.75fr minmax(108px,.42fr);
+    align-items:center;
+    gap:clamp(20px,3vw,46px);
+    padding:clamp(24px,3vw,36px);
     border:1px solid var(--line);
     border-radius:18px;
-    background:linear-gradient(180deg, rgba(20,18,28,.55), rgba(11,10,16,.35));
+    background:linear-gradient(180deg, rgba(20,18,28,.6), rgba(11,10,16,.4));
+    overflow:hidden;
   }
+  .claim-aside__ic{
+    display:grid; place-items:center;
+    width:46px; height:46px; margin-bottom:16px;
+    border:1px solid var(--line-2); border-radius:12px;
+    color:var(--violet-soft);
+    background:linear-gradient(180deg, rgba(139,92,246,.14), rgba(139,92,246,.03));
+  }
+  .claim-aside__ic svg{ width:22px; height:22px; }
   .claim-aside h3{
     margin:0 0 8px;
     font-family:"Inter Tight",sans-serif;
-    font-size:1rem; font-weight:600; color:#fff;
+    font-size:1.05rem; font-weight:600; color:#fff;
   }
-  .claim-aside p{ margin:0; font-size:.9rem; line-height:1.7; color:var(--muted); }
-  .claim-aside ul{
+  .claim-aside__intro p{ margin:0; font-size:.88rem; line-height:1.65; color:var(--muted); }
+  .claim-aside__list{
     margin:0; padding:0; list-style:none;
-    display:grid; gap:11px;
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:14px 30px;
   }
-  .claim-aside li{
-    display:flex; align-items:flex-start; gap:11px;
-    font-size:.9rem; line-height:1.55; color:var(--text-soft);
+  .claim-aside__list li{
+    display:flex; align-items:flex-start; gap:10px;
+    font-size:.88rem; line-height:1.5; color:var(--text-soft);
   }
-  .claim-aside li svg{
-    flex-shrink:0; width:16px; height:16px; margin-top:2px;
+  .claim-aside__list li svg{
+    flex-shrink:0; width:19px; height:19px; margin-top:1px;
     color:var(--violet-soft);
   }
+  .claim-aside__art{
+    justify-self:end; align-self:center;
+    color:rgba(139,92,246,.5);
+    pointer-events:none;
+  }
+  .claim-aside__art svg{ width:clamp(116px,11vw,164px); height:auto; display:block; }
 
   .claim-cta{
     margin-top:clamp(26px,4vh,40px);
@@ -534,6 +852,30 @@
   .btn--primary:hover{ transform:translateY(-2px); background:#7c4ef0; }
   .btn--ghost{ border:1px solid var(--line-2); color:var(--text-soft); }
   .btn--ghost:hover{ border-color:var(--violet-soft); color:#fff; }
+
+  /* Check-warranty pill — gradient glow border on dark fill */
+  .btn--warranty{
+    position:relative;
+    color:#fff; font-weight:700;
+    background:
+      linear-gradient(#0c0b12, #0c0b12) padding-box,
+      linear-gradient(150deg, var(--violet-soft), var(--violet) 45%, #5b3fb8) border-box;
+    border:1.5px solid transparent;
+    box-shadow:
+      0 0 0 1px rgba(139,92,246,.12),
+      0 14px 34px -18px rgba(139,92,246,.75);
+  }
+  .btn--warranty svg{ color:var(--violet-ink); transition:transform .4s var(--ease); }
+  .btn--warranty:hover{
+    transform:translateY(-2px);
+    background:
+      linear-gradient(#141026, #141026) padding-box,
+      linear-gradient(150deg, #c9bcf4, var(--violet) 45%, #6b4ccf) border-box;
+    box-shadow:
+      0 0 0 1px rgba(139,92,246,.2),
+      0 18px 42px -16px rgba(139,92,246,.9);
+  }
+  .btn--warranty:hover svg{ transform:translate(2px,-2px); color:#fff; }
 
   /* ============================================================
      Footer
@@ -620,16 +962,23 @@
 
   @media (max-width:1040px){
     .hero__grid{
-      gap:clamp(40px,7vw,64px);
+      grid-template-columns:1fr;
+      gap:clamp(36px,7vw,56px);
     }
-    .hero__lede{ max-width:46ch; }
+    .hero__lede{ max-width:52ch; }
+    .wseal{ order:2; }
+    .wseal__stage{ width:min(100%, 460px); }
+    .wseal__badge{ left:-2%; }
 
     .covered__head{ grid-template-columns:1fr; gap:24px; align-items:start; }
     .coverage{ grid-template-columns:repeat(2,1fr); }
 
     .claimpath__head{ grid-template-columns:1fr; gap:24px; align-items:start; }
-    .steps{ grid-template-columns:repeat(2,1fr); }
-    .steps__item:nth-child(2)::after{ display:none; }
+    .steps{ grid-template-columns:repeat(2,1fr); gap:20px; }
+    .steps::before{ display:none; }
+    .steps__item::after{ display:none; }
+    .claim-aside{ grid-template-columns:1fr; }
+    .claim-aside__art{ display:none; }
   }
 
   @media (max-width:640px){
@@ -640,6 +989,22 @@
     .hero h1{ font-size:clamp(2.2rem, 10vw, 3rem); }
     .hero__lede{ margin-top:24px; }
     .hero__meta{ gap:10px 18px; margin-top:30px; padding-top:22px; }
+
+    .wseal__stage{ width:min(78vw, 300px); }
+    /* the decorative 01/02/03 rim markers crowd the numeral at this size */
+    .wseal__mark{ display:none; }
+    .wseal__badge{
+      position:static; translate:none;
+      margin:16px auto 0; width:max-content; max-width:100%;
+      animation:none;
+    }
+    /* on mobile the badge is in normal flow — fade it in without the slide */
+    .wseal.is-in .wseal__badge{ animation:wseal-arc-in .55s ease .5s both; translate:none; }
+    /* tighten the numeral and drop the "YEARS" wordmark — at phone size it
+       collided with the lower curve of the "3", and the hero h1 ("Three years
+       of protection") plus the badge already carry the message */
+    .wseal__digit{ font-size:100cqi; }
+    .wseal__years{ display:none; }
 
     .covered{ padding:60px 0 76px; }
     .coverage{ grid-template-columns:1fr; margin-top:36px; }
@@ -652,8 +1017,10 @@
 
     .claimpath{ padding:60px 0 76px; }
     .steps{ grid-template-columns:1fr; margin-top:36px; }
+    .steps::before{ display:none; }
     .steps__item::after{ display:none; }
     .claim-aside{ grid-template-columns:1fr; }
+    .claim-aside__list{ grid-template-columns:1fr; }
     .claim-cta .btn{ flex:1 1 auto; justify-content:center; }
 
     .foot__top{ grid-template-columns:1fr 1fr; }
@@ -664,8 +1031,13 @@
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
     [data-reveal]{ opacity:1; transform:none; }
+    .wseal__ring,.wseal__mark,.wseal__numeral,.wseal__years,.wseal__badge{ opacity:1 !important; transform:none !important; }
+    .wseal__stage::before{ opacity:1 !important; }
     html{ scroll-behavior:auto; }
   }
+  /* Golden eyebrows: "What is covered", "Making a claim" */
+  .section-eyebrow{ color:#E6B25C; }
+  .section-eyebrow::before{ background:linear-gradient(90deg, transparent, #E6B25C); }
 </style>
 </head>
 <body>
@@ -699,10 +1071,41 @@
           A premium film should keep doing its job. The UV99 warranty protects against
           common material failures and meaningful loss of performance.
         </p>
+        <a class="hero__cta" href="#covered-title" data-reveal data-reveal-delay="3">
+          See what&rsquo;s covered
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
         <div class="hero__meta" data-reveal data-reveal-delay="4">
           <span>Material failure</span>
           <span>Performance loss</span>
           <span>Installer&#8209;backed</span>
+        </div>
+      </div>
+
+      <div class="wseal" data-reveal data-reveal-delay="2" aria-hidden="true">
+        <div class="wseal__stage">
+          <span class="wseal__ring wseal__ring--1"></span>
+          <span class="wseal__ring wseal__ring--2"></span>
+          <span class="wseal__ring wseal__ring--3"></span>
+
+          <span class="wseal__mark wseal__mark--1">01</span>
+          <span class="wseal__mark wseal__mark--2">02</span>
+          <span class="wseal__mark wseal__mark--3">03</span>
+
+          <div class="wseal__numeral">
+            <span class="wseal__digit wseal__digit--back">3</span>
+            <span class="wseal__digit wseal__digit--glass">3</span>
+            <span class="wseal__digit wseal__digit--edge">3</span>
+          </div>
+
+          <p class="wseal__years">Years</p>
+
+          <div class="wseal__badge">
+            <span class="wseal__badge-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.6 4.6 5.4v5.9c0 4.5 3.1 8.4 7.4 9.8 4.3-1.4 7.4-5.3 7.4-9.8V5.4L12 2.6Z"/><path d="m8.7 11.8 2.3 2.3 4.4-4.7"/></svg>
+            </span>
+            <span class="wseal__badge-tx"><b>Installer-backed</b>Warranty</span>
+          </div>
         </div>
       </div>
 
@@ -806,47 +1209,61 @@
       </div>
 
       <ol class="steps" role="list">
-        <li class="steps__item" role="listitem" data-reveal data-reveal-delay="1">
+        <li class="steps__item is-active" role="listitem" data-reveal data-reveal-delay="1">
+          <span class="steps__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.3a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1Z"/></svg></span>
           <h3>Contact your installer</h3>
           <p>Reach out to the certified installer who fitted your film &mdash; their details sit on your warranty record.</p>
         </li>
         <li class="steps__item" role="listitem" data-reveal data-reveal-delay="2">
+          <span class="steps__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></span>
           <h3>Submit your record</h3>
           <p>Share your warranty number, installation date and clear photos of the affected area.</p>
         </li>
         <li class="steps__item" role="listitem" data-reveal data-reveal-delay="3">
+          <span class="steps__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
           <h3>Assessment</h3>
           <p>The installer checks the film against the coverage terms, on&#8209;site or from your images.</p>
         </li>
         <li class="steps__item" role="listitem" data-reveal data-reveal-delay="4">
+          <span class="steps__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 8 7 9 4-1 7-4.5 7-9V6Z"/><path d="m9 12 2 2 4-4"/></svg></span>
           <h3>Resolution</h3>
           <p>Approved claims are put right with replacement film refitted &mdash; no charge for parts or labour.</p>
         </li>
       </ol>
 
       <div class="claim-aside" data-reveal>
-        <div>
+        <div class="claim-aside__intro">
+          <span class="claim-aside__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z"/><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="m9.5 13 1.8 1.8 3.7-3.9"/></svg></span>
           <h3>What to have ready</h3>
           <p>Keeping these to hand lets the assessment happen without a second visit.</p>
         </div>
-        <ul>
+        <ul class="claim-aside__list">
           <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#8b5cf6" fill-opacity=".16" stroke="currentColor" stroke-width="1.4"/><path d="m8.4 12.3 2.4 2.4 4.8-5.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Your installer&#8209;issued warranty record number
           </li>
           <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#8b5cf6" fill-opacity=".16" stroke="currentColor" stroke-width="1.4"/><path d="m8.4 12.3 2.4 2.4 4.8-5.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Installation date and fitting location
           </li>
           <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#8b5cf6" fill-opacity=".16" stroke="currentColor" stroke-width="1.4"/><path d="m8.4 12.3 2.4 2.4 4.8-5.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Vehicle make, model and registration
           </li>
           <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#8b5cf6" fill-opacity=".16" stroke="currentColor" stroke-width="1.4"/><path d="m8.4 12.3 2.4 2.4 4.8-5.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Daylight photos of the affected film, one wide and one close
           </li>
         </ul>
+        <div class="claim-aside__art" aria-hidden="true">
+          <svg viewBox="0 0 210 160" fill="none">
+            <g transform="rotate(-9 105 82)">
+              <rect x="54" y="28" width="112" height="150" rx="8" fill="#a892ec" fill-opacity=".10" stroke="#a892ec" stroke-opacity=".38" stroke-width="2"/>
+              <path d="M76 64h68M76 86h68M76 108h44" stroke="#a892ec" stroke-opacity=".38" stroke-width="3" stroke-linecap="round"/>
+            </g>
+            <path d="M12 54h58l16 18h104a10 10 0 0 1 10 10v56a10 10 0 0 1-10 10H12a10 10 0 0 1-10-10V64a10 10 0 0 1 10-10Z" fill="#8b5cf6" fill-opacity=".16" stroke="#8b5cf6" stroke-opacity=".5" stroke-width="2"/>
+          </svg>
+        </div>
       </div>
 
       <div class="claim-cta" data-reveal>
@@ -855,6 +1272,10 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
         <a class="btn btn--ghost" href="/uv99/faq-contact.html#faq">Read the FAQ</a>
+        <a class="btn btn--warranty" href="http://c.uv99.in/" target="_blank" rel="noopener">
+          Check warranty
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
       </div>
 
     </div>
@@ -897,8 +1318,9 @@
     <div class="foot__bottom">
       <span>&copy; <span data-year></span> UV99 Glazing. All rights reserved.</span>
       <nav aria-label="Legal">
-        <a href="/uv99/warranty.html">Terms &amp; Conditions</a>
-        <a href="/uv99/faq-contact.html">Privacy Policy</a>
+        <a href="/uv99/terms.html">Terms &amp; Conditions</a>
+        <a href="/uv99/privacy.html">Privacy Policy</a>
+        <a href="/uv99/disclaimer.html">Disclaimer</a>
         <a href="/uv99/faq-contact.html#contact">Contact</a>
       </nav>
     </div>

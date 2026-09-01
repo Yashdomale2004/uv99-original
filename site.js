@@ -22,6 +22,27 @@
     });
   }
 
+  // UV99 wordmark: when it already points at the page you're on (the landing
+  // page), glide back to the top / hero instead of firing a full reload.
+  // On every other page it stays an ordinary link to the landing page.
+  const normPath = (p) => p.replace(/\/(?:index\.html)?$/, '') || '/';
+  document.querySelectorAll('a.brand').forEach((brand) => {
+    brand.addEventListener('click', (event) => {
+      if (event.defaultPrevented || event.button !== 0 ||
+          event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      let dest;
+      try { dest = new URL(brand.href); } catch (e) { return; }
+      if (dest.origin !== location.origin || normPath(dest.pathname) !== normPath(location.pathname)) return;
+
+      event.preventDefault();
+      const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+      // drop any lingering #hash so a later reload lands at the top too
+      if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+      links && links.classList.remove('is-open');
+    });
+  });
+
   // FAQ list: every answer is shown in sequence by default; each item toggles
   // independently (no auto-collapse of the others).
   document.querySelectorAll('.accordion__button').forEach((button) => {
@@ -294,7 +315,7 @@
       }
       const message = `Hello UV99 Glazing, I am ${name}. My phone is ${data.get('phone')}. I drive a ${car}. I am interested in ${data.get('film')}. ${data.get('message') || ''}`;
       status.textContent = 'Your enquiry is ready. Opening WhatsApp…';
-      window.open(`https://wa.me/919876543210?text=${encodeURIComponent(message)}`, '_blank', 'noopener');
+      window.open(`https://wa.me/91?text=${encodeURIComponent(message)}`, '_blank', 'noopener');
     });
   }
 

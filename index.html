@@ -28,7 +28,60 @@
     }
     .upo-hero::after { content: ""; position: absolute; left: var(--rail-w); top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,.06); pointer-events: none; z-index: 4; }
     .lp-rail-note { position: absolute; left: clamp(14px, 2vw, 26px); bottom: clamp(24px, 5vh, 54px); z-index: 4; margin: 0; font-size: 12px; line-height: 1.4; color: rgba(255,255,255,.5); pointer-events: none; }
-    @media (max-width: 900px) { .upo-hero { margin-top: -70px; } .upo-hero::after, .lp-rail-note { display: none; } .upo-hero__content { top: auto; } }
+    @media (max-width: 900px) {
+      .upo-hero { margin-top: -70px; }
+      .upo-hero::after, .lp-rail-note { display: none; }
+      /* the giant vertical "UV99" watermark collapses to a few stray glyphs
+         beside the logo on a phone — drop it */
+      .upo-watermark { display: none; }
+
+      /* ---- centre the stacked hero on phones/tablets ---- */
+      .upo-hero__content {
+        top: auto;
+        margin-inline: auto;
+        max-width: 560px;
+        text-align: center;
+      }
+      .upo-hero__headline { text-align: center; }
+      .upo-hero__lede {
+        margin-inline: auto;
+        max-width: 46ch;
+        text-align: center;
+        padding-top: 24px;
+      }
+      /* re-centre the little accent bar above the lede */
+      .upo-hero__lede::before { left: 50%; transform: translateX(-50%); }
+      .upo-hero__actions { align-items: center; }
+      .upo-stats { justify-content: center; }
+      /* centre the render composition in the stage: it sits left-of-centre
+         (and zoomed in) by default to make room for the desktop copy column,
+         which on a phone clips the energy sphere off the left edge. Nudge it
+         back towards centre and pull the zoom out so the whole scene reads. */
+      .upo-stage__frame { --sx: -40%; left: 50%; height: 106%; }
+      /* the boxes render right-of-slot-centre (perspective + tilt), so the slot
+         sits a little left of the podium centre to make the pack look centred.
+         --slot-w drives both the width and (proportionally) the height of the
+         pack, so shrinking it makes the boxes shorter on phones. */
+      .upo-product-slot { left: 42.5%; --slot-w: min(46vw, 250px); }
+    }
+    @media (max-width: 600px) {
+      .upo-hero { padding-top: 84px; padding-bottom: 8px; gap: 22px; }
+      /* stop the third line ("Noticeable Comfort.") running off the right edge:
+         smaller type, and let a long line wrap instead of being clipped by the
+         line mask */
+      .upo-hero__headline {
+        font-size: clamp(1.85rem, 8.2vw, 2.5rem);
+        line-height: 1.08;
+        letter-spacing: -.02em;
+      }
+      .upo-hero__headline .line { overflow: visible; }
+      .upo-hero__lede { max-width: 42ch; font-size: 15px; }
+      .upo-stage { height: clamp(280px, 42vh, 360px); }
+      /* keep the three stats on one centred row on narrow screens */
+      .upo-stats { flex-wrap: nowrap; justify-content: center; gap: 0; }
+      .upo-stat { width: auto; flex: 0 1 auto; }
+      .upo-stat:first-child { padding-left: 0; }
+    }
 
     /* ---- UV99 protection guard bar (shield icons + warranty note) ---- */
     .uv-guardbar { position: relative; z-index: 1; background: linear-gradient(180deg, #8a4aa4, #7c3a96); color: #fff; padding: clamp(12px, 1.6vw, 18px) clamp(20px, 5vw, 64px) clamp(10px, 1.2vw, 14px); text-align: center; }
@@ -40,8 +93,61 @@
     .uv-guardbar__note { margin: clamp(8px, 1vw, 12px) auto 0; max-width: 860px; font: 500 clamp(9.5px, .8vw, 11.5px)/1.55 "Inter", Arial, sans-serif; letter-spacing: .01em; color: rgba(255, 255, 255, .9); }
     @media (max-width: 900px) { .uv-guardbar__row { grid-template-columns: repeat(3, 1fr); gap: 22px 16px; } }
     @media (max-width: 520px) { .uv-guardbar__row { grid-template-columns: repeat(2, 1fr); } }
+
+    /* ============================================================
+       HERO SCROLL MOTION — count-up stats + staggered reveal.
+       Scoped to .upo-hero. Lives in the page's last stylesheet so it
+       wins over the site-wide [data-reveal] rule in styles.css.
+       ============================================================ */
+
+    /* Baseline: hero reveal targets are fully visible. This overrides the
+       unconditional `[data-reveal]{opacity:0}` in styles.css, so with no JS
+       (or reduced motion) the hero renders complete and static. */
+    .upo-hero [data-reveal] { opacity: 1; transform: none; transition: none; }
+
+    /* Only once the inline <head> script confirms JS + motion-OK do we
+       pre-hide, then transition in when JS adds .is-visible.
+       REVEAL_DISTANCE 32px  — start offset below resting position
+       REVEAL_DURATION 0.8s  — settle time
+       REVEAL_EASE cubic-bezier(0.16,1,0.3,1) — fast out, long glide to rest */
+    html.anim-ready .upo-hero [data-reveal] {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .8s cubic-bezier(.16, 1, .3, 1),
+                  transform .8s cubic-bezier(.16, 1, .3, 1);
+      will-change: opacity, transform;
+    }
+    html.anim-ready .upo-hero [data-reveal].is-visible { opacity: 1; transform: none; }
+
+    /* Per-child stagger under a [data-reveal-stagger] parent.
+       STAGGER_STEP 80ms between successive children (child 1 = 0ms). */
+    html.anim-ready .upo-hero [data-reveal-stagger] > [data-reveal]:nth-child(2) { transition-delay: .08s; }
+    html.anim-ready .upo-hero [data-reveal-stagger] > [data-reveal]:nth-child(3) { transition-delay: .16s; }
+    html.anim-ready .upo-hero [data-reveal-stagger] > [data-reveal]:nth-child(4) { transition-delay: .24s; }
+    html.anim-ready .upo-hero [data-reveal-stagger] > [data-reveal]:nth-child(5) { transition-delay: .32s; }
+
+    /* Hard fallback: kill every transform/transition for reduced motion,
+       regardless of the gate class or the global rule. */
+    @media (prefers-reduced-motion: reduce) {
+      .upo-hero [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+    /* Golden eyebrows: "Why UV99", "About UV99", "One promise, three paths", "The UV99 Standard" */
+    body .std99__eyebrow,
+    body .section-head .eyebrow { color: #E6B25C; }
+    body .about-uv99__eyebrow {
+      background: none;
+      -webkit-background-clip: border-box;
+      background-clip: border-box;
+      -webkit-text-fill-color: #E6B25C;
+      color: #E6B25C;
+    }
   </style>
   <script>try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('hero-anim');}catch(e){}</script>
+  <!-- No-flash gate for the hero scroll motion: mark the doc "animation ready"
+       immediately, but only when motion is allowed. CSS keys the pre-hidden
+       state off html.anim-ready, so no-JS / reduced-motion visitors never see
+       a hidden hero. -->
+  <script>try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('anim-ready');}catch(e){}</script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -77,18 +183,18 @@
         <span class="upo-stage__sweep"></span>
       </div>
 
-      <div class="upo-hero__content">
-        <h1 class="upo-hero__headline">
+      <div class="upo-hero__content" data-reveal-stagger>
+        <h1 class="upo-hero__headline" data-reveal>
           <span class="line"><span>Invisible</span></span>
           <span class="line"><span>Protection.</span></span>
           <span class="line"><span>Noticeable Comfort.</span></span>
         </h1>
 
-        <p class="upo-hero__lede">
+        <p class="upo-hero__lede" data-reveal>
           Blocks up to <strong>99%</strong> of harmful UV rays while preserving exceptional optical clarity.
         </p>
 
-        <div class="upo-hero__actions">
+        <div class="upo-hero__actions" data-reveal>
           <a class="upo-btn" href="/uv99/films.html">
             <span>Explore UV99 Films</span>
             <svg class="upo-btn__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -96,9 +202,12 @@
           <a class="upo-textlink" href="/uv99/about.html">See the technology</a>
         </div>
 
-        <dl class="upo-stats">
+        <!-- data-countup groups the counters so they share one progress and
+             finish together. Each .stat's text content is the no-JS /
+             reduced-motion fallback. -->
+        <dl class="upo-stats" data-reveal data-countup>
           <div class="upo-stat">
-            <dd class="upo-stat__value">99%</dd>
+            <dd class="upo-stat__value"><span class="stat" data-count="99" data-suffix="%">99%</span></dd>
             <dt class="upo-stat__label">UV<br>Protection</dt>
           </div>
           <div class="upo-stat">
@@ -106,7 +215,7 @@
             <dt class="upo-stat__label">Clarity</dt>
           </div>
           <div class="upo-stat">
-            <dd class="upo-stat__value">3&nbsp;Year</dd>
+            <dd class="upo-stat__value"><span class="stat" data-count="3" data-suffix="&nbsp;Year">3&nbsp;Year</span></dd>
             <dt class="upo-stat__label">Warranty</dt>
           </div>
         </dl>
@@ -363,10 +472,141 @@
     </section>
     <section class="dark-cta"><div class="wrap dark-cta__in"><div data-reveal><h2>Find the right film for your car.</h2><p>Tell us how, when and where you drive. We’ll help narrow the choice.</p></div><a class="button button--light" href="/uv99/faq-contact.html#contact" data-reveal>Start an enquiry</a></div></section>
   </main>
-  <footer class="site-footer" data-reveal><div class="wrap"><div class="footer-cols"><div class="footer-brand" data-reveal><a class="brand" href="/uv99/index.html" aria-label="UV99 Glazing home"><img class="brand__logo" src="/uv99/assets/uv99-logo.png" alt="UV99 Glazing"></a><p class="footer-about">Harmful rays out, protection in. Automotive glazing engineered on advanced UV rejection and nano-ceramic heat-control film.</p><ul class="footer-contact"><li><a href="tel:+919876543210">+91 98765 43210</a></li><li><a href="mailto:bookings@uv99glazing.com">bookings@uv99glazing.com</a></li><li>Service centre address available on request</li></ul><p class="footer-social-label">Follow us</p><ul class="footer-social"><li><a href="https://www.instagram.com/uv99.in/" target="_blank" rel="noopener" aria-label="UV99 on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></li><li><a href="https://www.facebook.com/profile.php?id=61591502420683" target="_blank" rel="noopener" aria-label="UV99 on Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H17V3.6c-.3-.04-1.3-.13-2.47-.13-2.44 0-4.11 1.49-4.11 4.22V9.9H7.7V13h2.72v8h3.08Z"/></svg></a></li><li><a href="https://www.youtube.com/@UV99Glazing" target="_blank" rel="noopener" aria-label="UV99 on YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.45A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.97C5.12 20 12 20 12 20s6.88 0 8.59-.45a2.78 2.78 0 0 0 1.95-1.97A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58ZM9.75 15.5v-7l6 3.5-6 3.5Z"/></svg></a></li></ul></div><nav class="footer-nav" data-reveal aria-label="Products"><h3>Products</h3><ul><li><a href="/uv99/films.html">Window Film</a></li><li><a href="/uv99/uv99-plus-one.html">UV99 +1</a></li><li><a href="/uv99/films.html#simulator">Tint Simulator</a></li><li><a href="/uv99/films.html#selector">Compare &amp; Configure</a></li></ul></nav><nav class="footer-nav" data-reveal aria-label="Ownership"><h3>Ownership</h3><ul><li><a href="/uv99/warranty.html">Warranty</a></li><li><a href="/uv99/warranty.html#care">Film Care</a></li><li><a href="/uv99/faq-contact.html#contact">Contact</a></li></ul></nav><nav class="footer-nav" data-reveal aria-label="Company"><h3>Company</h3><ul><li><a href="/uv99/about.html">Our Journey</a></li><li><a href="/uv99/faq-contact.html#faq">FAQ</a></li><li><a href="/uv99/faq-contact.html#contact">Become a Dealer</a></li></ul></nav></div><div class="footer-bottom" data-reveal><span>&copy; <span data-year></span> UV99 Glazing. All rights reserved.</span><nav class="footer-legal" aria-label="Legal"><a href="/uv99/warranty.html">Terms &amp; Conditions</a><a href="/uv99/faq-contact.html">Privacy Policy</a><a href="/uv99/warranty.html#care">Disclaimer</a><a href="/uv99/faq-contact.html#contact">Contact</a></nav></div></div></footer>
+  <footer class="site-footer" data-reveal><div class="wrap"><div class="footer-cols"><div class="footer-brand" data-reveal><a class="brand" href="/uv99/index.html" aria-label="UV99 Glazing home"><img class="brand__logo" src="/uv99/assets/uv99-logo.png" alt="UV99 Glazing"></a><p class="footer-about">Harmful rays out, protection in. Automotive glazing engineered on advanced UV rejection and nano-ceramic heat-control film.</p><ul class="footer-contact"><li><a href="tel:+91">+91</a></li><li><a href="mailto:bookings@uv99glazing.com">bookings@uv99glazing.com</a></li><li>Service centre address available on request</li></ul><p class="footer-social-label">Follow us</p><ul class="footer-social"><li><a href="https://www.instagram.com/uv99.in/" target="_blank" rel="noopener" aria-label="UV99 on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></li><li><a href="https://www.facebook.com/profile.php?id=61591502420683" target="_blank" rel="noopener" aria-label="UV99 on Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H17V3.6c-.3-.04-1.3-.13-2.47-.13-2.44 0-4.11 1.49-4.11 4.22V9.9H7.7V13h2.72v8h3.08Z"/></svg></a></li><li><a href="https://www.youtube.com/@UV99Glazing" target="_blank" rel="noopener" aria-label="UV99 on YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.45A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.97C5.12 20 12 20 12 20s6.88 0 8.59-.45a2.78 2.78 0 0 0 1.95-1.97A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58ZM9.75 15.5v-7l6 3.5-6 3.5Z"/></svg></a></li></ul></div><nav class="footer-nav" data-reveal aria-label="Products"><h3>Products</h3><ul><li><a href="/uv99/films.html">Window Film</a></li><li><a href="/uv99/uv99-plus-one.html">UV99 +1</a></li><li><a href="/uv99/films.html#simulator">Tint Simulator</a></li><li><a href="/uv99/films.html#selector">Compare &amp; Configure</a></li></ul></nav><nav class="footer-nav" data-reveal aria-label="Ownership"><h3>Ownership</h3><ul><li><a href="/uv99/warranty.html">Warranty</a></li><li><a href="/uv99/warranty.html#care">Film Care</a></li><li><a href="/uv99/faq-contact.html#contact">Contact</a></li></ul></nav><nav class="footer-nav" data-reveal aria-label="Company"><h3>Company</h3><ul><li><a href="/uv99/about.html">Our Journey</a></li><li><a href="/uv99/faq-contact.html#faq">FAQ</a></li><li><a href="/uv99/faq-contact.html#contact">Become a Dealer</a></li></ul></nav></div><div class="footer-bottom" data-reveal><span>&copy; <span data-year></span> UV99 Glazing. All rights reserved.</span><nav class="footer-legal" aria-label="Legal"><a href="/uv99/terms.html">Terms &amp; Conditions</a><a href="/uv99/privacy.html">Privacy Policy</a><a href="/uv99/disclaimer.html">Disclaimer</a><a href="/uv99/faq-contact.html#contact">Contact</a></nav></div></div></footer>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="/uv99/site.js" defer></script>
+
+  <!-- =====================================================================
+       HERO SCROLL MOTION — count-up stats + staggered section reveal.
+       Vanilla JS, no animation library. One self-contained IIFE, scoped to
+       .upo-hero. Degrades: no JS -> literal markup; reduced-motion -> final
+       state on load; no IntersectionObserver -> everything shown + numbers
+       set. A ~1s watchdog force-shows anything on screen but still hidden.
+       ===================================================================== -->
+  <script>
+  (function () {
+    'use strict';
+
+    var hero = document.querySelector('.upo-hero');
+    if (!hero) return;
+
+    /* ---- timing / threshold constants ---------------------------------
+       COUNT_MS     total run of every counter, ms (starts fast, eases out)
+       COUNT_VIS    fraction of the stats container on screen before the
+                    count-up fires (~35%)
+       REVEAL_HIDE  viewport bottom inset, % — a [data-reveal] fires once it
+                    is this far up from the bottom edge, i.e. ~85% down
+       WATCHDOG_MS  safety-sweep interval, ms
+    ------------------------------------------------------------------- */
+    var COUNT_MS    = 1500;
+    var COUNT_VIS   = 0.35;
+    var REVEAL_HIDE = 15;      /* 100% - 85% */
+    var WATCHDOG_MS = 1000;
+
+    var reduce = false;
+    try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+    var hasIO = 'IntersectionObserver' in window;
+
+    var revealEls = [].slice.call(hero.querySelectorAll('[data-reveal]'));
+    var countWrap = hero.querySelector('[data-countup]');
+    var counters  = countWrap ? [].slice.call(countWrap.querySelectorAll('.stat[data-count]')) : [];
+    var targets   = counters.map(function (el) { return parseFloat(el.getAttribute('data-count')) || 0; });
+
+    /* easeOutCubic — quick departure, long deceleration into the target */
+    function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+    function paint(el, value) {
+      var decimals = parseInt(el.getAttribute('data-decimals'), 10) || 0;
+      var suffix = el.getAttribute('data-suffix') || '';
+      var shown = decimals ? value.toFixed(decimals) : String(Math.round(value));
+      el.textContent = shown + suffix;
+    }
+
+    /* One shared rAF pass drives every counter in the container, so they
+       progress on the same clock and land on the same frame. */
+    var raf = null;
+    function runCounters() {
+      if (!counters.length) return;
+      if (raf) cancelAnimationFrame(raf);
+      var start = null;
+      function frame(now) {
+        if (start === null) start = now;
+        var t = Math.min(1, (now - start) / COUNT_MS);
+        var eased = easeOutCubic(t);
+        for (var i = 0; i < counters.length; i++) {
+          var el = counters[i], target = targets[i];
+          var decimals = parseInt(el.getAttribute('data-decimals'), 10) || 0;
+          if (t >= 1) {
+            paint(el, target);                                   /* snap exact on the last frame */
+          } else if (decimals) {
+            paint(el, target * eased);
+          } else {
+            paint(el, Math.min(target, Math.round(target * eased)));
+          }
+        }
+        raf = t < 1 ? requestAnimationFrame(frame) : null;
+      }
+      raf = requestAnimationFrame(frame);
+    }
+
+    function resetCounters() {
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
+      counters.forEach(function (el) { paint(el, 0); });
+    }
+
+    /* ---- motion-free path: no IntersectionObserver or reduced motion --- */
+    if (reduce || !hasIO) {
+      revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+      counters.forEach(function (el, i) { paint(el, targets[i]); });
+      return;
+    }
+
+    /* ---- section reveal: fire once, ~85% down the viewport ------------- */
+    var revealIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        revealIO.unobserve(entry.target);
+      });
+    }, { threshold: 0, rootMargin: '0px 0px -' + REVEAL_HIDE + '% 0px' });
+    revealEls.forEach(function (el) { revealIO.observe(el); });
+
+    /* ---- count-up: start when the stats row is ~35% visible ----------- */
+    if (countWrap && counters.length) {
+      var counting = false;
+      var countIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && entry.intersectionRatio >= COUNT_VIS && !counting) {
+            counting = true;
+            runCounters();
+          } else if (entry.intersectionRatio === 0 && counting) {
+            /* fully left the viewport — re-arm so it replays on scroll-back */
+            counting = false;
+            resetCounters();
+          }
+        });
+      }, { threshold: [0, COUNT_VIS] });
+      countIO.observe(countWrap);
+    }
+
+    /* ---- watchdog: once a second, force-show any hero [data-reveal] that
+       is inside the viewport but still hasn't been revealed (observer
+       missed it, tab was backgrounded, late layout shift). Clears itself
+       once nothing is left pending. */
+    var watchdog = setInterval(function () {
+      var pending = 0;
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      revealEls.forEach(function (el) {
+        if (el.classList.contains('is-visible')) return;
+        var r = el.getBoundingClientRect();
+        if (r.top < vh && r.bottom > 0) el.classList.add('is-visible');
+        else pending++;
+      });
+      if (!pending) clearInterval(watchdog);
+    }, WATCHDOG_MS);
+  })();
+  </script>
 
   <!-- "The UV99 Standard" — cinematic entrance for the .std99 spec panel.
        Runs after the deferred GSAP bundle (DOMContentLoaded fires later).
@@ -438,6 +678,19 @@
         });
       });
     }, '-=0.2');
+
+    // Failsafe: if the ScrollTrigger never fires (mis-measured trigger point,
+    // section already in view on a short mobile viewport, resize race), force
+    // the panel, headline and counter into their final readable state so the
+    // section can never sit blank.
+    setTimeout(function () {
+      if (tl.progress() < 1 && (!tl.scrollTrigger || !tl.scrollTrigger.isActive)) {
+        gsap.set(['.std99__eyebrow', '.std99__copy', '.std99__panel'], { autoAlpha: 1, y: 0 });
+        gsap.set(lines, { yPercent: 0 });
+        gsap.set(reveals, { autoAlpha: 1, y: 0 });
+        finishCount();
+      }
+    }, 4000);
   });
   </script>
 </body>
