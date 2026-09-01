@@ -103,7 +103,7 @@
     const buttons = Array.from(document.querySelectorAll('.sim-button'));
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const DIR = '/uv99/assets/images/products/';
+    const DIR = '/assets/images/products/';
     const CLEAR_SRC = DIR + 'simulator-clear-glass.webp';
 
     /* Film data — names and descriptions reused verbatim from the product copy. */
