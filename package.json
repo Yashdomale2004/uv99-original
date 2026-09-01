@@ -1,0 +1,9 @@
+{
+  "name": "uv99",
+  "version": "1.0.0",
+  "private": true,
+  "description": "UV99 Glazing static marketing website",
+  "scripts": {
+    "build": "node build.js"
+  }
+}

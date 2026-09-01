@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Series Showcase — interactive category switcher</title>
+
+<!-- The section uses Montserrat (headings/numbers) + Inter (UI/body), exactly
+     like the reference. If your site already loads them, delete this link. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+
+<style>
+/* =====================================================================
+   SERIES SHOWCASE  ·  self-contained, drop-in interactive section
+   ---------------------------------------------------------------------
+   Everything is namespaced under `.sx` so it collides with nothing.
+   No build step, no dependencies. If the <script> never runs the
+   section still renders the first series' real numbers.
+
+   Runtime CSS variables the script sets per selected series:
+     --sx-accent      series accent (hex)        e.g. #8b5cf6
+     --sx-accent-rgb  same colour as "r,g,b"     e.g. 139,92,246
+     --sx-block       0..1 performance strength  (drives the wash)
+   ===================================================================== */
+
+.sx *,
+.sx *::before,
+.sx *::after { box-sizing: border-box; }
+
+.sx {
+  --sx-radius: 24px;
+  --sx-wrap: min(1180px, calc(100% - 40px));
+  --sx-accent: #8b5cf6;
+  --sx-accent-rgb: 139, 92, 246;
+  --sx-block: 0.5;
+
+  position: relative;
+  overflow: hidden;
+  padding: clamp(64px, 9vw, 96px) 0;
+  color: #fff;
+  font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.65;
+  background:
+    radial-gradient(620px 440px at 82% 6%, rgba(230, 148, 24, .10), transparent 60%),
+    radial-gradient(760px 540px at 2% 100%, rgba(139, 92, 246, .22), transparent 62%),
+    #050505;
+}
+/* subtle honeycomb texture — same motif as the reference */
+.sx::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .2;
+  background-image: url("data:image/svg+xml,%3Csvg width='28' height='49' viewBox='0 0 28 49' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9z' fill='%23ffffff' fill-opacity='0.06' fill-rule='evenodd'/%3E%3C/svg%3E");
+  background-size: 56px 98px;
+}
+.sx__wrap { position: relative; z-index: 1; width: var(--sx-wrap); margin-inline: auto; }
+.sx [hidden] { display: none !important; }
+
+/* ---- heading ------------------------------------------------------- */
+.sx__head { max-width: 760px; margin-bottom: clamp(32px, 5vw, 48px); }
+.sx__eyebrow {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  color: #c7a2ff;
+}
+.sx__title {
+  margin: 0 0 15px;
+  font-family: "Montserrat", "Inter", Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(32px, 4vw, 55px);
+  line-height: 1.08;
+  letter-spacing: -.025em;
+  color: #fff;
+}
+.sx__lede { margin: 0; font-size: 17px; color: rgba(255, 255, 255, .62); }
+
+/* ---- layout: selector row, then product · stats · visual ---------- */
+.sx__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 25fr) minmax(0, 31fr) minmax(0, 44fr);
+  grid-template-areas:
+    "selector selector selector"
+    "product  stats     viz";
+  gap: 26px;
+  align-items: start;
+}
+.sx__selector { grid-area: selector; }
+.sx__card--product { grid-area: product; }
+.sx__card--stats { grid-area: stats; }
+.sx__card--viz { grid-area: viz; }
+
+/* ---- selector: one clean centred pill row ------------------------- */
+.sx__selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 10px;
+}
+.sx__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .035);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.sx__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 20px;
+  color: rgba(255, 255, 255, .72);
+  font: 800 13px/1 Inter, Arial, sans-serif;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, .04);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color .25s ease, border-color .25s ease, background .25s ease,
+              box-shadow .25s ease, transform .18s ease;
+}
+.sx__btn:hover { color: #fff; border-color: rgba(255, 255, 255, .34); transform: translateY(-1px); }
+.sx__btn:focus-visible { outline: 2px solid #c7a2ff; outline-offset: 2px; }
+.sx__btn-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .22);
+  transition: background .3s ease, box-shadow .3s ease;
+}
+.sx__btn.is-active {
+  color: #fff;
+  border-color: rgba(var(--sx-accent-rgb), .85);
+  background: linear-gradient(180deg, rgba(var(--sx-accent-rgb), .32), rgba(var(--sx-accent-rgb), .16));
+  box-shadow:
+    0 0 0 1px rgba(var(--sx-accent-rgb), .5),
+    0 0 22px rgba(var(--sx-accent-rgb), .45),
+    0 0 46px -6px rgba(139, 92, 246, .55),
+    0 18px 44px -18px rgb(var(--sx-accent-rgb));
+}
+.sx__btn.is-active .sx__btn-dot {
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(var(--sx-accent-rgb), .3), 0 0 10px rgba(var(--sx-accent-rgb), .95);
+}
+.sx__hint { margin: 0; font-size: 12px; text-align: center; color: rgba(255, 255, 255, .42); }
+.sx__hint kbd {
+  display: inline-block;
+  min-width: 18px;
+  padding: 1px 5px;
+  margin: 0 1px;
+  font: 600 11px/1.4 Inter, Arial, sans-serif;
+  text-align: center;
+  color: rgba(255, 255, 255, .72);
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 5px;
+}
+
+/* ---- left: series identity + specs card -------------------------- */
+.sx__card--product {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 26px 24px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: var(--sx-radius);
+  background:
+    radial-gradient(120% 80% at 0% 0%, rgba(var(--sx-accent-rgb), .12), transparent 55%),
+    linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .018));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .06),
+    0 44px 90px -46px rgba(0, 0, 0, .85);
+}
+.sx__tag {
+  align-self: flex-start;
+  margin-bottom: 12px;
+  padding: 5px 11px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgb(var(--sx-accent-rgb));
+  border: 1px solid rgba(var(--sx-accent-rgb), .5);
+  border-radius: 999px;
+}
+.sx__name {
+  margin: 0 0 6px;
+  font-family: "Montserrat", "Inter", Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(23px, 3vw, 29px);
+  letter-spacing: -.02em;
+}
+.sx__desc { margin: 0 0 18px; color: rgba(255, 255, 255, .66); font-size: 14px; }
+.sx__specs { margin: 0; display: grid; gap: 12px; }
+.sx__specs > div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 8px 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+.sx__specs > div:last-child { border-bottom: 0; padding-bottom: 0; }
+.sx__specs dt { color: rgba(255, 255, 255, .55); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.sx__specs dd { margin: 0; font: 700 18px/1 "Montserrat", Inter, Arial, sans-serif; }
+
+/* products in the selected series */
+.sx__products {
+  margin: 18px 0 0;
+  padding: 16px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.sx__product {
+  padding: 7px 12px;
+  font: 700 12px/1 Inter, Arial, sans-serif;
+  letter-spacing: .01em;
+  color: rgba(255, 255, 255, .82);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .04);
+  /* fades/slides in when the series changes (see .is-swapping below) */
+  transition: opacity .4s ease, transform .4s ease, border-color .25s ease, color .25s ease;
+}
+.sx__product:hover { color: #fff; border-color: rgba(var(--sx-accent-rgb), .7); }
+.sx__card--product.is-swapping .sx__product { opacity: 0; transform: translateY(6px); }
+
+/* ---- middle: live statistics — compact 2 x 2 grid --------------- */
+.sx__stats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-content: start;
+}
+.sx__stats li {
+  display: flex;
+  flex-direction: column;
+  min-height: 132px;
+  padding: 18px 16px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .02));
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 24px 48px -30px rgba(0, 0, 0, .8);
+  transition: border-color .3s ease, background .3s ease;
+}
+.sx__stats li.is-highlight {
+  border-color: rgba(var(--sx-accent-rgb), .5);
+  background: linear-gradient(180deg, rgba(var(--sx-accent-rgb), .16), rgba(var(--sx-accent-rgb), .05));
+}
+.sx__stats b {
+  display: block;
+  font: 800 clamp(26px, 2.6vw, 34px)/1 "Montserrat", Inter, Arial, sans-serif;
+  letter-spacing: -.02em;
+}
+.sx__stats b i { font-style: normal; font-size: .5em; margin-left: 2px; color: rgba(255, 255, 255, .6); }
+.sx__stats li > span:not([class]) {
+  display: block;
+  margin-top: 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .55);
+}
+.sx__meter {
+  display: block;
+  margin-top: auto;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, .1);
+  overflow: hidden;
+}
+.sx__meter i {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: rgb(var(--sx-accent-rgb));
+  transition: width .9s cubic-bezier(.22, .61, .36, 1);
+}
+.sx__stats li:last-child b { font-size: clamp(20px, 2.4vw, 26px); }
+
+/* ---- right: visual showcase card -------------------------------- */
+.sx__card--viz {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid rgba(var(--sx-accent-rgb), .38);
+  border-radius: calc(var(--sx-radius) + 6px);
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(var(--sx-accent-rgb), .1), transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, .015));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .06),
+    0 0 0 1px rgba(var(--sx-accent-rgb), .12),
+    0 44px 90px -44px rgba(var(--sx-accent-rgb), .55);
+  transition: border-color .5s ease, box-shadow .5s ease;
+}
+.sx__scene {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  min-height: 150px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: var(--sx-radius);
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(160deg, #0a0710 0%, #0c0913 45%, #070510 100%);
+}
+/* optional photo per series — drop <img class="sx__photo" src="…"> into
+   the scene; if you omit it the layered-pane motif below stands alone */
+.sx__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* stacked translucent "film layers" that recolour per series */
+.sx__panes {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  perspective: 900px;
+}
+.sx__pane {
+  position: absolute;
+  width: 62%;
+  height: 40%;
+  border-radius: 14px;
+  border: 1px solid rgba(var(--sx-accent-rgb), .55);
+  background: linear-gradient(150deg,
+    rgba(var(--sx-accent-rgb), calc(.10 + var(--sx-block) * .30)),
+    rgba(var(--sx-accent-rgb), .04));
+  box-shadow: 0 30px 60px -30px rgba(var(--sx-accent-rgb), .8);
+  transform: rotateX(58deg) rotateZ(-38deg) translateZ(0);
+  transition: border-color .55s ease, background .55s ease, box-shadow .55s ease;
+}
+.sx__pane:nth-child(1) { transform: rotateX(58deg) rotateZ(-38deg) translate(38px, -46px); opacity: .55; }
+.sx__pane:nth-child(2) { transform: rotateX(58deg) rotateZ(-38deg) translate(0, 0); opacity: .8; }
+.sx__pane:nth-child(3) { transform: rotateX(58deg) rotateZ(-38deg) translate(-38px, 46px); opacity: 1; }
+
+/* accent wash whose strength tracks the series' performance */
+.sx__wash {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(90% 70% at 62% 40%,
+      rgba(var(--sx-accent-rgb), calc(.14 + var(--sx-block) * .26)) 0, transparent 62%),
+    linear-gradient(150deg,
+      rgba(var(--sx-accent-rgb), .10) 0, rgba(var(--sx-accent-rgb), .04) 100%);
+  box-shadow: inset 0 0 90px rgba(var(--sx-accent-rgb), calc(.18 + var(--sx-block) * .32));
+  transition: background .55s ease, box-shadow .55s ease;
+}
+
+/* diagonal sheen — replays on every series change (adds .is-live) */
+.sx__sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  transform: translateX(-60%);
+  background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, .22) 50%, transparent 58%);
+  opacity: 0;
+}
+.sx__scene.is-live .sx__sheen { animation: sx-sheen 2.4s ease-in-out .1s 1; }
+
+/* luminous vertical edge — sweeps only on a real user pick (.is-scanning) */
+.sx__scan {
+  position: absolute;
+  top: -8%;
+  left: 0;
+  width: 26%;
+  height: 116%;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(var(--sx-accent-rgb), .35) 42%,
+    rgba(255, 255, 255, .85) 50%,
+    rgba(var(--sx-accent-rgb), .35) 58%,
+    transparent 100%);
+  filter: blur(1px);
+}
+.sx__scene.is-scanning .sx__scan { animation: sx-scan 880ms cubic-bezier(.4, 0, .2, 1) both; }
+
+/* big series readout — repurposes the reference's live-temp panel */
+.sx__readout {
+  position: absolute;
+  right: 5%;
+  bottom: 6%;
+  width: 46%;
+  aspect-ratio: 4 / 3;
+  display: grid;
+  place-items: center;
+  z-index: 5;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  background:
+    radial-gradient(82% 82% at 50% 32%,
+      rgba(var(--sx-accent-rgb), calc(.30 + var(--sx-block) * .2)) 0,
+      rgba(10, 8, 16, .66) 100%);
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, .5);
+  transition: background .6s ease;
+}
+.sx__big { margin: 0; text-align: center; line-height: 1; }
+.sx__big-value { font: 800 clamp(30px, 6vw, 42px)/1 "Montserrat", Inter, Arial, sans-serif; }
+.sx__big-unit { margin-left: 2px; font: 700 16px/1 "Montserrat", Inter, Arial, sans-serif; color: rgba(255, 255, 255, .7); }
+.sx__big-label {
+  display: block;
+  margin-top: 8px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .55);
+}
+.sx__big-sub {
+  display: block;
+  margin-top: 3px;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .34);
+}
+.sx__note {
+  margin: 0;
+  padding: 0 6px 2px;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, .38);
+}
+
+/* screen-reader-only running summary */
+.sx__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---- entrance reveal (self-contained observer in the script) ----- */
+.sx [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .55s ease, transform .55s ease; }
+.sx [data-reveal].is-visible { opacity: 1; transform: none; }
+.sx [data-reveal]:nth-child(2) { transition-delay: .06s; }
+.sx [data-reveal]:nth-child(3) { transition-delay: .12s; }
+.sx [data-reveal]:nth-child(4) { transition-delay: .18s; }
+
+/* ---- keyframes -------------------------------------------------- */
+@keyframes sx-sheen {
+  0%   { transform: translateX(-60%); opacity: 0; }
+  30%  { opacity: 1; }
+  100% { transform: translateX(60%); opacity: 0; }
+}
+@keyframes sx-scan {
+  0%   { opacity: 0;   transform: translateX(-40%); }
+  14%  { opacity: 1; }
+  86%  { opacity: .92; }
+  100% { opacity: 0;   transform: translateX(430%); }
+}
+
+/* ---- responsive ---------------------------------------------------- */
+@media (max-width: 1080px) {
+  .sx__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "selector selector"
+      "product  stats"
+      "viz      viz";
+    gap: 24px;
+  }
+  .sx__card--viz .sx__scene { max-width: 620px; margin-inline: auto; }
+}
+@media (max-width: 720px) {
+  .sx__grid { display: block; }
+  .sx__grid > * { margin-bottom: 22px; }
+  .sx__grid > *:last-child { margin-bottom: 0; }
+  .sx__btn { flex: 1 1 42%; justify-content: center; }
+}
+@media (max-width: 420px) {
+  .sx__stats { grid-template-columns: 1fr; }
+  .sx__stats li { min-height: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sx [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .sx__scene.is-live .sx__sheen,
+  .sx__scene.is-scanning .sx__scan { animation: none; }
+  .sx__meter i { transition: none; }
+}
+</style>
+</head>
+<body style="margin:0;background:#050505">
+
+<!-- ================================================================
+     SECTION MARKUP — paste this <section> where you want it.
+     ================================================================ -->
+<section class="sx" id="series-showcase" aria-labelledby="sx-title">
+  <div class="sx__wrap">
+
+    <div class="sx__head" data-reveal>
+      <p class="sx__eyebrow">Interactive &middot; Product range</p>
+      <h2 class="sx__title" id="sx-title">Find your series.</h2>
+      <p class="sx__lede">Pick a series and the products, specs and performance readout below switch to match &mdash; every figure is a published specification.</p>
+    </div>
+
+    <p class="sx__sr" data-sx-sr aria-live="polite"></p>
+
+    <div class="sx__grid">
+
+      <!-- FULL-WIDTH · series selector -->
+      <div class="sx__selector" data-reveal>
+        <div class="sx__buttons" role="group" aria-label="Choose a product series">
+          <button class="sx__btn is-active" type="button" aria-pressed="true"  data-key="global"  aria-label="Global Series"><span class="sx__btn-dot" aria-hidden="true"></span>Global Series</button>
+          <button class="sx__btn"           type="button" aria-pressed="false" data-key="classic" aria-label="Classic Series"><span class="sx__btn-dot" aria-hidden="true"></span>Classic Series</button>
+          <button class="sx__btn"           type="button" aria-pressed="false" data-key="uvkool"  aria-label="UV Kool"><span class="sx__btn-dot" aria-hidden="true"></span>UV Kool</button>
+          <button class="sx__btn"           type="button" aria-pressed="false" data-key="pro"     aria-label="Pro Series"><span class="sx__btn-dot" aria-hidden="true"></span>Pro Series</button>
+        </div>
+        <p class="sx__hint">Tab to a series, then use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> to compare.</p>
+      </div>
+
+      <!-- LEFT · series identity + specs + product list -->
+      <div class="sx__card--product" data-reveal>
+        <span class="sx__tag" data-sx-tag>Flagship</span>
+        <h3 class="sx__name" data-sx-name>Global Series</h3>
+        <p class="sx__desc" data-sx-desc>Our nano-ceramic flagship — the highest clarity and heat rejection in the range.</p>
+        <dl class="sx__specs">
+          <div><dt>Visible light</dt><dd><span data-sx-spec="vlt">70</span>%</dd></div>
+          <div><dt>UV rejection</dt><dd><span data-sx-spec="uv">99</span>%</dd></div>
+          <div><dt>Heat rejection</dt><dd><span data-sx-spec="heat">63</span>%</dd></div>
+          <div><dt>Infrared rejection</dt><dd><span data-sx-spec="ir">96</span>%</dd></div>
+        </dl>
+        <div class="sx__products" data-sx-products aria-live="polite"></div>
+      </div>
+
+      <!-- MIDDLE · live statistics, 2x2 -->
+      <div class="sx__card--stats" data-reveal>
+        <ul class="sx__stats">
+          <li class="is-highlight">
+            <b><span data-sx-stat="heat">63</span><i>%</i></b>
+            <span>Heat rejected</span>
+            <span class="sx__meter"><i data-sx-meter="heat"></i></span>
+          </li>
+          <li>
+            <b><span data-sx-stat="uv">99</span><i>%</i></b>
+            <span>UV blocked</span>
+            <span class="sx__meter"><i data-sx-meter="uv"></i></span>
+          </li>
+          <li>
+            <b><span data-sx-stat="vlt">70</span><i>%</i></b>
+            <span>Visible light</span>
+            <span class="sx__meter"><i data-sx-meter="vlt"></i></span>
+          </li>
+          <li>
+            <b data-sx-warranty>Lifetime</b>
+            <span>Limited warranty<br>Every film in series</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- RIGHT · visual showcase -->
+      <div class="sx__card--viz" data-reveal>
+        <div class="sx__scene is-live" data-sx-scene role="img" aria-label="Stacked translucent film layers tinted in the selected series' accent colour, with a performance readout.">
+          <!-- optional: <img class="sx__photo" src="/img/global-series.jpg" alt=""> -->
+          <div class="sx__panes" aria-hidden="true">
+            <span class="sx__pane"></span>
+            <span class="sx__pane"></span>
+            <span class="sx__pane"></span>
+          </div>
+          <span class="sx__wash" aria-hidden="true"></span>
+          <span class="sx__sheen" aria-hidden="true"></span>
+          <span class="sx__scan" aria-hidden="true"></span>
+          <div class="sx__readout" aria-hidden="true">
+            <p class="sx__big">
+              <span class="sx__big-value" data-sx-peak>63</span><span class="sx__big-unit">%</span>
+              <span class="sx__big-label">Peak heat rejection</span>
+              <span class="sx__big-sub">Total solar energy</span>
+            </p>
+          </div>
+        </div>
+        <p class="sx__note">Published specifications for the series' flagship film. Individual films within a series vary by shade — see the product page for the full grid.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     SECTION SCRIPT — no dependencies. Edit the DATA object only.
+     ================================================================ -->
+<script>
+(function () {
+  'use strict';
+  var root = document.getElementById('series-showcase');
+  if (!root) return;
+
+  /* ------------------------------------------------------------------
+   * SERIES DATA — the single source of truth. Replace the numbers and
+   * product names with your real published specification.
+   *   vlt  : representative visible light transmission (%)
+   *   uv   : ultra-violet rejection (%)
+   *   heat : total solar energy rejected (%)  -> drives the big readout
+   *   ir   : infrared rejection (%)           -> optional, omit to hide
+   *   warranty : free text ("Lifetime", "10 yr", …)
+   * ---------------------------------------------------------------- */
+  var DATA = {
+    global: {
+      label: 'Global Series', accent: '#8b5cf6', tag: 'Flagship',
+      blurb: 'Our nano-ceramic flagship — the highest clarity and heat rejection in the range.',
+      vlt: 70, uv: 99, heat: 63, ir: 96, warranty: 'Lifetime',
+      products: ['Global 70', 'Global 50', 'Global 35', 'Global 15']
+    },
+    classic: {
+      label: 'Classic Series', accent: '#6366f1', tag: 'Everyday value',
+      blurb: 'A proven, budget-friendly line that still shuts out 99% of UV and cuts glare hard.',
+      vlt: 35, uv: 99, heat: 45, ir: 60, warranty: '5 yr',
+      products: ['Classic 35', 'Classic 20', 'Classic 05']
+    },
+    uvkool: {
+      label: 'UV Kool', accent: '#06b6d4', tag: 'Clear protection',
+      blurb: 'Near-invisible film that keeps factory looks while blocking UV and infrared heat.',
+      vlt: 88, uv: 100, heat: 50, ir: 94, warranty: 'Lifetime',
+      products: ['UV Kool 90', 'UV Kool 80', 'UV Kool 70']
+    },
+    pro: {
+      label: 'Pro Series', accent: '#f59e0b', tag: 'Balanced performance',
+      blurb: 'Carbon-based film with a deep, colour-stable finish and strong all-round rejection.',
+      vlt: 35, uv: 99, heat: 55, ir: 80, warranty: '10 yr',
+      products: ['Pro 50', 'Pro 35', 'Pro 20', 'Pro 05']
+    }
+  };
+  var ORDER = ['global', 'classic', 'uvkool', 'pro'];
+
+  var HEATS = ORDER.map(function (k) { return DATA[k].heat; });
+  var HEAT_MIN = Math.min.apply(null, HEATS);
+  var HEAT_MAX = Math.max.apply(null, HEATS);
+
+  var reduceMotion = false;
+  try { reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+
+  var $  = function (s) { return root.querySelector(s); };
+  var $$ = function (s) { return Array.prototype.slice.call(root.querySelectorAll(s)); };
+
+  var buttons  = $$('.sx__btn');
+  var scene    = $('[data-sx-scene]');
+  var prodCard = $('.sx__card--product');
+  var nameEl   = $('[data-sx-name]');
+  var descEl   = $('[data-sx-desc]');
+  var tagEl    = $('[data-sx-tag]');
+  var srEl     = $('[data-sx-sr]');
+  var peakEl   = $('[data-sx-peak]');
+  var warrEl   = $('[data-sx-warranty]');
+  var prodsEl  = $('[data-sx-products]');
+  var irSpec   = $('[data-sx-spec="ir"]');
+  var irRow    = irSpec ? irSpec.closest('div') : null;
+
+  var specEls  = { vlt: $('[data-sx-spec="vlt"]'),  uv: $('[data-sx-spec="uv"]'),
+                   heat: $('[data-sx-spec="heat"]'), ir: irSpec };
+  var statEls  = { vlt: $('[data-sx-stat="vlt"]'),  uv: $('[data-sx-stat="uv"]'),
+                   heat: $('[data-sx-stat="heat"]') };
+  var meterEls = { vlt: $('[data-sx-meter="vlt"]'),  uv: $('[data-sx-meter="uv"]'),
+                   heat: $('[data-sx-meter="heat"]') };
+
+  /* hex -> "r,g,b" so CSS can build rgba(var(--sx-accent-rgb), a) */
+  function hexToRgb(hex) {
+    var h = hex.replace('#', '');
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    var n = parseInt(h, 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255].join(',');
+  }
+
+  /* number count-up — rAF + easeOutCubic; instant under reduced-motion.
+     A per-element token means rapid re-clicks supersede any in-flight
+     tween instead of two rAF loops fighting over one text node. */
+  function animateNumber(el, to, duration) {
+    if (!el) return;
+    var from = parseFloat(el.getAttribute('data-sx-cur'));
+    if (isNaN(from)) from = to;
+    el.setAttribute('data-sx-cur', to);
+    var token = (parseInt(el.getAttribute('data-sx-tok') || '0', 10) + 1) % 4096;
+    el.setAttribute('data-sx-tok', token);
+    if (reduceMotion || from === to) { el.textContent = String(Math.round(to)); return; }
+    var start = performance.now(), dur = duration || 900;
+    requestAnimationFrame(function tick(now) {
+      if (parseInt(el.getAttribute('data-sx-tok'), 10) !== token) return;
+      var p = Math.min(1, (now - start) / dur);
+      var e = 1 - Math.pow(1 - p, 3);
+      el.textContent = String(Math.round(from + (to - from) * e));
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = String(Math.round(to));
+    });
+  }
+
+  function setMeter(kind, value) {
+    var m = meterEls[kind];
+    if (m) m.style.width = Math.max(0, Math.min(100, value)) + '%';
+  }
+
+  var currentKey = ORDER[0];
+  var booted = false;   /* first paint must not fire the scan sweep */
+
+  function render(key, userInitiated) {
+    var d = DATA[key];
+    if (!d) return;
+    currentKey = key;
+    var hasIR = typeof d.ir === 'number';
+
+    /* 1 · active button */
+    buttons.forEach(function (b) {
+      var on = b.getAttribute('data-key') === key;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+
+    /* 2 · theme the whole section through custom properties */
+    root.style.setProperty('--sx-accent', d.accent);
+    root.style.setProperty('--sx-accent-rgb', hexToRgb(d.accent));
+    var block = HEAT_MAX === HEAT_MIN ? 0.5 : (d.heat - HEAT_MIN) / (HEAT_MAX - HEAT_MIN);
+    root.style.setProperty('--sx-block', block.toFixed(3));
+
+    /* 3 · replay the scene so the change reads as a physical swap.
+       On a real user pick we also run the luminous scan edge. Re-picking
+       mid-sweep just restarts it via the reflow trick — never stacks. */
+    if (!reduceMotion && scene) {
+      scene.classList.remove('is-live');
+      if (booted && userInitiated) scene.classList.remove('is-scanning');
+      void scene.offsetWidth;                 /* force reflow */
+      scene.classList.add('is-live');
+      if (booted && userInitiated) scene.classList.add('is-scanning');
+    }
+
+    /* 4 · copy */
+    if (nameEl) nameEl.textContent = d.label;
+    if (descEl) descEl.textContent = d.blurb;
+    if (tagEl)  tagEl.textContent  = d.tag;
+    if (warrEl) warrEl.textContent = d.warranty;
+
+    /* 5 · specs + stats + meters (animated) */
+    animateNumber(specEls.vlt,  d.vlt);   animateNumber(statEls.vlt,  d.vlt);
+    animateNumber(specEls.uv,   d.uv);    animateNumber(statEls.uv,   d.uv);
+    animateNumber(specEls.heat, d.heat);  animateNumber(statEls.heat, d.heat);
+    animateNumber(peakEl,       d.heat, 1000);
+    setMeter('vlt', d.vlt); setMeter('uv', d.uv); setMeter('heat', d.heat);
+    if (irRow)  irRow.hidden = !hasIR;
+    if (hasIR)  animateNumber(specEls.ir, d.ir);
+
+    /* 6 · product chips — brief fade/slide so the swap reads */
+    if (prodsEl) {
+      var paint = function () {
+        prodsEl.innerHTML = '';
+        d.products.forEach(function (p) {
+          var s = document.createElement('span');
+          s.className = 'sx__product';
+          s.textContent = p;
+          prodsEl.appendChild(s);
+        });
+      };
+      if (reduceMotion || !prodCard) { paint(); }
+      else {
+        prodCard.classList.add('is-swapping');
+        setTimeout(function () {
+          paint();
+          void prodsEl.offsetWidth;
+          prodCard.classList.remove('is-swapping');
+        }, 180);
+      }
+    }
+
+    /* 7 · screen-reader running summary */
+    if (srEl) {
+      srEl.textContent = d.label + ': ' + d.uv + '% UV blocked, ' + d.heat + '% heat rejected'
+        + (hasIR ? ', ' + d.ir + '% infrared rejection' : '') + ', ' + d.vlt
+        + '% visible light. ' + d.warranty + ' warranty. '
+        + d.products.length + ' films: ' + d.products.join(', ') + '.';
+    }
+  }
+
+  /* ---- interaction: click + keyboard (Left/Right = prev/next) ---- */
+  function step(delta) {
+    var i = (ORDER.indexOf(currentKey) + delta + ORDER.length) % ORDER.length;
+    render(ORDER[i], true);
+    if (buttons[i]) buttons[i].focus();
+  }
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () { render(btn.getAttribute('data-key'), true); });
+    btn.addEventListener('keydown', function (ev) {
+      if (ev.key === 'ArrowRight' || ev.key === 'ArrowDown') { ev.preventDefault(); step(1); }
+      else if (ev.key === 'ArrowLeft' || ev.key === 'ArrowUp') { ev.preventDefault(); step(-1); }
+      else if (ev.key === 'Home') { ev.preventDefault(); render(ORDER[0], true); buttons[0].focus(); }
+      else if (ev.key === 'End') { ev.preventDefault(); render(ORDER[ORDER.length - 1], true); buttons[buttons.length - 1].focus(); }
+    });
+  });
+
+  /* ---- first paint: real values straight away ---- */
+  render(currentKey);
+  booted = true;
+
+  /* ---- entrance: reveal items + count every figure up from 0 ---- */
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        io.disconnect();
+        $$('[data-reveal]').forEach(function (el) { el.classList.add('is-visible'); });
+        if (!reduceMotion) {
+          [specEls.vlt, specEls.uv, specEls.heat, specEls.ir,
+           statEls.vlt, statEls.uv, statEls.heat, peakEl].forEach(function (el) {
+            if (el) el.setAttribute('data-sx-cur', '0');
+          });
+          render(currentKey);
+        }
+      });
+    }, { threshold: 0.25 });
+    io.observe(root);
+  } else {
+    $$('[data-reveal]').forEach(function (el) { el.classList.add('is-visible'); });
+  }
+})();
+</script>
+</body>
+</html>

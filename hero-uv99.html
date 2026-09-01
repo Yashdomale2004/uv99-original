@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UV99 — Find the right protection for your drive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050509;
+    --ink:#ffffff;
+    --muted:#9a95a8;
+    --muted-dim:#6f6a7e;
+    --violet:#a855f7;
+    --violet-bright:#c8a3ff;
+    --violet-deep:#7c3aed;
+    --line:rgba(168,133,247,.22);
+    --glass:rgba(255,255,255,.035);
+    --edge:clamp(20px,5vw,72px);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Inter","Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  a{color:inherit;text-decoration:none}
+
+  /* ============ HERO SHELL ============ */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    min-height:100vh;
+    padding:clamp(22px,3vw,40px) var(--edge) clamp(40px,5vw,64px);
+    isolation:isolate;
+  }
+  .hero__bg{
+    position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(900px 620px at 70% 30%, rgba(124,58,237,.28), transparent 62%),
+      radial-gradient(680px 520px at 22% 78%, rgba(168,85,247,.16), transparent 60%),
+      radial-gradient(1200px 800px at 50% -10%, rgba(90,50,170,.18), transparent 70%),
+      var(--bg);
+  }
+  .hero__bg::after{ /* faint grid texture */
+    content:"";position:absolute;inset:0;opacity:.5;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(circle at 60% 40%, #000, transparent 75%);
+  }
+
+  .hero__inner{max-width:1440px;margin:0 auto}
+
+  /* breadcrumb */
+  .crumb{
+    font-size:12.5px;letter-spacing:.02em;color:var(--muted-dim);
+    display:flex;gap:8px;align-items:center;
+  }
+  .crumb span{opacity:.5}
+  .crumb b{color:var(--muted);font-weight:500}
+
+  /* ============ GRID ============ */
+  .hero__grid{
+    display:grid;
+    grid-template-columns:minmax(0,0.86fr) minmax(0,1.14fr);
+    gap:clamp(24px,4vw,56px);
+    align-items:center;
+    margin-top:clamp(26px,4vw,48px);
+  }
+
+  /* ---- left copy ---- */
+  .eyebrow{
+    font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--violet-bright);
+    display:inline-flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--violet)}
+
+  .headline{
+    margin-top:20px;
+    font-weight:800;
+    font-size:clamp(2.5rem,5.2vw,4.15rem);
+    line-height:1.03;
+    letter-spacing:-.025em;
+    color:#fff;
+  }
+
+  .sub{
+    margin-top:22px;
+    max-width:34ch;
+    font-size:clamp(.95rem,1.05vw,1.02rem);
+    color:var(--muted);
+    line-height:1.7;
+  }
+
+  .cta{
+    margin-top:34px;
+    display:flex;align-items:center;gap:26px;flex-wrap:wrap;
+  }
+  .btn-primary{
+    display:inline-flex;align-items:center;gap:12px;
+    padding:15px 26px;border-radius:999px;
+    font-weight:600;font-size:.95rem;letter-spacing:.01em;
+    color:#fff;
+    background:linear-gradient(120deg,var(--violet-deep),var(--violet) 70%,#b96bff);
+    box-shadow:0 10px 34px -10px rgba(168,85,247,.65), inset 0 1px 0 rgba(255,255,255,.25);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 40px -10px rgba(168,85,247,.8), inset 0 1px 0 rgba(255,255,255,.25)}
+  .btn-primary svg{transition:transform .25s ease}
+  .btn-primary:hover svg{transform:translateX(4px)}
+
+  .btn-link{
+    font-size:.9rem;font-weight:500;color:var(--muted);
+    padding-bottom:3px;border-bottom:1px solid var(--line);
+    transition:color .2s ease,border-color .2s ease;
+  }
+  .btn-link:hover{color:#fff;border-color:var(--violet)}
+
+  /* ---- right visual ---- */
+  .hero__visual{position:relative}
+
+  .stage{
+    position:relative;
+    border-radius:24px;
+    padding:clamp(10px,2vw,26px);
+    background:
+      radial-gradient(66% 74% at 52% 47%, #eae5f2 0%, #d7d0e6 22%, #a99ecb 40%, rgba(120,80,170,.24) 58%, rgba(20,16,32,0) 84%);
+  }
+  .stage::before{ /* purple ground pool + glow */
+    content:"";position:absolute;left:50%;top:58%;translate:-50% 0;
+    width:88%;height:46%;
+    background:radial-gradient(closest-side, rgba(168,85,247,.5), transparent 72%);
+    filter:blur(28px);z-index:-1;
+  }
+  .stage__car{
+    display:block;width:100%;height:auto;
+    /* dissolve the studio-plate edges into the dark hero */
+    -webkit-mask-image:radial-gradient(78% 82% at 50% 47%, #000 56%, transparent 84%);
+            mask-image:radial-gradient(78% 82% at 50% 47%, #000 56%, transparent 84%);
+    filter:drop-shadow(0 40px 60px rgba(0,0,0,.55));
+  }
+
+  /* ---- UV-ray annotation overlay ---- */
+  .uv-overlay{position:absolute;inset:0;pointer-events:none;overflow:visible}
+  .uv-overlay svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .uv-arc{fill:none;stroke:url(#uvArc);stroke-width:1.4;stroke-dasharray:2 6;stroke-linecap:round}
+  .uv-ray{stroke:var(--violet-bright);stroke-width:1.6;stroke-linecap:round;opacity:.95;filter:drop-shadow(0 0 3px rgba(200,163,255,.6))}
+  .uv-dot{fill:#e6d4ff}
+  .uv-dot-glow{fill:var(--violet);opacity:.35}
+  .uv-tag{
+    position:absolute;top:8%;right:3%;
+    font-size:11px;font-weight:700;letter-spacing:.26em;
+    color:var(--violet-bright);
+    display:flex;align-items:center;gap:9px;
+  }
+  .uv-tag::before{content:"";width:22px;height:1px;background:var(--violet-bright);opacity:.7}
+  .uv-sun{position:absolute;top:3%;left:6%;color:var(--violet-bright);opacity:.9}
+  .uv-sun svg{position:static;width:34px;height:34px}
+
+  /* ============ FEATURE CARDS ============ */
+  .cards{
+    margin-top:clamp(40px,5vw,64px);
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:clamp(14px,1.6vw,22px);
+  }
+  .card{
+    position:relative;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:clamp(20px,2vw,28px);
+    background:var(--glass);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    box-shadow:0 20px 50px -30px rgba(0,0,0,.9);
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";position:absolute;left:0;top:0;width:100%;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(200,163,255,.5),transparent);
+  }
+  .card__icon{
+    width:38px;height:38px;border-radius:10px;
+    display:grid;place-items:center;
+    color:var(--violet-bright);
+    background:rgba(168,85,247,.12);
+    border:1px solid rgba(168,85,247,.25);
+  }
+  .card__value{
+    margin-top:16px;min-height:2rem;line-height:1.1;
+    font-size:clamp(1.5rem,2.4vw,2rem);font-weight:800;letter-spacing:-.02em;color:#fff;
+  }
+  .card__title{
+    margin-top:6px;font-size:1rem;font-weight:600;color:#efeaf6;
+  }
+  .card__text{
+    margin-top:10px;font-size:.86rem;color:var(--muted);line-height:1.6;
+  }
+
+  /* ============ BENEFITS BAR ============ */
+  .benefits{
+    margin-top:clamp(16px,1.6vw,22px);
+    display:flex;align-items:stretch;flex-wrap:wrap;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  }
+  .benefit{
+    flex:1 1 0;min-width:160px;
+    display:flex;align-items:center;gap:12px;
+    padding:16px clamp(14px,1.8vw,24px);
+    border-right:1px solid rgba(168,133,247,.14);
+  }
+  .benefit:last-child{border-right:0}
+  .benefit__icon{color:var(--violet-bright);flex-shrink:0}
+  .benefit__t{display:block;font-size:.86rem;font-weight:600;color:#efeaf6;line-height:1.25}
+  .benefit__s{display:block;font-size:.75rem;color:var(--muted-dim);line-height:1.3;margin-top:2px}
+
+  /* ============ TRUST ============ */
+  .trust{
+    margin-top:clamp(28px,4vw,44px);
+    display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;
+    font-size:.9rem;color:var(--muted);
+  }
+  .stars{display:inline-flex;gap:3px;color:var(--violet)}
+  .trust b{color:#fff;font-weight:700}
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:1080px){
+    .hero__grid{grid-template-columns:1fr;text-align:left}
+    .sub{max-width:52ch}
+    .hero__visual{margin-top:10px}
+    .cards{grid-template-columns:1fr}
+    .benefit{border-right:0;border-bottom:1px solid rgba(168,133,247,.14)}
+    .benefit:last-child{border-bottom:0}
+  }
+  @media (max-width:560px){
+    .cta{gap:16px}
+    .btn-primary{width:100%;justify-content:center}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .btn-primary,.btn-primary svg{transition:none}
+  }
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="hero__bg"></div>
+  <div class="hero__inner">
+
+    <nav class="crumb" aria-label="Breadcrumb">
+      <b>Home</b><span>/</span><b>Products</b>
+    </nav>
+
+    <div class="hero__grid">
+
+      <!-- LEFT : COPY -->
+      <div class="hero__copy">
+        <p class="eyebrow">Protection matched to your drive</p>
+        <h1 class="headline">Find the right<br>protection for<br>your drive.</h1>
+        <p class="sub">Compare UV rejection, heat, glare and clarity across the UV99 range — then choose the film that fits how you actually drive.</p>
+        <div class="cta">
+          <a class="btn-primary" href="#compare">
+            Compare the range
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a>
+          <a class="btn-link" href="#simulator">Try the tint simulator</a>
+        </div>
+      </div>
+
+      <!-- RIGHT : CAR + UV RAYS -->
+      <div class="hero__visual">
+        <div class="stage">
+          <img class="stage__car"
+               src="uv99/assets/NEWCAR-cut.png"
+               alt="Black luxury sedan fitted with UV99 purple window film, shown beside two UV99 film packages">
+        </div>
+
+        <div class="uv-overlay" aria-hidden="true">
+          <div class="uv-sun">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M19.4 4.6l-2.1 2.1M6.7 17.3l-2.1 2.1"/></svg>
+          </div>
+          <span class="uv-tag">UV RAYS</span>
+          <svg viewBox="0 0 600 400" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="uvArc" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#c8a3ff" stop-opacity="0"/>
+                <stop offset="0.5" stop-color="#c8a3ff" stop-opacity="1"/>
+                <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- thin curved light arc -->
+            <path class="uv-arc" d="M470 40 C 520 130, 500 240, 380 300"/>
+            <!-- glowing points along the arc -->
+            <circle class="uv-dot-glow" cx="470" cy="40" r="7"/><circle class="uv-dot" cx="470" cy="40" r="2.6"/>
+            <circle class="uv-dot-glow" cx="512" cy="150" r="6"/><circle class="uv-dot" cx="512" cy="150" r="2.2"/>
+            <circle class="uv-dot-glow" cx="452" cy="258" r="6"/><circle class="uv-dot" cx="452" cy="258" r="2.2"/>
+            <!-- directional UV rays toward the windshield -->
+            <path class="uv-ray" d="M300 60 L 355 150"/>
+            <path class="uv-ray" d="M340 52 L 388 138" opacity="0.55"/>
+            <path class="uv-ray" d="M262 74 L 322 162" opacity="0.4"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE CARDS -->
+    <div class="cards">
+      <article class="card">
+        <div class="card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 7.8 7 9 4-1.2 7-4.5 7-9V6z"/></svg>
+        </div>
+        <div class="card__value">99%</div>
+        <h3 class="card__title">UV Protection</h3>
+        <p class="card__text">Blocks up to 99% harmful UV rays for safer drives.</p>
+      </article>
+
+      <article class="card">
+        <div class="card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+        </div>
+        <div class="card__value" aria-hidden="true"></div>
+        <h3 class="card__title">Optical Clarity</h3>
+        <p class="card__text">Crystal clear visibility with zero distortion.</p>
+      </article>
+
+      <article class="card">
+        <div class="card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 7.8 7 9 4-1.2 7-4.5 7-9V6z"/><path d="m9 11.5 2 2 4-4.5"/></svg>
+        </div>
+        <div class="card__value" aria-hidden="true"></div>
+        <h3 class="card__title">3 Year Warranty</h3>
+        <p class="card__text">Built to last with long-term performance assurance.</p>
+      </article>
+    </div>
+
+    <!-- BENEFITS BAR -->
+    <div class="benefits">
+      <div class="benefit">
+        <span class="benefit__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13.5V5a2 2 0 1 1 4 0v8.5a4 4 0 1 1-4 0z"/><path d="M12 9v4.5"/></svg></span>
+        <span><span class="benefit__t">Reduces Heat</span><span class="benefit__s">Stay cooler inside</span></span>
+      </div>
+      <div class="benefit">
+        <span class="benefit__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4"/><path d="M18 6 6 18" opacity=".5"/></svg></span>
+        <span><span class="benefit__t">Reduces Glare</span><span class="benefit__s">Comfort in bright light</span></span>
+      </div>
+      <div class="benefit">
+        <span class="benefit__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18v-4a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v4"/><path d="M6 11V8a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3"/><path d="M4 18v2M20 18v2"/></svg></span>
+        <span><span class="benefit__t">Fades Protection</span><span class="benefit__s">Protects your interiors</span></span>
+      </div>
+      <div class="benefit">
+        <span class="benefit__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 7.8 7 9 4-1.2 7-4.5 7-9V6z"/><path d="m10 8-2 4h4l-2 4"/></svg></span>
+        <span><span class="benefit__t">Shatter Resistance</span><span class="benefit__s">Adds safety &amp; strength</span></span>
+      </div>
+      <div class="benefit">
+        <span class="benefit__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6c-2 0-3.8-.5-5.3-1.2"/><circle cx="12" cy="12" r="3"/><path d="m4 4 16 16" opacity=".5"/></svg></span>
+        <span><span class="benefit__t">Better Privacy</span><span class="benefit__s">Enhanced privacy</span></span>
+      </div>
+    </div>
+
+    <!-- TRUST -->
+    <div class="trust">
+      <span>Trusted by <b>10,000+</b> happy drivers</span>
+      <span class="stars" aria-label="4.9 out of 5 stars">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+      </span>
+      <b>4.9/5</b>
+    </div>
+
+  </div>
+</section>
+</body>
+</html>
