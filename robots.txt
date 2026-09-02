@@ -1,0 +1,20 @@
+# robots.txt — https://uv99.in/
+# UV99 Glazing — automotive window film marketing site (static HTML)
+
+# Allow all legitimate crawlers full access to the public site,
+# including CSS, JavaScript, images and other render-critical assets.
+User-agent: *
+Allow: /
+
+# Internal QA / prototype pages — not part of the public site.
+Disallow: /_probe.html
+Disallow: /hero-uv99.html
+Disallow: /series-showcase.html
+
+# Standalone QR-code landing page: duplicates homepage content and is
+# reached by scanning a printed code, not by search. Kept out of the index.
+Disallow: /qr.html
+Disallow: /QR
+Disallow: /QR/
+
+Sitemap: https://uv99.in/sitemap.xml

@@ -1,0 +1,174 @@
+# UV99
+
+> UV99 Glazing is an automotive window-film brand. Its films are engineered to
+> block harmful ultraviolet light and reduce infrared heat while keeping the
+> view through the glass clear and close to factory appearance.
+> Canonical site: https://uv99.in/
+
+This file summarises information that is published on the UV99 website. Figures
+are the manufacturer's stated values as shown on the site; the site notes that
+published values are QC averages and real-world results vary with the vehicle,
+its factory glass and local conditions.
+
+## About
+
+UV99 ("UV99 Glazing") is an automotive glazing brand built around a single
+promise: "Harmful rays out, protection in." The films use a non-metallic
+nano-ceramic construction that absorbs and re-radiates ultraviolet and infrared
+energy while letting visible light pass through with minimal change, so there is
+no dye to fade and no metal layer to corrode or interfere with signals.
+
+Brand principles stated on the site: preserve optical clarity (no haze, colour
+shift or distortion), label performance honestly (visible light, UV, infrared
+and total heat treated as separate measures), keep the result visually
+restrained/"factory-fitted", and stand behind the installation with care
+guidance, fitment records and written warranty terms.
+
+## Products
+
+The range is five automotive window films. All figures below are taken from the
+website's Products page and the UV99+1 page.
+
+### UV99 70
+- Positioning: maximum clarity; keeps the character of factory glass
+- Visible Light Transmission (VLT): 70%
+- UV rejection: 99%
+- Total heat rejection: 30%
+- Best for: maximum visibility with full UV protection
+
+### UV99 50
+- Positioning: balanced protection with more glare control
+- Visible Light Transmission (VLT): 47%
+- UV rejection: 99%
+- Total heat rejection: 35%
+- Best for: calmer glare without going dark
+
+### UV PRO 70
+- Positioning: clear appearance with meaningful heat relief
+- Visible Light Transmission (VLT): 70%
+- UV rejection: 99%
+- Total heat rejection: 42%
+- Best for: a clear look with stronger heat comfort
+
+### UV PRO 50
+- Positioning: cooler, calmer cabin with balanced daylight visibility
+- Visible Light Transmission (VLT): 51%
+- UV rejection: 99%
+- Total heat rejection: 50%
+- Best for: daytime-heavy driving where glare and heat dominate
+
+### UV99 +1 (flagship)
+- Positioning: clear film with UV protection extended across the full UV band to
+  400 nm and the strongest cooling in the range
+- Visible Light Transmission (VLT): 70%
+- UV rejection: 100% (UVA and UVB; full UV block range stated as 280–400 nm)
+- Infrared rejection: 89%
+- Total heat rejection: 54%
+- Construction: multilayer non-metallic nano-ceramic matrix — hard coat
+  (scratch resistance), optical polyester base, nano-ceramic core (solar energy
+  rejection without metallic signal interference), UVA400 shield (UV filtration
+  through the full band to 400 nm)
+- Optical: stated haze / optical distortion of about 1%
+- Signal-safe: non-metallic, designed not to interfere with phone, GPS or toll
+  signals
+- Fitment: installed only by certified UV99+1 installers; precision-cut,
+  heat-formed and inspected
+- Note published on the page: values are QC averages and may vary by batch by
+  about ±5%
+
+## Warranty
+
+- Term: 3 years from the date of installation
+- Backed by the certified installer who fitted the film
+- Covered items (subject to the installer-issued warranty record terms):
+  - Bubbling — adhesive or material failure lifting the film from the glass
+  - Adhesive failure — peeling, lifting or separation from the mounted surface
+  - Discolouration — colour shift or fade beyond the published appearance
+    tolerance
+  - Performance loss — more than a 10% drop in UV or published infrared
+    rejection over the term
+- Claims process: handled by the installer from first contact to refitted film;
+  customer submits the warranty record number, installation date and daylight
+  photos of the affected area
+- Resolution: approved claims are put right with replacement film refitted at no
+  charge for parts or labour
+- Details published at https://uv99.in/warranty.html
+
+## Services
+
+- Supply and professional installation of UV99 automotive window films
+- Film selection guidance based on the customer's vehicle, daily route and the
+  comfort issue they most want to address (UV, heat, glare, or all three)
+- On-site tools to compare the range and preview the look: a comparison /
+  "compare & configure" view and a tint simulator on the Products page
+- Warranty registration and claims handling through a certified installer
+  network
+- Dealer / installer partnership enquiries ("Become a Dealer")
+
+Installation notes published on the site: a full vehicle generally takes two to
+four hours depending on window count and rear-glass complexity; allow three to
+five days for the adhesive to cure fully. Permitted visible-light levels differ
+by window position and jurisdiction, and the installer must confirm what is
+legal for the vehicle before cutting film.
+
+## Film care
+
+After curing, clean with a soft microfibre cloth and an ammonia-free glass
+cleaner. Do not use abrasive pads, blades or scrapers on the filmed face.
+
+## Important Pages
+
+- Home: https://uv99.in/
+- Products (compare the range, tint simulator): https://uv99.in/films.html
+- UV99 +1 (flagship film): https://uv99.in/uv99-plus-one.html
+- About / brand story and technology: https://uv99.in/about.html
+- Warranty: https://uv99.in/warranty.html
+- FAQ & Contact: https://uv99.in/faq-contact.html
+- Terms & Conditions: https://uv99.in/terms.html
+- Privacy Policy: https://uv99.in/privacy.html
+- Disclaimer: https://uv99.in/disclaimer.html
+
+## Contact
+
+- Enquiry form and WhatsApp contact option: https://uv99.in/faq-contact.html
+- Service centre address: 32/33, Mayfair, Near AIR, Congress Nagar,
+  Nagpur - 440012, Maharashtra, India
+- Instagram: https://www.instagram.com/uv99.in/
+- Facebook: https://www.facebook.com/profile.php?id=61591502420683
+- YouTube: https://www.youtube.com/@UV99Glazing
+
+(No public phone number or email address is published on the website; enquiries
+are made through the website form or WhatsApp.)
+
+## Locations
+
+- Nagpur, Maharashtra, India — service centre address listed above.
+
+The website states that films are fitted by a certified installer network and
+that the service centre address is otherwise "available on request". No other
+specific locations or branches are listed on the site.
+
+## Frequently Relevant Topics
+
+Topics the website actually covers:
+
+- Automotive window film / car window glazing and tinting
+- UV-A and UV-B protection (ultraviolet band 280–400 nm; "UV99" = up to 99% UV
+  rejection, UV99 +1 = 100% to 400 nm)
+- Infrared and total heat rejection for cabin comfort
+- Visible Light Transmission (VLT) and how film shade affects day and night
+  visibility
+- Glare reduction
+- Nano-ceramic, non-metallic film technology and why it is signal-safe (no
+  interference with phone, GPS or toll transponders)
+- Protecting skin from UV exposure through side glass
+- Reducing interior fade, dashboard cracking and leather ageing from sun
+  exposure
+- Installation process and adhesive curing time
+- Film cleaning and care
+- 3-year installer-backed warranty and the claims process
+- Local tint / visible-light regulations (the installer confirms legality per
+  vehicle)
+
+Not covered by this site: paint protection film (PPF), pricing, promotions, and
+any products other than the five window films listed above.
