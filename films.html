@@ -5,8 +5,13 @@
   <title>Products — Find Your UV99 Automotive Film</title>
   <meta name="description" content="Compare UV rejection, heat, glare and clarity across the UV99 automotive film range, then preview the look with the tint simulator.">
   <link rel="stylesheet" href="/styles.css">
-  <link rel="preload" as="image" href="/assets/NEWCAR-cut.png">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%238f4a9e'/><text x='50' y='67' text-anchor='middle' fill='white' font-size='44' font-family='Arial' font-weight='900'>99</text></svg>">
+  <link rel="preload" as="image" href="/assets/new%20product.png">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#8f4a9e">
   <script>try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('fh-anim');}catch(e){}</script>
   <style>
     /* Golden eyebrows / kickers on the Products page */
@@ -45,7 +50,7 @@
       </div>
 
       <div class="fh-hero__visual" aria-hidden="true">
-        <img class="fh-hero__car" src="/assets/NEWCAR-cut.png" alt="" fetchpriority="high" decoding="async">
+        <img class="fh-hero__car" src="/assets/new%20product.png" alt="" fetchpriority="high" decoding="async">
       </div>
 
       <div class="fh-hero__content">
@@ -62,7 +67,7 @@
             Compare the range
             <svg class="fh-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <a class="fh-link" href="#uv99-experience"><span>Try the tint simulator</span></a>
+          <a class="fh-link" href="#simulator"><span>Try the tint simulator</span></a>
         </div>
       </div>
 
@@ -87,206 +92,6 @@
           <p class="fh-card__label fh-card__label--lead"><span data-count="3">3</span> Year Warranty</p>
         </li>
       </ul>
-    </section>
-
-    <!-- ================================================================
-         Interactive film experience  (additive · scripted at page end)
-         Desktop three-column feel:
-           LEFT   film selector  +  live product information
-           CENTRE sun -> glass + film -> cabin-temperature visualisation
-           RIGHT  live statistics
-         All values shown are each film's real published specification.
-         ================================================================ -->
-    <section class="section uvx" id="uv99-experience" aria-labelledby="uvx-title">
-      <div class="wrap">
-        <div class="section-head" data-reveal>
-          <p class="eyebrow">Interactive &middot; Film technology</p>
-          <h2 class="section-title" id="uvx-title">See the film do its job.</h2>
-          <p class="section-lede">Pick a UV99 film and watch how it turns heat and UV away before they reach the cabin. Every figure below is the film&rsquo;s real published specification.</p>
-        </div>
-
-        <p class="uvx__sr" data-uvx-sr aria-live="polite"></p>
-
-        <div class="uvx__grid">
-
-          <!-- FULL-WIDTH · film selector row -->
-          <div class="uvx__selector" data-reveal>
-            <div class="uvx__buttons" role="group" aria-label="Choose a UV99 film">
-              <button class="uvx__btn is-active" type="button" aria-pressed="true"  data-key="UV99 70"   aria-label="UV99 70 film"><span class="uvx__btn-dot" aria-hidden="true"></span><span class="uvx__btn-label">70</span></button>
-              <button class="uvx__btn"           type="button" aria-pressed="false" data-key="UV99 50"   aria-label="UV99 50 film"><span class="uvx__btn-dot" aria-hidden="true"></span><span class="uvx__btn-label">50</span></button>
-              <button class="uvx__btn"           type="button" aria-pressed="false" data-key="UV PRO 70" aria-label="UV PRO 70 film"><span class="uvx__btn-dot" aria-hidden="true"></span><span class="uvx__btn-label">PRO 70</span></button>
-              <button class="uvx__btn"           type="button" aria-pressed="false" data-key="UV PRO 50" aria-label="UV PRO 50 film"><span class="uvx__btn-dot" aria-hidden="true"></span><span class="uvx__btn-label">PRO 50</span></button>
-              <button class="uvx__btn"           type="button" aria-pressed="false" data-key="UV99 +1"   aria-label="UV99 +1 film"><span class="uvx__btn-dot" aria-hidden="true"></span><span class="uvx__btn-label">+1</span></button>
-            </div>
-            <p class="uvx__hint">Tab to a film, then use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> to compare.</p>
-          </div>
-
-          <!-- CENTRE · sun -> glass + film -> cabin visualisation -->
-          <div class="uvx__panel uvx__panel--viz" data-reveal>
-            <div class="uvx__scene is-live" data-uvx-scene role="img" aria-label="Illustration: an intense sun drives heat and UV rays at a car windscreen; selecting a UV99 film applies it to the windscreen only, weakening and reflecting the rays and lowering the modelled cabin temperature.">
-              <img class="uvx__photo" src="/assets/DEGREE.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
-              <span class="uvx__film" data-uvx-film aria-hidden="true"></span>
-
-              <!-- ============================================================
-                   FX layer — one SVG sharing DEGREE.png's 1690x931 space so
-                   every effect stays aligned to the windscreen at any size.
-                   Only #uvxWind-clipped nodes tint the glass; see styles.css
-                   ("UV99 EXPERIENCE - windshield film simulator FX layer").
-                   ============================================================ -->
-              <svg class="uvx__fx" viewBox="0 0 1690 931" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
-                <defs>
-                  <radialGradient id="uvxSunG" cx="50%" cy="50%" r="50%">
-                    <stop offset="0" stop-color="#fff7e8" stop-opacity=".92"/>
-                    <stop offset=".38" stop-color="#ffd27a" stop-opacity=".5"/>
-                    <stop offset="1" stop-color="#ffb347" stop-opacity="0"/>
-                  </radialGradient>
-                  <linearGradient id="uvxHeatG" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stop-color="#ffe7b0" stop-opacity="0"/>
-                    <stop offset=".28" stop-color="#ffcf7a"/>
-                    <stop offset=".72" stop-color="#ff8a2a"/>
-                    <stop offset="1" stop-color="#ff6a1f" stop-opacity=".15"/>
-                  </linearGradient>
-                  <linearGradient id="uvxUvG" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stop-color="#ff7ae0" stop-opacity="0"/>
-                    <stop offset=".42" stop-color="#e85fff"/>
-                    <stop offset="1" stop-color="#b23cff" stop-opacity=".2"/>
-                  </linearGradient>
-                  <linearGradient id="uvxReflG" x1="0" y1="1" x2="0" y2="0">
-                    <stop offset="0" stop-color="#8b5cf6" stop-opacity="0"/>
-                    <stop offset=".45" stop-color="#a78bfa"/>
-                    <stop offset="1" stop-color="#67e8f9" stop-opacity=".95"/>
-                  </linearGradient>
-                  <linearGradient id="uvxScanG" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0" stop-color="#67e8f9" stop-opacity="0"/>
-                    <stop offset=".44" stop-color="#a78bfa" stop-opacity=".42"/>
-                    <stop offset=".5" stop-color="#eef6ff" stop-opacity=".8"/>
-                    <stop offset=".56" stop-color="#67e8f9" stop-opacity=".5"/>
-                    <stop offset="1" stop-color="#67e8f9" stop-opacity="0"/>
-                  </linearGradient>
-                  <radialGradient id="uvxCabinG" cx="50%" cy="50%" r="50%">
-                    <stop offset="0" stop-color="#ffd9a8" stop-opacity=".8"/>
-                    <stop offset=".55" stop-color="#ffb060" stop-opacity=".32"/>
-                    <stop offset="1" stop-color="#ff8a2a" stop-opacity="0"/>
-                  </radialGradient>
-                  <!-- windscreen outline in DEGREE.png pixel space (see summary
-                       notes for how to re-trace these six points) -->
-                  <clipPath id="uvxWind" clipPathUnits="userSpaceOnUse">
-                    <path d="M240 466 L1100 408 L1116 592 L980 726 L560 788 L196 626 Z"/>
-                  </clipPath>
-                </defs>
-
-                <ellipse class="uvx__sun" cx="70" cy="40" rx="300" ry="260" fill="url(#uvxSunG)"/>
-
-                <g class="uvx__rays uvx__rays--heat" fill="none" stroke="url(#uvxHeatG)" stroke-linecap="round">
-                  <path style="--i:0" d="M150 96 L300 566"/>
-                  <path style="--i:1" d="M150 96 L372 604"/>
-                  <path style="--i:2" d="M150 96 L446 566"/>
-                  <path style="--i:3" d="M150 96 L520 622"/>
-                  <path style="--i:4" d="M150 96 L590 582"/>
-                  <path style="--i:5" d="M150 96 L648 632"/>
-                </g>
-
-                <g class="uvx__rays uvx__rays--uv" fill="none" stroke="url(#uvxUvG)" stroke-linecap="round">
-                  <path style="--i:0" d="M172 104 L330 548"/>
-                  <path style="--i:1" d="M172 104 L410 590"/>
-                  <path style="--i:2" d="M172 104 L486 548"/>
-                  <path style="--i:3" d="M172 104 L566 604"/>
-                  <path style="--i:4" d="M172 104 L300 612"/>
-                  <path style="--i:5" d="M172 104 L534 566"/>
-                </g>
-
-                <g clip-path="url(#uvxWind)">
-                  <rect class="uvx__glass" x="0" y="0" width="1690" height="931"/>
-                  <rect class="uvx__glassAccent" x="0" y="0" width="1690" height="931"/>
-                  <ellipse class="uvx__cabinGlare" cx="600" cy="662" rx="300" ry="182" fill="url(#uvxCabinG)"/>
-                  <g class="uvx__shimmer" fill="#cfe6ff">
-                    <rect x="0" y="470" width="1690" height="24"/>
-                    <rect x="0" y="560" width="1690" height="18"/>
-                    <rect x="0" y="650" width="1690" height="22"/>
-                  </g>
-                  <rect class="uvx__scan" x="-400" y="-60" width="360" height="1050" fill="url(#uvxScanG)"/>
-                </g>
-
-                <g class="uvx__rays uvx__rays--refl" fill="none" stroke="url(#uvxReflG)" stroke-linecap="round">
-                  <path style="--i:0" d="M352 560 L300 300"/>
-                  <path style="--i:1" d="M452 582 L430 296"/>
-                  <path style="--i:2" d="M556 560 L560 280"/>
-                  <path style="--i:3" d="M660 600 L706 300"/>
-                  <path style="--i:4" d="M762 560 L846 300"/>
-                  <path style="--i:5" d="M604 540 L648 262"/>
-                  <path style="--i:6" d="M500 540 L498 272"/>
-                </g>
-
-                <g class="uvx__spark" fill="#ffd9a8">
-                  <circle style="--i:0" cx="360" cy="540" r="3"/>
-                  <circle style="--i:1" cx="470" cy="500" r="2.4"/>
-                  <circle style="--i:2" cx="300" cy="470" r="2.6"/>
-                  <circle style="--i:3" cx="560" cy="520" r="3.2"/>
-                  <circle style="--i:4" cx="420" cy="560" r="2"/>
-                  <circle style="--i:5" cx="640" cy="470" r="2.4"/>
-                  <circle style="--i:6" cx="520" cy="440" r="2.2"/>
-                  <circle style="--i:7" cx="380" cy="600" r="2.6"/>
-                </g>
-              </svg>
-
-              <div class="uvx__cabin" aria-hidden="true">
-                <p class="uvx__temp">
-                  <span class="uvx__temp-value" data-uvx-temp>42.0</span><span class="uvx__temp-unit">&deg;C</span>
-                  <span class="uvx__temp-label">Live cabin temp</span>
-                  <span class="uvx__temp-base">48&deg;C bare glass</span>
-                </p>
-              </div>
-            </div>
-            <p class="uvx__note">Illustrative model. Cabin temperature is derived from each film&rsquo;s heat-rejection rating against a 48&deg;C bare-glass baseline; real results vary with vehicle, glass and conditions.</p>
-          </div>
-
-          <!-- LEFT · unified product card: identity + specs -->
-          <div class="uvx__panel uvx__panel--product" data-reveal>
-            <div class="uvx__info" aria-live="polite">
-              <span class="uvx__tag" data-uvx-tag>Maximum clarity</span>
-              <h3 class="uvx__name" data-uvx-name>UV99 70</h3>
-              <p class="uvx__desc" data-uvx-desc>Clear protection that keeps the character of your factory glass.</p>
-              <dl class="uvx__specs">
-                <div><dt>Visible light</dt><dd><span data-uvx-spec="vlt">70</span>%</dd></div>
-                <div><dt>UV protection</dt><dd><span data-uvx-spec="uv">99</span>%</dd></div>
-                <div><dt>Heat rejection</dt><dd><span data-uvx-spec="heat">30</span>%</dd></div>
-                <div data-uvx-ir-row hidden><dt>Infrared rejection</dt><dd><span data-uvx-spec="ir">89</span>%</dd></div>
-              </dl>
-            </div>
-          </div>
-
-          <!-- RIGHT · live statistics, 2x2 -->
-          <div class="uvx__panel uvx__panel--stats" data-reveal>
-            <ul class="uvx__stats">
-              <li class="is-highlight">
-                <b><span data-uvx-stat="heat">30</span><i>%</i></b>
-                <span>Heat rejected</span>
-                <span class="uvx__meter"><i data-uvx-meter="heat"></i></span>
-              </li>
-              <li>
-                <b><span data-uvx-stat="uv">99</span><i>%</i></b>
-                <span>UV blocked</span>
-                <span class="uvx__meter"><i data-uvx-meter="uv"></i></span>
-              </li>
-              <li>
-                <b><span data-uvx-stat="vlt">70</span><i>%</i></b>
-                <span>Visible light</span>
-                <span class="uvx__meter"><i data-uvx-meter="vlt"></i></span>
-              </li>
-              <li data-uvx-ir-stat hidden>
-                <b><span data-uvx-stat="ir">89</span><i>%</i></b>
-                <span>Infrared rejection</span>
-                <span class="uvx__meter"><i data-uvx-meter="ir"></i></span>
-              </li>
-              <li>
-                <b>3<i>&nbsp;yr</i></b>
-                <span>Limited warranty<br>All UV99 films</span>
-              </li>
-            </ul>
-          </div>
-
-        </div>
-      </div>
     </section>
 
     <!-- ================================================================
@@ -335,7 +140,7 @@
           <!-- UV99 Series -->
           <article class="card product-card" data-product-series="uv99" style="--product-accent:#8f4a9e">
             <div class="product-media media-slot" data-media-slot>
-              <img src="/assets/uv99%2070.png" alt="UV99 70 premium window film packaging" loading="lazy" decoding="async">
+              <img src="/assets/UV99NEW70.png" alt="UV99 70 premium window film packaging" loading="lazy" decoding="async">
               <div class="ph" aria-hidden="true" style="--tint-a:.10">
                 <svg class="ph__svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" focusable="false">
                   <defs>
@@ -368,7 +173,7 @@
 
           <article class="card product-card" data-product-series="uv99" style="--product-accent:#8f4a9e">
             <div class="product-media media-slot" data-media-slot>
-              <img src="/assets/UV99%2050%20NEW.png" alt="UV99 50 premium window film packaging" loading="lazy" decoding="async">
+              <img src="/assets/UV99NEW50.png" alt="UV99 50 premium window film packaging" loading="lazy" decoding="async">
               <div class="ph" aria-hidden="true" style="--tint-a:.34">
                 <svg class="ph__svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" focusable="false">
                   <defs>
@@ -402,7 +207,7 @@
           <!-- UV PRO Series -->
           <article class="card product-card" data-product-series="pro" style="--product-accent:#d84f9a" hidden>
             <div class="product-media media-slot" data-media-slot>
-              <img src="/assets/uv99%20pro%2070.png" alt="UV PRO 70 bright exterior with a cooler cabin" loading="lazy" decoding="async">
+              <img src="/assets/UV99PRO70.png" alt="UV PRO 70 bright exterior with a cooler cabin" loading="lazy" decoding="async">
               <div class="ph ph--cool" aria-hidden="true" style="--tint-a:.13">
                 <svg class="ph__svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" focusable="false">
                   <defs>
@@ -435,7 +240,7 @@
 
           <article class="card product-card" data-product-series="pro" style="--product-accent:#d84f9a" hidden>
             <div class="product-media media-slot" data-media-slot>
-              <img src="/assets/pro%2050.png" alt="UV PRO 50 comfort and glare control on a daytime drive" loading="lazy" decoding="async">
+              <img src="/assets/UV99PRO50.png" alt="UV PRO 50 comfort and glare control on a daytime drive" loading="lazy" decoding="async">
               <div class="ph ph--cool" aria-hidden="true" style="--tint-a:.40">
                 <svg class="ph__svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" focusable="false">
                   <defs>
@@ -469,7 +274,7 @@
           <!-- UV99 +1 -->
           <article class="card product-card product-card--premium" data-product-series="plus" style="--product-accent:#e69418" hidden>
             <div class="product-media media-slot" data-media-slot>
-              <img src="/assets/uv99-plus-one.png" alt="UV99 +1 premium window film packaging" loading="lazy" decoding="async">
+              <img src="/assets/UV99%2B1.png" alt="UV99 +1 premium window film packaging" loading="lazy" decoding="async">
               <div class="ph" aria-hidden="true" style="--tint-a:.12">
                 <svg class="ph__svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" focusable="false">
                   <defs>
@@ -671,256 +476,6 @@
     }
     buttons.forEach(function (b) { b.addEventListener('click', function () { pick(b.dataset.sim); }); });
     pick('70');
-  })();
-  </script>
-
-  <script>
-  /* ======================================================================
-   * UV99 — Interactive film experience   (films.html · #uv99-experience)
-   * No dependencies. Progressive enhancement: if this script never runs,
-   * the section still shows the first film's real published numbers.
-   * ==================================================================== */
-  (function () {
-    'use strict';
-    var root = document.getElementById('uv99-experience');
-    if (!root) return;
-
-    /* --------------------------------------------------------------------
-     * PRODUCT DATA — the exact published specification for each UV99 film.
-     *   vlt  : Visible Light Transmission (%)
-     *   uv   : Ultra-Violet rejected (%)
-     *   ir   : Infrared rejection (%)   — published for UV99 +1 only
-     *   heat : Total solar heat rejection (%)  → feeds the temperature model
-     * These are the single source of truth for the whole section. Do not
-     * edit them here without updating the product spec sheet.
-     * ------------------------------------------------------------------ */
-    /* `label` is the short chip token shown on screen (selector + product
-       heading + SR summary). The object KEY stays the internal id used by
-       data-key / ORDER / currentKey — don't rename those. */
-    var PRODUCTS = {
-      'UV99 70':   { label: '70',     vlt: 70, uv: 99,  heat: 30, accent: '#8f4a9e', tag: 'Maximum clarity',
-                     blurb: 'Clear protection that keeps the character of your factory glass.' },
-      'UV99 50':   { label: '50',     vlt: 47, uv: 99,  heat: 35, accent: '#8f4a9e', tag: 'Balanced protection',
-                     blurb: 'More glare control while everyday visibility stays easy.' },
-      'UV PRO 70': { label: 'PRO 70', vlt: 70, uv: 99,  heat: 42, accent: '#d84f9a', tag: 'Clear heat comfort',
-                     blurb: 'A clear appearance with meaningful heat relief for hot, bright drives.' },
-      'UV PRO 50': { label: 'PRO 50', vlt: 51, uv: 99,  heat: 50, accent: '#d84f9a', tag: 'Comfort + glare control',
-                     blurb: 'A cooler, calmer cabin with balanced daylight visibility.' },
-      'UV99 +1':   { label: '+1',     vlt: 70, uv: 100, heat: 54, ir: 89, accent: '#e69418', tag: 'Advanced protection',
-                     blurb: 'Full-band UV protection to 400 nm with the strongest cooling in the range.' }
-    };
-    var ORDER = ['UV99 70', 'UV99 50', 'UV PRO 70', 'UV PRO 50', 'UV99 +1'];
-
-    /* heat-rejection span of the range — used to normalise the scene so the
-       difference between films reads clearly (0 = weakest, 1 = strongest) */
-    var HEATS   = ORDER.map(function (k) { return PRODUCTS[k].heat; });
-    var HEAT_MIN = Math.min.apply(null, HEATS);
-    var HEAT_MAX = Math.max.apply(null, HEATS);
-
-    /* --------------------------------------------------------------------
-     * CABIN-TEMPERATURE MODEL — one formula, one place.
-     *
-     *   temperature = BASE_TEMPERATURE - (heatRejection * TEMPERATURE_FACTOR)
-     *
-     *   BASE_TEMPERATURE    modelled cabin temp behind bare glass on a hot
-     *                       day, in deg C (the "no film" number)
-     *   TEMPERATURE_FACTOR  deg C removed per 1% of total heat rejection
-     *
-     * This is a MODELLING visualisation, not a claimed lab temperature.
-     * Result across the range (hot -> cool):
-     *   UV99 70  30% -> 42.0     UV99 50  35% -> 41.0
-     *   UV PRO 70 42% -> 39.6    UV PRO 50 50% -> 38.0
-     *   UV99 +1  54% -> 37.2
-     * To re-scale the whole experience, change ONLY these two constants.
-     * ------------------------------------------------------------------ */
-    var BASE_TEMPERATURE   = 48;
-    var TEMPERATURE_FACTOR = 0.2;
-    function cabinTemperature(heatRejection) {
-      return BASE_TEMPERATURE - (heatRejection * TEMPERATURE_FACTOR);
-    }
-
-    var reduceMotion = false;
-    try { reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
-
-    var $  = function (s) { return root.querySelector(s); };
-    var $$ = function (s) { return Array.prototype.slice.call(root.querySelectorAll(s)); };
-
-    var buttons    = $$('.uvx__btn');
-    var scene      = $('[data-uvx-scene]');
-    var tempEl     = $('[data-uvx-temp]');
-    var nameEl     = $('[data-uvx-name]');
-    var descEl     = $('[data-uvx-desc]');
-    var tagEl      = $('[data-uvx-tag]');
-    var srEl       = $('[data-uvx-sr]');
-    var rejectBars = $$('.uvx__beam--out i');
-    var irSpecRow  = $('[data-uvx-ir-row]');
-    var irStatRow  = $('[data-uvx-ir-stat]');
-    var specEls = { vlt: $('[data-uvx-spec="vlt"]'),  uv: $('[data-uvx-spec="uv"]'),
-                    heat: $('[data-uvx-spec="heat"]'), ir: $('[data-uvx-spec="ir"]') };
-    var statEls = { vlt: $('[data-uvx-stat="vlt"]'),  uv: $('[data-uvx-stat="uv"]'),
-                    heat: $('[data-uvx-stat="heat"]'), ir: $('[data-uvx-stat="ir"]') };
-    var meterEls = { vlt: $('[data-uvx-meter="vlt"]'),  uv: $('[data-uvx-meter="uv"]'),
-                     heat: $('[data-uvx-meter="heat"]'), ir: $('[data-uvx-meter="ir"]') };
-
-    /* hex -> "r,g,b" so CSS can build rgba(var(--uvx-accent-rgb), a) */
-    function hexToRgb(hex) {
-      var h = hex.replace('#', '');
-      if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
-      var n = parseInt(h, 16);
-      return [(n >> 16) & 255, (n >> 8) & 255, n & 255].join(',');
-    }
-
-    /* number count-up — rAF + easeOutCubic; instant under reduced-motion.
-       ~900ms cinematic tween. The element holds only its numeric text. */
-    function fmt(v, d) { return d ? v.toFixed(d) : String(Math.round(v)); }
-    function animateNumber(el, to, decimals, duration) {
-      if (!el) return;
-      decimals = decimals || 0;
-      var from = parseFloat(el.getAttribute('data-uvx-cur'));
-      if (isNaN(from)) from = to;
-      el.setAttribute('data-uvx-cur', to);
-      /* token: rapid re-selects supersede any in-flight tween on this element
-         so parallel rAF loops can never fight over the same text node */
-      var token = (parseInt(el.getAttribute('data-uvx-tok') || '0', 10) + 1) % 4096;
-      el.setAttribute('data-uvx-tok', token);
-      if (reduceMotion || from === to) { el.textContent = fmt(to, decimals); return; }
-      var start = performance.now(), dur = duration || 900;
-      requestAnimationFrame(function tick(now) {
-        if (parseInt(el.getAttribute('data-uvx-tok'), 10) !== token) return;
-        var p = Math.min(1, (now - start) / dur);
-        var e = 1 - Math.pow(1 - p, 3);
-        el.textContent = fmt(from + (to - from) * e, decimals);
-        if (p < 1) requestAnimationFrame(tick);
-        else el.textContent = fmt(to, decimals);
-      });
-    }
-
-    function setMeter(kind, value) {
-      var m = meterEls[kind];
-      if (m) m.style.width = Math.max(0, Math.min(100, value)) + '%';
-    }
-
-    var currentKey = ORDER[0];
-    var booted = false;   /* first paint must not fire the activation sweep */
-
-    function render(key, userInitiated) {
-      var p = PRODUCTS[key];
-      if (!p) return;
-      currentKey = key;
-      var hasIR = typeof p.ir === 'number';
-
-      /* 1 · active button */
-      buttons.forEach(function (b) {
-        var on = b.getAttribute('data-key') === key;
-        b.classList.toggle('is-active', on);
-        b.setAttribute('aria-pressed', String(on));
-      });
-
-      /* 2 · drive the visualisation via CSS custom properties */
-      root.style.setProperty('--uvx-accent', p.accent);
-      root.style.setProperty('--uvx-accent-rgb', hexToRgb(p.accent));
-      root.style.setProperty('--uvx-tint-rgb', hexToRgb(p.accent));
-      root.style.setProperty('--uvx-heat', (p.heat / 100).toFixed(3));
-      /* block = this film's heat rejection normalised across the range (0..1) */
-      var block = (p.heat - HEAT_MIN) / (HEAT_MAX - HEAT_MIN);
-      root.style.setProperty('--uvx-block', block.toFixed(3));
-      /* film darkens as less visible light is transmitted (from VLT) */
-      root.style.setProperty('--uvx-tint-a', (((100 - p.vlt) / 100) * 0.42 + 0.06).toFixed(3));
-
-      /* 3 · rejected rays: more bars bounce away as heat rejection climbs */
-      var lit = 2 + Math.round(block * (rejectBars.length - 2));
-      rejectBars.forEach(function (bar, i) { bar.classList.toggle('is-on', i < lit); });
-
-      /* replay the scene so the change reads as a physical film swap.
-         On a user pick we also run the luminous edge that scans across the
-         windscreen only (.uvx__scan, clipped to #uvxWind). Re-selecting
-         mid-sweep just restarts it via the reflow trick — never stacks. */
-      if (!reduceMotion && scene) {
-        scene.classList.remove('is-live');
-        if (booted && userInitiated) scene.classList.remove('is-scanning');
-        void scene.offsetWidth;                 /* force reflow */
-        scene.classList.add('is-live');
-        if (booted && userInitiated) scene.classList.add('is-scanning');
-      }
-
-      /* 4 · product copy */
-      if (nameEl) nameEl.textContent = p.label || key;
-      if (descEl) descEl.textContent = p.blurb;
-      if (tagEl)  tagEl.textContent  = p.tag;
-
-      /* 5 · specs + stats + meters (animated counters) */
-      animateNumber(specEls.vlt,  p.vlt);   animateNumber(statEls.vlt,  p.vlt);
-      animateNumber(specEls.uv,   p.uv);    animateNumber(statEls.uv,   p.uv);
-      animateNumber(specEls.heat, p.heat);  animateNumber(statEls.heat, p.heat);
-      setMeter('vlt', p.vlt); setMeter('uv', p.uv); setMeter('heat', p.heat);
-
-      if (irSpecRow) irSpecRow.hidden = !hasIR;
-      if (irStatRow) irStatRow.hidden = !hasIR;
-      if (hasIR) {
-        animateNumber(specEls.ir, p.ir); animateNumber(statEls.ir, p.ir);
-        setMeter('ir', p.ir);
-      }
-
-      /* 6 · cabin temperature + thermal tone (1 = hot ~42, 0 = cool ~37) */
-      var t = cabinTemperature(p.heat);
-      animateNumber(tempEl, t, 1, 1000);
-      root.style.setProperty('--uvx-warm', Math.max(0, Math.min(1, (t - 36) / 6)).toFixed(3));
-
-      /* 7 · screen-reader running summary */
-      if (srEl) {
-        srEl.textContent = (p.label || key) + ': ' + p.uv + '% UV blocked, ' + p.heat + '% heat rejected'
-          + (hasIR ? ', ' + p.ir + '% infrared rejection' : '') + ', ' + p.vlt
-          + '% visible light. Modelled cabin temperature ' + t.toFixed(1) + ' degrees Celsius.';
-      }
-    }
-
-    /* ---- interaction: click + keyboard (Left/Right = prev/next) ---- */
-    function step(delta, focusIt) {
-      var i = (ORDER.indexOf(currentKey) + delta + ORDER.length) % ORDER.length;
-      render(ORDER[i], true);
-      if (focusIt) {
-        var b = buttons[i];
-        if (b) b.focus();
-      }
-    }
-    buttons.forEach(function (btn) {
-      btn.addEventListener('click', function () { render(btn.getAttribute('data-key'), true); });
-      btn.addEventListener('keydown', function (ev) {
-        if (ev.key === 'ArrowRight' || ev.key === 'ArrowDown') { ev.preventDefault(); step(1, true); }
-        else if (ev.key === 'ArrowLeft' || ev.key === 'ArrowUp') { ev.preventDefault(); step(-1, true); }
-        else if (ev.key === 'Home') { ev.preventDefault(); render(ORDER[0], true); buttons[0].focus(); }
-        else if (ev.key === 'End') { ev.preventDefault(); render(ORDER[ORDER.length - 1], true); buttons[buttons.length - 1].focus(); }
-      });
-    });
-
-    /* ---- first paint: show the real values straight away ---- */
-    render(currentKey);
-    booted = true;
-
-    /* failsafe: never leave these two sections' reveal items hidden if the
-       shared IntersectionObserver in site.js fails to fire (mirrors the
-       existing .hero / .about-uv99 guards). Adds the same class the observer
-       would, so it is a harmless no-op once the observer has run. */
-    setTimeout(function () {
-      document.querySelectorAll('#uv99-experience [data-reveal], .uvx-cost [data-reveal]')
-        .forEach(function (el) { el.classList.add('is-visible'); });
-    }, 4000);
-
-    /* ---- intro flourish: count every figure up from 0 on first view ---- */
-    if (!reduceMotion && 'IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (!en.isIntersecting) return;
-          io.disconnect();
-          [specEls.vlt, specEls.uv, specEls.heat, specEls.ir,
-           statEls.vlt, statEls.uv, statEls.heat, statEls.ir, tempEl].forEach(function (el) {
-            if (el) el.setAttribute('data-uvx-cur', '0');
-          });
-          render(currentKey);
-        });
-      }, { threshold: 0.3 });
-      io.observe(root);
-    }
   })();
   </script>
 

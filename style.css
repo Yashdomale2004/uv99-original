@@ -688,7 +688,9 @@ main { position: relative; z-index: 1; }
   .upo-stage__glow           { animation: upo-glow-pulse 5.5s ease-in-out infinite; }
   .upo-stage__spark          { animation: upo-spark-drift 9s ease-in-out infinite alternate; }
   .upo-stage__sweep          { animation: upo-sweep 13s ease-in-out 2s infinite; }
-  .upo-stage__turntable-spin { animation: upo-turntable 10s linear infinite reverse; }
+  /* podium sheen held at a fixed angle — the disc reflection should read as
+     still light on glass, not a spinning turntable */
+  .upo-stage__turntable-spin { animation: none; transform: rotate(-24deg); }
   .upo-product__lift         { animation: upo-box-float 3.5s ease-in-out infinite alternate; }
   .upo-product__box          { animation: upo-spin 16s linear infinite; }
   .upo-product__photo        { animation: upo-photo-turn 12s ease-in-out infinite alternate; }
@@ -705,10 +707,9 @@ main { position: relative; z-index: 1; }
   .upo-hero.is-paused .upo-product__photo,
   .upo-hero.is-paused .upo-product__shadow { animation-play-state: paused; }
 
-  /* pointer hover over the visual: gently quicker box, livelier turntable rim.
+  /* pointer hover over the visual: gently quicker box, brighter podium sheen.
      Only animation-duration / opacity change — no stop, no reversal. */
   .upo-hero:hover .upo-product__box          { animation-duration: 12s; }
-  .upo-hero:hover .upo-stage__turntable-spin { animation-duration: 8.5s; }
   .upo-hero:hover .upo-stage__turntable      { opacity: .56; }
 }
 @keyframes upo-float {
@@ -726,10 +727,6 @@ main { position: relative; z-index: 1; }
 @keyframes upo-photo-turn {        /* flat packshot: gentle 3D showcase sway about Y */
   from { transform: rotateY(-16deg); }
   to   { transform: rotateY(16deg); }
-}
-@keyframes upo-turntable {         /* platform disc: opposite sense via `reverse` */
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
 }
 @keyframes upo-contact {          /* contact shadow breathes across each half-turn */
   from { transform: translateX(-50%) scaleX(.93); opacity: .78; }
@@ -1045,10 +1042,9 @@ body.upo.menu-open { overflow: hidden; }
   }
   .upo-product-slot { bottom: 20%; --slot-w: min(55vw, 300px); }
 
-  /* phones: calmer box, shallower depth, lighter turntable / ember load */
+  /* phones: calmer box, shallower depth, lighter ember load */
   .upo-product { --d: calc(var(--w) * 0.16); perspective: 900px; }
   .upo-product__box { animation-duration: 26s; }
-  .upo-stage__turntable-spin { animation-duration: 16s; }
   .upo-stage__spark { opacity: .5; }
 
   .upo-watermark {
@@ -1103,7 +1099,7 @@ html.upo-anim .upo-stage__spark { opacity: 0; }
 
   /* no continuous rotation — present the package at a static three-quarter
      angle with all lighting / reflections intact */
-  .upo-stage__turntable-spin { animation: none !important; transform: none !important; }
+  .upo-stage__turntable-spin { animation: none !important; transform: rotate(-24deg) !important; }
   .upo-stage__turntable { opacity: .4; }
   .upo-product__lift  { animation: none !important; transform: rotateX(-6deg); }
   .upo-product__box   { animation: none !important; transform: rotateY(-26deg); }
